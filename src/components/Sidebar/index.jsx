@@ -9,7 +9,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -28,6 +27,7 @@ import {
   FiChevronDown,
 } from 'react-icons/fi';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
+import {Link} from "react-router-dom"
 
 const LinkItems = [
   { name: 'Content Types', icon: FiHome, to: '/content-types' },
@@ -96,7 +96,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 const NavItem = ({ icon, children,to, ...rest }) => {
   return (
     <Link
-      href={`/admin${to}`}
+      to={`/admin${to}`}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}
     >

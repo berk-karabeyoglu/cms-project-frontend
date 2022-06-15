@@ -37,7 +37,7 @@ const queryStringValidationCheck = () => {
 
 const login = (email, password, onError) => {
   axios
-    .post(API.API_URL + '/login', {
+    .post(API.API_URL + '/auth/login', {
       email,
       password,
       device_name: 'TEST',
@@ -59,7 +59,7 @@ const login = (email, password, onError) => {
 
 const sendEmailForForgotPassword = (email, onSuccess, onError) => {
   axios
-    .post(API.API_URL + '/password/reset', {
+    .post(API.API_URL + '/auth/password/reset', {
       email,
     })
     .then(response => {
@@ -73,7 +73,7 @@ const sendEmailForForgotPassword = (email, onSuccess, onError) => {
 const resetPassword = (password, password_confirmation, onSuccess, onError) => {
   const { token, email } = queryStringValidationCheck();
   axios
-    .put(API.API_URL + '/password', {
+    .put(API.API_URL + '/auth/password', {
       email,
       password,
       password_confirmation,
@@ -83,7 +83,6 @@ const resetPassword = (password, password_confirmation, onSuccess, onError) => {
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response);
       onError(error.response.data.message);
     });
 };

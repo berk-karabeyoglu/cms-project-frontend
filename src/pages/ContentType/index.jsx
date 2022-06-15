@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Navigation from './navigation';
 
 const ContentType = () => {
   return (
-    <div>ContentType</div>
-  )
-}
+    <>
+      <Navigation />
+    </>
+  );
+};
 
-export default ContentType
+export default ContentType;
