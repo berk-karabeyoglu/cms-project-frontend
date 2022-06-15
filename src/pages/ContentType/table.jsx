@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTable, usePagination } from 'react-table';
 import './table.css';
 import {
@@ -35,7 +35,7 @@ export const Paginated = ({ columns, data }) => {
     {
       columns,
       data,
-      initialState: { pageIndex: 2 },
+      initialState: { pageIndex: 0 },
     },
     usePagination
   );
@@ -114,7 +114,7 @@ export const Paginated = ({ columns, data }) => {
                   : 0;
                 gotoPage(pageNumber);
               }}
-              style={{ width: '50px' }}
+              style={{ width: '4rem', textAlign: 'center' }}
             />
           </Box>
           <Box flex="5">
@@ -123,7 +123,7 @@ export const Paginated = ({ columns, data }) => {
               value={pageSize}
               onChange={e => setPageSize(Number(e.target.value))}
             >
-              {[10, 25, 50].map(pageSize => (
+              {[10, 20, 50].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
                   Show {pageSize}
                 </option>

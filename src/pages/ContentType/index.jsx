@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from './navigation';
 import { Paginated } from './table';
-import data from './data';
+import data from './data.json';
 import { COLUMNS } from './columnData';
 
 const ContentType = () => {
