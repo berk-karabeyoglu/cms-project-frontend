@@ -21,18 +21,21 @@ import {
   MenuList,
 } from '@chakra-ui/react';
 import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
   FiMenu,
   FiChevronDown,
+  FiShield,
+  FiEdit,
+  FiUsers,
+  FiFolder,
 } from 'react-icons/fi';
+
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
+import { authUtils } from '../../utils/authenticationUtils';
 
 const LinkItems = [
-  { name: 'Content Types', icon: FiHome, to: '/content-types' },
-  { name: 'Contents', icon: FiTrendingUp, to: '/contents' },
-  { name: 'Users', icon: FiCompass, to: '/users' },
+  { name: 'Content Types', icon: FiEdit, to: '/content-types' },
+  { name: 'Contents', icon: FiFolder, to: '/contents' },
+  { name: 'Users', icon: FiUsers, to: '/users' },
 ];
 
 export default function SidebarWithHeader({ children }) {
@@ -78,10 +81,13 @@ const SidebarContent = ({ onClose, ...rest }) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+      <Flex h="20" alignItems="center" mx="8" justifyContent="center">
+        <Text fontSize="2xl" fontWeight="bold">
+          <Flex>
+            Babe <FiShield /> CMS
+          </Flex>
         </Text>
+
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map(link => (
@@ -93,7 +99,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
   );
 };
 
-const NavItem = ({ icon, children,to, ...rest }) => {
+const NavItem = ({ icon, children, to, ...rest }) => {
   return (
     <Link
       href={`/admin${to}`}
@@ -199,7 +205,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={authUtils.logOutHandle}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

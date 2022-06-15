@@ -13,11 +13,11 @@ const AuthLayout = () => {
   return (
     <If test={isTokenValid}>
       <VStack minH="100vh">
-        <Flex alignItems="center" height="4rem" w="100vw" bgColor="blue.500">
+        <Flex alignItems="center" height="4rem" w="100vw" bgColor="#1A365D">
           <Flex minWidth="max-content" gap="2" w="100%">
             <Box p="2">
-              <Heading size="md" textColor="whiteAlpha.800">
-                Chakra App
+              <Heading size="md" textColor="whiteAlpha.900" mx="0.3rem">
+                Babe CMS
               </Heading>
             </Box>
             <Spacer />

@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Paginated } from './table';
+import data from './data';
+import { COLUMNS } from './columnData';
 
-const ContentType = () => {
-  return (
-    <div>ContentType</div>
-  )
-}
+const Content = () => {
+  return <Paginated data={data} columns={COLUMNS} />;
+};
 
-export default ContentType
+export default Content;

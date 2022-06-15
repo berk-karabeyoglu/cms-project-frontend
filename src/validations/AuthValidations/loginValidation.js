@@ -13,18 +13,18 @@ const validateEmail = email => {
 const validatePassword = password => {
   let errors = {};
   if (!password) {
-    errors.password = 'Password is require';
+    errors.password = 'Password is required';
   }
   return errors.password;
 };
 
 const arePasswordsSame = (password1, password2) => {
-  console.log(password1,password2)
-  let errors = {}
+  console.log(password1, password2);
+  let errors = {};
   if (password1 !== password2) {
     errors.password_confirmation = 'Passwords must match!';
   }
-  return errors.password_confirmation
+  return errors.password_confirmation;
 };
 
 const strengthPasswordChecker = password => {
