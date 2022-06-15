@@ -8,10 +8,16 @@ const validateAccessToken = () => {
     window.location = '/login';
     return false;
   }
+
   return true;
 };
 
-// Access token varsa dashboarda yonlendirmek icin 
+const logOutHandle = () => {
+  localStorage.removeItem('access_token');
+  window.location = '/login';
+};
+
+// Access token varsa dashboarda yonlendirmek icin
 const accessTokenChecker = () => {
   const token = localStorage.getItem(AUTH_CONSTANTS.TOKEN_KEY);
   if (token) {
@@ -94,4 +100,5 @@ export const authUtils = {
   login,
   sendEmailForForgotPassword,
   resetPassword,
+  logOutHandle,
 };
