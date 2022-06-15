@@ -10,7 +10,7 @@ export const PATHS = {
 }
 
 export const API = {
-    API_URL : "http://localhost:8000/api/v1/auth"
+    API_URL : "http://localhost:8000/api/v1"
 }
 
 export const PASSWORD_VALIDATION_CRITERIAS = {

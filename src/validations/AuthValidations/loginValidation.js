@@ -19,7 +19,6 @@ const validatePassword = password => {
 };
 
 const arePasswordsSame = (password1, password2) => {
-  console.log(password1,password2)
   let errors = {}
   if (password1 !== password2) {
     errors.password_confirmation = 'Passwords must match!';
