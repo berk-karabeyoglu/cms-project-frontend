@@ -1,26 +1,38 @@
-import { format } from 'date-fns';
-
 export const COLUMNS = [
   {
-    Header: 'Name',
-    Footer: 'Id',
+    Header: 'ID',
     accessor: 'id',
     disableFilters: true,
     sticky: 'left',
   },
   {
-    Header: 'Description',
-    Footer: 'First Name',
-    accessor: 'first_name',
+    Header: 'Name',
+    accessor: 'name',
+    disableFilters: true,
     sticky: 'left',
   },
   {
-    Header: 'ACTION',
-    Footer: 'Last Name',
-    accessor: 'last_name',
+    Header: 'Description',
+    accessor: 'description',
     sticky: 'left',
   },
+  {
+    Header: 'Action',
+    accessor: 'action',
+    sticky: 'left',
+    Cell: ({ cell }) => (
+      <a
+        href={'http://localhost:3000/admin/content-types/' + cell.row.values.id}
+      >
+        <button className="editButton" value={'Edit'}>
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+      </a>
+    ),
+  },
 ];
+
+// http://localhost:3000/admin/content-types/" + cell.row.values.id " "
 
 // export const GROUPED_COLUMNS = [
 //   {

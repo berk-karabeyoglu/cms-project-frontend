@@ -1,6 +1,7 @@
 import { Formik, Form, Field } from 'formik';
 import React from 'react';
 import loginValidations from '../../validations/AuthValidations/loginValidation';
+import { PATHS } from '../../constants/constants';
 import {
   Box,
   Button,
@@ -11,6 +12,7 @@ import {
   Input,
   Text,
   useToast,
+  Link,
 } from '@chakra-ui/react';
 import { authUtils } from '../../utils/authenticationUtils';
 
@@ -94,6 +96,16 @@ const LoginForm = () => {
             >
               Send Mail
             </Button>
+            <Link
+              color="blue.500"
+              textDecoration="none"
+              display="flex"
+              mt="1rem"
+              justifyContent="center"
+              href={PATHS.LOGIN}
+            >
+              Go Back to Login
+            </Link>
           </Form>
         </Box>
       )}

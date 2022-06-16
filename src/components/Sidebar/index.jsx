@@ -30,6 +30,7 @@ import {
 
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import { authUtils } from '../../utils/authenticationUtils';
+import { Link } from 'react-router-dom';
 
 const LinkItems = [
   { name: 'Content Types', icon: FiEdit, to: '/content-types' },
@@ -100,11 +101,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
 const NavItem = ({ icon, children, to, ...rest }) => {
   return (
-    <Link
-      to={`/admin${to}`}
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-    >
+    <Link to={`/admin${to}`} _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
         p="4"
