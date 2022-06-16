@@ -33,12 +33,11 @@ const Navigation = () => {
   const finalRef = React.useRef(null);
   const [modalNameText, setModalNameText] = useState('');
 
-  const handleOnBlur = (e,field) => {
-    field(e)
+  const handleOnBlur = (e, field) => {
+    field(e);
     let text = modalUtils.setModalName(e.target.value);
     setModalNameText(text);
   };
-
 
   return (
     <Flex alignItems="center" height="8rem" w="100%" bgColor="whiteAlpha.900">
@@ -133,7 +132,7 @@ const Navigation = () => {
                             {...field}
                             id="contentTypeName"
                             placeholder="Content Type Name"
-                            onBlur={(e) => handleOnBlur(e,field.onBlur)}
+                            onBlur={e => handleOnBlur(e, field.onBlur)}
                           />
                           <FormErrorMessage>
                             {form.errors.contentTypeName}
@@ -189,6 +188,7 @@ const Navigation = () => {
                       <Button onClick={onClose} colorScheme="red" w={'50%'}>
                         Cancel
                       </Button>
+
                       <Button
                         colorScheme="blue"
                         px={6}

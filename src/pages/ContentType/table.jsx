@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import './table.css';
+import axios from 'axios';
+import { API } from '../../constants/constants';
 import {
   Button,
   Select,
@@ -35,12 +37,29 @@ export const Paginated = ({ columns, data }) => {
     {
       columns,
       data,
-      initialState: { pageIndex: 2 },
+      initialState: { pageIndex: 0 },
     },
     usePagination
   );
 
   const { pageIndex, pageSize } = state;
+
+  const [resultArray, setResultArray] = useState([]);
+
+  useEffect(() => {
+    const contentTypeList = async () => {
+      await axios
+        .get(API.API_URL + '/content-types', {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              JSON.parse(localStorage.getItem('access_token')).token,
+          },
+        })
+        .then(response => setResultArray(response.data.data));
+    };
+    contentTypeList();
+  }, []);
 
   return (
     <>
@@ -114,7 +133,7 @@ export const Paginated = ({ columns, data }) => {
                   : 0;
                 gotoPage(pageNumber);
               }}
-              style={{ width: '50px' }}
+              style={{ width: '4rem', textAlign: 'center' }}
             />
           </Box>
           <Box flex="5">
@@ -123,7 +142,7 @@ export const Paginated = ({ columns, data }) => {
               value={pageSize}
               onChange={e => setPageSize(Number(e.target.value))}
             >
-              {[10, 25, 50].map(pageSize => (
+              {[1, 10, 20].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
                   Show {pageSize}
                 </option>
