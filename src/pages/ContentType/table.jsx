@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTable, usePagination } from 'react-table';
 import './table.css';
 import {

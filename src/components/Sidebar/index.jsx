@@ -30,6 +30,7 @@ import {
 
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import { authUtils } from '../../utils/authenticationUtils';
+import { Link } from 'react-router-dom';
 
 const LinkItems = [
   { name: 'Content Types', icon: FiEdit, to: '/content-types' },
