@@ -20,3 +20,13 @@ export const PASSWORD_VALIDATION_CRITERIAS = {
     digit : "Have to at least 1 digit",
     specialChar : "Have to at least 1 special character"
 }
+
+export const FIELD_TYPES = {
+    string: "Text (string)",
+    decimal : "Number (decimal)",
+    boolean : "Boolean",
+    float:"Number (float)",
+    integer : "Number (integer)",
+    dateField : "Date Field",
+    fileField : "File Field"
+}

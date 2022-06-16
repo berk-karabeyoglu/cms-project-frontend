@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 
 export const Paginated = ({ columns, data }) => {
-  const [current_Page, setCurrentPage] = useState();
   const {
     getTableProps,
     getTableBodyProps,
