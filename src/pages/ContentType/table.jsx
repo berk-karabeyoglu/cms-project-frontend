@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import './table.css';
+import axios from 'axios';
+import { API } from '../../constants/constants';
 import {
   Button,
   Select,
@@ -16,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 
 export const Paginated = ({ columns, data }) => {
+  const [current_Page, setCurrentPage] = useState();
   const {
     getTableProps,
     getTableBodyProps,
@@ -41,6 +44,23 @@ export const Paginated = ({ columns, data }) => {
   );
 
   const { pageIndex, pageSize } = state;
+
+  const [resultArray, setResultArray] = useState([]);
+
+  useEffect(() => {
+    const contentTypeList = async () => {
+      await axios
+        .get(API.API_URL + '/content-types', {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              JSON.parse(localStorage.getItem('access_token')).token,
+          },
+        })
+        .then(response => setResultArray(response.data.data));
+    };
+    contentTypeList();
+  }, []);
 
   return (
     <>
@@ -123,7 +143,7 @@ export const Paginated = ({ columns, data }) => {
               value={pageSize}
               onChange={e => setPageSize(Number(e.target.value))}
             >
-              {[10, 20, 50].map(pageSize => (
+              {[1, 10, 20].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
                   Show {pageSize}
                 </option>

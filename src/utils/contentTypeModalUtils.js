@@ -5,7 +5,7 @@ import { API } from '../constants/constants';
 const setModalName = name => {
   capitalizeWords(name);
   name = name.replace(/\s/g, ''); // Bunun ile aradaki, bas ve sondaki butun boslukları siliyoruz
-  name = pluralize.singular(name)
+  name = pluralize.singular(name);
   return name;
 };
 
@@ -15,7 +15,6 @@ const capitalizeWords = nameField => {
     return element.charAt(0).toUpperCase() + element.substring(1).toLowerCase();
   });
 };
-
 
 const createContentType = (
   name,

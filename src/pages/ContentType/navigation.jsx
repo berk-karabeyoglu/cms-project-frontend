@@ -188,6 +188,7 @@ const Navigation = () => {
                       <Button onClick={onClose} colorScheme="red" w={'50%'}>
                         Cancel
                       </Button>
+
                       <Button
                         colorScheme="blue"
                         px={6}
