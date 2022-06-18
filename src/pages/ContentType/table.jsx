@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTable, usePagination } from 'react-table';
 import './table.css';
-import axios from 'axios';
-import { API } from '../../constants/constants';
 import {
   Button,
   Select,
@@ -43,24 +41,7 @@ export const Paginated = ({ columns, data }) => {
   );
 
   const { pageIndex, pageSize } = state;
-
-  const [resultArray, setResultArray] = useState([]);
-
-  useEffect(() => {
-    const contentTypeList = async () => {
-      await axios
-        .get(API.API_URL + '/content-types', {
-          headers: {
-            Authorization:
-              'Bearer ' +
-              JSON.parse(localStorage.getItem('access_token')).token,
-          },
-        })
-        .then(response => setResultArray(response.data.data));
-    };
-    contentTypeList();
-  }, []);
-
+  
   return (
     <>
       <Table {...getTableProps()}>
@@ -99,7 +80,7 @@ export const Paginated = ({ columns, data }) => {
 
       <Box>
         <Flex mt="1rem">
-          <Box ml="0.5rem">
+          <Box ml="0.1rem">
             <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
               {'<<'}
             </Button>{' '}
@@ -138,7 +119,7 @@ export const Paginated = ({ columns, data }) => {
           </Box>
           <Box flex="5">
             <Select
-              width="15vw"
+              width="10vw"
               value={pageSize}
               onChange={e => setPageSize(Number(e.target.value))}
             >

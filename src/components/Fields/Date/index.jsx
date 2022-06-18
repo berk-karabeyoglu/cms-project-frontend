@@ -12,6 +12,7 @@ import {
   Heading,
   Select,
 } from '@chakra-ui/react';
+
 const DateField = () => {
   return (
     <Flex
@@ -27,9 +28,7 @@ const DateField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
-          description: '',
-          modalNameText: '',
+          
         }}
         onSubmit={values => {}}
       >
@@ -39,6 +38,7 @@ const DateField = () => {
               Manage Field
             </Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
+
               {/* Name Input */}
               <Field name="name">
                 {({ field, form }) => (
@@ -139,6 +139,8 @@ const DateField = () => {
                   </FormControl>
                 )}
               </Field>
+
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
                 <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
                   Cancel

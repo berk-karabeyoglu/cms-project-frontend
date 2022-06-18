@@ -22,7 +22,41 @@ export const COLUMNS = [
     sticky: 'left',
     Cell: ({ cell }) => (
       <a
-        href={'http://localhost:3000/admin/content-types/' + cell.row.values.id}
+        href={'http://localhost:3000/admin/content-types/edit/' + cell.row.values.id}
+      >
+        <button className="editButton" value={'Edit'}>
+          <i className="fa-solid fa-pen-to-square"></i>
+        </button>
+      </a>
+    ),
+  },
+];
+
+export const CONTENT_TYPE_FIELDS_COLUMNS = [
+  {
+    Header: '#',
+    accessor: 'id',
+    disableFilters: true,
+    sticky: 'left',
+  },
+  {
+    Header: 'Name',
+    accessor: 'label',
+    disableFilters: true,
+    sticky: 'left',
+  },
+  {
+    Header: 'Type',
+    accessor: 'type',
+    sticky: 'left',
+  },
+  {
+    Header: 'Action',
+    accessor: 'action',
+    sticky: 'left',
+    Cell: ({ cell }) => (
+      <a
+        href={'http://localhost:3000/admin/content-types/fields/edit' + cell.row.values.id}
       >
         <button className="editButton" value={'Edit'}>
           <i class="fa-solid fa-pen-to-square"></i>
@@ -32,49 +66,3 @@ export const COLUMNS = [
   },
 ];
 
-// http://localhost:3000/admin/content-types/" + cell.row.values.id " "
-
-// export const GROUPED_COLUMNS = [
-//   {
-//     Header: 'Id',
-//     Footer: 'Id',
-//     accessor: 'id',
-//   },
-//   {
-//     Header: 'Name',
-//     Footer: 'Name',
-//     columns: [
-//       {
-//         Header: 'First Name',
-//         Footer: 'First Name',
-//         accessor: 'first_name',
-//       },
-//       {
-//         Header: 'Last Name',
-//         Footer: 'Last Name',
-//         accessor: 'last_name',
-//       },
-//     ],
-//   },
-//   {
-//     Header: 'Info',
-//     Footer: 'Info',
-//     columns: [
-//       {
-//         Header: 'Date of Birth',
-//         Footer: 'Date of Birth',
-//         accessor: 'date_of_birth',
-//       },
-//       {
-//         Header: 'Country',
-//         Footer: 'Country',
-//         accessor: 'country',
-//       },
-//       {
-//         Header: 'Phone',
-//         Footer: 'Phone',
-//         accessor: 'phone',
-//       },
-//     ],
-//   },
-// ];

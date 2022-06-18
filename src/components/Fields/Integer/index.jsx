@@ -11,6 +11,7 @@ import {
   Button,
   Heading,
 } from '@chakra-ui/react';
+
 const IntegerField = () => {
   return (
     <Flex
@@ -38,6 +39,7 @@ const IntegerField = () => {
               Add Field
             </Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
+
               {/* Name Input */}
               <Field name="name">
                 {({ field, form }) => (
@@ -104,6 +106,7 @@ const IntegerField = () => {
                   </FormControl>
                 )}
               </Field>
+
               {/* Is Required Input */}
               <Field name="is_required">
                 {({ field, form }) => (
@@ -155,6 +158,7 @@ const IntegerField = () => {
                   </FormControl>
                 )}
               </Field>
+
               {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
@@ -179,6 +183,8 @@ const IntegerField = () => {
                   </FormControl>
                 )}
               </Field>
+
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
                 <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
                   Cancel

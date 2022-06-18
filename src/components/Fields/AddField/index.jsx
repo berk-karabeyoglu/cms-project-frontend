@@ -3,16 +3,16 @@ import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
   FormLabel,
-  Input,
   Flex,
   FormErrorMessage,
-  Textarea,
-  Switch,
   Button,
   Heading,
   Select,
   Box,
 } from '@chakra-ui/react';
+import editPageUtils from '../../../utils/editPageUtils';
+
+
 const AddField = () => {
   return (
     <Box
@@ -30,7 +30,8 @@ const AddField = () => {
         initialValues={{
           field_type: '',
         }}
-        onSubmit={values => {}}
+        onSubmit={values => {
+        }}
       >
         {props => (
           <Form w="100%">
@@ -64,7 +65,7 @@ const AddField = () => {
                 alignItems={'center'}
                 colorScheme="blue"
                 disabled={props.isSubmitting}
-                type="submit"
+                // type="submit"
               >
                 Add Field Type
               </Button>

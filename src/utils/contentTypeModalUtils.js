@@ -39,12 +39,10 @@ const createContentType = (
       }
     )
     .then(response => {
-      console.log('Console.logdan gelen : ' + response.message);
-      onSuccess(response.message);
+      onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response.data.message);
-      onError(error.response.message);
+      onError(error.response.data.message);
     });
 };
 

@@ -16,6 +16,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from '@chakra-ui/react';
+
 const FileField = () => {
   return (
     <Flex
@@ -31,9 +32,7 @@ const FileField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
-          description: '',
-          modalNameText: '',
+          
         }}
         onSubmit={values => {}}
       >

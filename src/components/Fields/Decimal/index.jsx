@@ -17,6 +17,7 @@ import {
   Button,
   Heading,
 } from '@chakra-ui/react';
+
 const DecimalField = () => {
   return (
     <Flex
@@ -32,9 +33,7 @@ const DecimalField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
-          description: '',
-          modalNameText: '',
+         
         }}
         onSubmit={values => {}}
       >
@@ -42,6 +41,7 @@ const DecimalField = () => {
           <Form>
             <Heading as={'h3'} size="md" mb={6}>Add Field To Content Type</Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
+
               {/* Name Input */}
               <Field name="name">
                 {({ field, form }) => (
@@ -141,6 +141,7 @@ const DecimalField = () => {
                   </FormControl>
                 )}
               </Field>
+
               {/* Prefix Input */}
               <Field name="prefix">
                 {({ field, form }) => (
@@ -156,6 +157,7 @@ const DecimalField = () => {
                   </FormControl>
                 )}
               </Field>
+
               {/* Suffix */}
               <Field name="suffix">
                 {({ field, form }) => (
@@ -248,6 +250,8 @@ const DecimalField = () => {
                   </FormControl>
                 )}
               </Field>
+              
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
                 <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
                   Cancel

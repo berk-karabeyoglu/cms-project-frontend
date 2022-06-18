@@ -1,12 +1,8 @@
 import React from 'react';
-import {
-  ChakraProvider,
-  theme,
-} from '@chakra-ui/react';
+import { ChakraProvider, theme } from '@chakra-ui/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthLayout from './layouts/AuthLayout';
 import PrivateLayout from './layouts/PrivateLayout';
-
 function App() {
   return (
     <ChakraProvider theme={theme}>

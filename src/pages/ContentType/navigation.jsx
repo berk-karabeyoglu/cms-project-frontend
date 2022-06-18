@@ -81,9 +81,6 @@ const Navigation = () => {
             <ModalBody pb={6}>
               <Formik
                 initialValues={{
-                  contentTypeName: '',
-                  description: '',
-                  modalNameText: '',
                 }}
                 onSubmit={values => {
                   modalUtils.createContentType(
@@ -96,9 +93,10 @@ const Navigation = () => {
                         title: 'Success',
                         description: onSuccessMessage,
                         status: 'success',
-                        duration: 1000,
+                        duration: 1500,
                         isClosable: true,
                       });
+                      onClose();
                     },
                     onErrorMessage => {
                       toast({
@@ -106,7 +104,7 @@ const Navigation = () => {
                         title: 'Error',
                         description: onErrorMessage,
                         status: 'error',
-                        duration: 1000,
+                        duration: 1500,
                         isClosable: true,
                       });
                     }
