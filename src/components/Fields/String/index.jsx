@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -14,8 +14,22 @@ import {
   NumberInputStepper,
   Switch,
   Button,
+  Heading,
+  useToast,
 } from '@chakra-ui/react';
-const StringField = () => {
+import stringFieldValidations from '../../../validations/FieldsValidation/String';
+import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
+const StringField = ({onClose}) => {
+  const toast = useToast();
+  const [columnNameText, setColumnNameText] = useState('');
+  const [switchStatus, setSwitchStatus] = useState(false);
+
+  const nameInputHandleOnBlur = (e, field) => {
+    field(e);
+    let columName = stringFieldValidations.formatFieldColumName(e.target.value);
+    setColumnNameText(columName);
+  };
+
   return (
     <Flex
       alignItems="center"
@@ -30,16 +44,55 @@ const StringField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
+          type: 'string',
+          name: '',
+          column_name: { columnNameText },
           description: '',
-          modalNameText: '',
+          length: '',
         }}
-        onSubmit={values => {}}
+        onSubmit={values => {
+          stringFieldsUtils.post(
+            values.type,
+            values.name,
+            values.description,
+            columnNameText,
+            values.length,
+            switchStatus,
+            onSuccessMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Success',
+                description: onSuccessMessage,
+                status: 'success',
+                duration: 10000,
+                isClosable: true,
+              });
+              onClose();
+            },
+            onErrorMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Error',
+                description: onErrorMessage,
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+              });
+            }
+          );
+        }}
       >
         {props => (
           <Form>
+            <Heading as={'h4'} size="md" mb={6}>
+              Add Text Field
+            </Heading>
             <Flex wrap={'wrap'} minW={'250px'} justifyContent={'space-evenly'}>
-              <Field name="name">
+              {/* Name Input */}
+              <Field
+                name="name"
+                validate={stringFieldValidations.validateFieldName}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
@@ -48,12 +101,19 @@ const StringField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="name">Name</FormLabel>
-                    <Input size="md" id="name" type="name" />
+                    <Input
+                      {...field}
+                      size="md"
+                      id="name"
+                      type="name"
+                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
+                    />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
+              {/* Column Name Input */}
               <Field name="column_name">
                 {({ field, form }) => (
                   <FormControl
@@ -65,7 +125,13 @@ const StringField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input size="md" id="column_name" type="text" />
+                    <Input
+                      {...field}
+                      value={columnNameText}
+                      size="md"
+                      id="column_name"
+                      type="text"
+                    />
                     <FormErrorMessage>
                       {form.errors.column_name}
                     </FormErrorMessage>
@@ -73,16 +139,10 @@ const StringField = () => {
                 )}
               </Field>
 
+              {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
-                  <FormControl
-                    w={'40%'}
-                    minW={'250px'}
-                    isInvalid={
-                      form.errors.description && form.touched.description
-                    }
-                    mb={5}
-                  >
+                  <FormControl w={'40%'} minW={'250px'} mb={5}>
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
                       {...field}
@@ -90,14 +150,15 @@ const StringField = () => {
                       size="sm"
                       resize={'none'}
                     />
-                    <FormErrorMessage>
-                      {form.errors.description}
-                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
-              <Field name="length">
+              {/* Length Input */}
+              <Field
+                name="length"
+                validate={stringFieldValidations.validateFieldLength}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
@@ -106,8 +167,8 @@ const StringField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="length">Length</FormLabel>
-                    <NumberInput defaultValue={15} min={10} max={20}>
-                      <NumberInputField />
+                    <NumberInput>
+                      <NumberInputField {...field} id="length" name="length" />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
@@ -117,32 +178,31 @@ const StringField = () => {
                   </FormControl>
                 )}
               </Field>
+
+              {/* Is Required Input */}
               <Field name="is_required">
                 {({ field, form }) => (
-                  <FormControl
-                    minW={'250px'}
-                    display={'flex'}
-                    isInvalid={
-                      form.errors.is_required && form.touched.is_required
-                    }
-                    mb={5}
-                  >
+                  <FormControl minW={'250px'} display={'flex'} mb={5}>
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch colorScheme="green" size="lg" />
-                    <FormErrorMessage>
-                      {form.errors.is_required}
-                    </FormErrorMessage>
+                    <Switch
+                      colorScheme="green"
+                      id="is_require"
+                      name='is_require'
+                      size="lg"
+                      onChange={() => setSwitchStatus(!switchStatus)}
+                    />
                   </FormControl>
                 )}
               </Field>
+
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
                   Cancel
                 </Button>
                 <Button
                   w="20%"
                   colorScheme="blue"
-                  disabled={props.isSubmitting}
                   type="submit"
                 >
                   Save

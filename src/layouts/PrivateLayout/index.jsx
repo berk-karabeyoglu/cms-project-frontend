@@ -15,7 +15,7 @@ const PrivateLayout = () => {
           <Route path="/users" element={<h1>users</h1>} />
           <Route path="/contents" element={<Content />} />
           <Route path="/content-types" element={<ContentType />} />
-          <Route path="/edit" element={<EditContentType />} />
+          <Route path="/content-types/edit/:content_type_id" element={<EditContentType />} />
         </Routes>
       </SidebarWithHeader>
     </If>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -16,8 +16,28 @@ import {
   Select,
   Button,
   Heading,
+  useToast,
 } from '@chakra-ui/react';
-const DecimalField = () => {
+import decimalFieldValidations from '../../../validations/FieldsValidation/Decimal';
+import decimalFieldUtils from '../../../utils/FieldsUtils/decimalFieldsUtils';
+const DecimalField = ({onClose}) => {
+  const [columnNameText, setColumnNameText] = useState('');
+  const [switchStatus, setSwitchStatus] = useState(false);
+  const [selectedSeperator, setSelectedSeperator] = useState();
+  const toast = useToast();
+
+  const nameInputHandleOnBlur = (e, field) => {
+    field(e);
+    let columName = decimalFieldValidations.formatFieldColumName(
+      e.target.value
+    );
+    setColumnNameText(columName);
+  };
+
+  const selectOnChangeHandle = e => {
+    console.log(e.target.value);
+    setSelectedSeperator(e.target.value);
+  };
   return (
     <Flex
       alignItems="center"
@@ -32,18 +52,66 @@ const DecimalField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
+          type: 'decimal',
+          name: '',
           description: '',
-          modalNameText: '',
+          column_name: { columnNameText },
+          minimum: 0,
+          maximum: 0,
+          digits: 0,
+          decimal: 0,
+          seperator: '',
+          prefix: '',
+          suffix: '',
         }}
-        onSubmit={values => {}}
+        onSubmit={values => {
+          decimalFieldUtils.post(
+            values.type,
+            values.name,
+            values.description,
+            switchStatus,
+            columnNameText,
+            values.digits,
+            values.decimal,
+            selectedSeperator,
+            values.minimum,
+            values.maximum,
+            values.prefix,
+            values.suffix,
+            onSuccessMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Success',
+                description: onSuccessMessage,
+                status: 'success',
+                duration: 10000,
+                isClosable: true,
+              });
+            },
+            onErrorMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Error',
+                description: onErrorMessage,
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+              });
+            }
+          );
+        }}
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>Add Field To Content Type</Heading>
+            <Heading as={'h3'} size="md" mb={6}>
+              Add Field To Content Type
+            </Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
-              <Field name="name">
+              <Field
+                name="name"
+                validate={decimalFieldValidations.validateFieldName}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
@@ -52,7 +120,13 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="name">Name</FormLabel>
-                    <Input size="sm" id="name" type="name" />
+                    <Input
+                      {...field}
+                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
+                      size="sm"
+                      id="name"
+                      type="name"
+                    />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -70,7 +144,13 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input size="sm" id="column_name" type="text" />
+                    <Input
+                      {...field}
+                      value={columnNameText}
+                      size="sm"
+                      id="column_name"
+                      type="text"
+                    />
                     <FormErrorMessage>
                       {form.errors.column_name}
                     </FormErrorMessage>
@@ -90,7 +170,11 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch colorScheme="green" size="lg" />
+                    <Switch
+                      onChange={() => setSwitchStatus(!switchStatus)}
+                      colorScheme="green"
+                      size="lg"
+                    />
                     <FormErrorMessage>
                       {form.errors.is_required}
                     </FormErrorMessage>
@@ -108,8 +192,8 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="digits">Digits</FormLabel>
-                    <NumberInput min={0} max={9} id="digits">
-                      <NumberInputField />
+                    <NumberInput>
+                      <NumberInputField {...field} id="digits" name="digits" />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
@@ -130,8 +214,12 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="decimal">Decimal</FormLabel>
-                    <NumberInput min={0} max={9}>
-                      <NumberInputField />
+                    <NumberInput>
+                      <NumberInputField
+                        {...field}
+                        id="decimal"
+                        name="decimal"
+                      />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
@@ -141,6 +229,7 @@ const DecimalField = () => {
                   </FormControl>
                 )}
               </Field>
+
               {/* Prefix Input */}
               <Field name="prefix">
                 {({ field, form }) => (
@@ -151,11 +240,18 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="prefix">Prefix</FormLabel>
-                    <Input size="sm" id="prefix" type="text" />
+                    <Input
+                      {...field}
+                      placeholder="$"
+                      size="sm"
+                      id="prefix"
+                      type="text"
+                    />
                     <FormErrorMessage>{form.errors.prefix}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+
               {/* Suffix */}
               <Field name="suffix">
                 {({ field, form }) => (
@@ -166,7 +262,13 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="suffix">Suffix</FormLabel>
-                    <Input size="sm" id="suffix" type="text" />
+                    <Input
+                      {...field}
+                      placeholder="USD"
+                      size="sm"
+                      id="suffix"
+                      type="text"
+                    />
                     <FormErrorMessage>{form.errors.suffix}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -183,9 +285,14 @@ const DecimalField = () => {
                   >
                     <FormLabel htmlFor="separator">Separator</FormLabel>
                     {/* <Input size="sm" id="separator" type="text" /> */}
-                    <Select size="sm">
-                      <option value="dot">.</option>
-                      <option value="comma">,</option>
+                    <Select
+                      {...field}
+                      onChange={e => selectOnChangeHandle(e)}
+                      value={selectedSeperator}
+                      size="sm"
+                    >
+                      <option value=".">.</option>
+                      <option value=",">,</option>
                     </Select>
                     <FormErrorMessage>{form.errors.separator}</FormErrorMessage>
                   </FormControl>
@@ -193,7 +300,10 @@ const DecimalField = () => {
               </Field>
 
               {/* Minimum Input */}
-              <Field name="minimum">
+              <Field
+                name="minimum"
+                validate={decimalFieldValidations.validateMinimum}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
@@ -202,7 +312,7 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="minimum">Minimum</FormLabel>
-                    <Input size="sm" id="minimum" type="number" />
+                    <Input {...field} size="sm" id="minimum" type="number" />
                     <FormErrorMessage>{form.errors.minimum}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -211,30 +321,23 @@ const DecimalField = () => {
               {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
-                  <FormControl
-                    w={'40%'}
-                    minW={'200px'}
-                    isInvalid={
-                      form.errors.description && form.touched.description
-                    }
-                    mb={5}
-                  >
+                  <FormControl w={'40%'} minW={'200px'} mb={5}>
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
-                      placeholder=""
+                      {...field}
                       size="sm"
                       id="description"
                       resize={'none'}
                     />
-                    <FormErrorMessage>
-                      {form.errors.column_name}
-                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* Maximum Input */}
-              <Field name="maximum">
+              <Field
+                name="maximum"
+                validate={decimalFieldValidations.validateMaximum}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
@@ -243,21 +346,18 @@ const DecimalField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="maximum">Maximum</FormLabel>
-                    <Input size="sm" id="maximum" type="number" />
+                    <Input {...field} size="sm" id="maximum" type="number" />
                     <FormErrorMessage>{form.errors.maximum}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  disabled={props.isSubmitting}
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Submit
                 </Button>
               </Flex>

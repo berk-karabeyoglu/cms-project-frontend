@@ -1,7 +1,6 @@
 // import pluralize from "pluralize";
 
 const validateName = name => {
-    console.log(name)
     let errors = {};
     if(!name){
         errors.contentTypeName = "Name is required !"

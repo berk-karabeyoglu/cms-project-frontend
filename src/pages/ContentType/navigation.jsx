@@ -26,7 +26,7 @@ import { Formik, Form, Field } from 'formik';
 import modalValidations from '../../validations/ContentType/addModalValidation';
 import modalUtils from '../../utils/contentTypeModalUtils';
 
-const Navigation = () => {
+const Navigation = (props) => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -81,9 +81,6 @@ const Navigation = () => {
             <ModalBody pb={6}>
               <Formik
                 initialValues={{
-                  contentTypeName: '',
-                  description: '',
-                  modalNameText: '',
                 }}
                 onSubmit={values => {
                   modalUtils.createContentType(
@@ -96,9 +93,11 @@ const Navigation = () => {
                         title: 'Success',
                         description: onSuccessMessage,
                         status: 'success',
-                        duration: 1000,
+                        duration: 1500,
                         isClosable: true,
                       });
+                      props.onRefetchData();
+                      onClose();
                     },
                     onErrorMessage => {
                       toast({
@@ -106,7 +105,7 @@ const Navigation = () => {
                         title: 'Error',
                         description: onErrorMessage,
                         status: 'error',
-                        duration: 1000,
+                        duration: 1500,
                         isClosable: true,
                       });
                     }

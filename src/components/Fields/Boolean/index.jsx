@@ -11,7 +11,9 @@ import {
   Button,
   Heading,
 } from '@chakra-ui/react';
-const BooleanField = () => {
+
+
+const BooleanField = ({onClose}) => {
   return (
     <Flex
       alignItems="center"
@@ -26,9 +28,7 @@ const BooleanField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
-          description: '',
-          modalNameText: '',
+         
         }}
         onSubmit={values => {}}
       >
@@ -150,8 +150,10 @@ const BooleanField = () => {
                   </FormControl>
                 )}
               </Field>
+
+              {/* Buttons Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
                   Cancel
                 </Button>
                 <Button

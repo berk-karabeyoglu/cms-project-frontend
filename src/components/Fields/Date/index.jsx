@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -11,8 +11,27 @@ import {
   Button,
   Heading,
   Select,
+  useToast,
 } from '@chakra-ui/react';
-const DateField = () => {
+import timestampFieldValidations from '../../../validations/FieldsValidation/Timestamp';
+import timestampFieldUtils from '../../../utils/FieldsUtils/timestampFieldsUtils';
+const DateField = ({onClose}) => {
+  const [columnNameText, setColumnNameText] = useState('');
+  const [switchStatus, setSwitchStatus] = useState(false);
+  const [selectedFormat, setSelectedFormat] = useState();
+  const toast = useToast();
+
+  const nameInputHandleOnBlur = (e, field) => {
+    field(e);
+    let columName = timestampFieldValidations.formatFieldColumName(
+      e.target.value
+    );
+    setColumnNameText(columName);
+  };
+
+  const selectOnChangeHandle = e => {
+    setSelectedFormat(e.target.value);
+  };
   return (
     <Flex
       alignItems="center"
@@ -27,11 +46,42 @@ const DateField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
+          type: 'timestamp',
+          name: '',
           description: '',
-          modalNameText: '',
+          timestampFormat: '',
+          column_name: { columnNameText },
         }}
-        onSubmit={values => {}}
+        onSubmit={values => {
+          timestampFieldUtils.post(
+            values.type,
+            values.name,
+            values.description,
+            switchStatus,
+            columnNameText,
+            selectedFormat,
+            onSuccessMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Success',
+                description: onSuccessMessage,
+                status: 'success',
+                duration: 10000,
+                isClosable: true,
+              });
+            },
+            onErrorMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Error',
+                description: onErrorMessage,
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+              });
+            }
+          );
+        }}
       >
         {props => (
           <Form>
@@ -40,7 +90,10 @@ const DateField = () => {
             </Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
-              <Field name="name">
+              <Field
+                name="name"
+                validate={timestampFieldValidations.validateFieldName}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
@@ -49,7 +102,13 @@ const DateField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="name">Name</FormLabel>
-                    <Input size="sm" id="name" type="name" />
+                    <Input
+                      {...field}
+                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
+                      size="sm"
+                      id="name"
+                      type="name"
+                    />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -67,7 +126,13 @@ const DateField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input size="sm" id="column_name" type="text" />
+                    <Input
+                      {...field}
+                      value={columnNameText}
+                      size="sm"
+                      id="column_name"
+                      type="text"
+                    />
                     <FormErrorMessage>
                       {form.errors.column_name}
                     </FormErrorMessage>
@@ -75,22 +140,32 @@ const DateField = () => {
                 )}
               </Field>
 
-              {/* Column Name Input */}
-              <Field name="Format">
+              {/* Format Input */}
+              <Field name="timestampFormat">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={form.errors.format && form.touched.format}
+                    isInvalid={
+                      form.errors.timestampFormat &&
+                      form.touched.timestampFormat
+                    }
                     mb={5}
                   >
-                    <FormLabel htmlFor="format">Format</FormLabel>
-                    <Select size="sm">
+                    <FormLabel htmlFor="timestampFormat">Format</FormLabel>
+                    <Select
+                      {...field}
+                      onChange={e => selectOnChangeHandle(e)}
+                      value={selectedFormat}
+                      size="sm"
+                    >
                       <option value="d_m_Y">d-m-Y</option>
                       <option value="m/d/Y">m/d/Y</option>
                       <option value="Y-m-d">Y-m-d</option>
                     </Select>
-                    <FormErrorMessage>{form.errors.format}</FormErrorMessage>
+                    <FormErrorMessage>
+                      {form.errors.timestampFormat}
+                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -107,7 +182,11 @@ const DateField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch colorScheme="green" size="lg" />
+                    <Switch
+                      onChange={() => setSwitchStatus(!switchStatus)}
+                      colorScheme="green"
+                      size="lg"
+                    />
                     <FormErrorMessage>
                       {form.errors.is_required}
                     </FormErrorMessage>
@@ -118,37 +197,25 @@ const DateField = () => {
               {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
-                  <FormControl
-                    w={'65%'}
-                    minW={'200px'}
-                    isInvalid={
-                      form.errors.description && form.touched.description
-                    }
-                    mb={5}
-                  >
+                  <FormControl w={'65%'} minW={'200px'} mb={5}>
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
+                      {...field}
                       placeholder=""
                       size="sm"
                       id="description"
                       resize={'none'}
                     />
-                    <FormErrorMessage>
-                      {form.errors.description}
-                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  disabled={props.isSubmitting}
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Save
                 </Button>
               </Flex>

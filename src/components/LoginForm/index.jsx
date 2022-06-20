@@ -62,6 +62,7 @@ const LoginForm = () => {
                 </FormControl>
               )}
             </Field>
+            
             <Field name="password" validate={loginValidations.validatePassword}>
               {({ field, form }) => (
                 <FormControl

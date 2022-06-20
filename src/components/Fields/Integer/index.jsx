@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -10,8 +10,23 @@ import {
   Switch,
   Button,
   Heading,
+  useToast,
 } from '@chakra-ui/react';
-const IntegerField = () => {
+import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
+import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
+const IntegerField = ({onClose}) => {
+  const [columnNameText, setColumnNameText] = useState('');
+  const [switchStatus, setSwitchStatus] = useState(false);
+  const toast = useToast();
+
+  const nameInputHandleOnBlur = (e, field) => {
+    field(e);
+    let columName = integerFieldValidations.formatFieldColumName(
+      e.target.value
+    );
+    setColumnNameText(columName);
+  };
+
   return (
     <Flex
       alignItems="center"
@@ -26,11 +41,48 @@ const IntegerField = () => {
     >
       <Formik
         initialValues={{
-          contentTypeName: '',
+          type: 'integer',
+          name: '',
+          column_name: { columnNameText },
           description: '',
-          modalNameText: '',
+          minimum:0,
+          maximum:0,
+          prefix:'',
+          suffix:''
         }}
-        onSubmit={values => {}}
+        onSubmit={values => {
+          integerFieldUtils.post(
+            values.type,
+            values.name,
+            values.description,
+            switchStatus,
+            columnNameText,
+            values.minimum,
+            values.maximum,
+            values.prefix,
+            values.suffix,
+            onSuccessMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Success',
+                description: onSuccessMessage,
+                status: 'success',
+                duration: 10000,
+                isClosable: true,
+              });
+            },
+            onErrorMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Error',
+                description: onErrorMessage,
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+              });
+            }
+          );
+        }}
       >
         {props => (
           <Form>
@@ -39,7 +91,10 @@ const IntegerField = () => {
             </Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
-              <Field name="name">
+              <Field
+                name="name"
+                validate={integerFieldValidations.validateFieldName}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
@@ -48,7 +103,13 @@ const IntegerField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="name">Name</FormLabel>
-                    <Input size="sm" id="name" type="name" />
+                    <Input
+                      {...field}
+                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
+                      size="sm"
+                      id="name"
+                      type="name"
+                    />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -66,7 +127,13 @@ const IntegerField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input size="sm" id="column_name" type="text" />
+                    <Input
+                      {...field}
+                      value={columnNameText}
+                      size="sm"
+                      id="column_name"
+                      type="text"
+                    />
                     <FormErrorMessage>
                       {form.errors.column_name}
                     </FormErrorMessage>
@@ -84,7 +151,13 @@ const IntegerField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="prefix">Prefix</FormLabel>
-                    <Input size="sm" id="prefix" type="text" />
+                    <Input
+                      {...field}
+                      size="sm"
+                      id="prefix"
+                      type="text"
+                      placeholder="$"
+                    />
                     <FormErrorMessage>{form.errors.prefix}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -99,11 +172,18 @@ const IntegerField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="suffix">Suffix</FormLabel>
-                    <Input size="sm" id="suffix" type="text" />
+                    <Input
+                      {...field}
+                      size="sm"
+                      id="suffix"
+                      type="text"
+                      placeholder="USD"
+                    />
                     <FormErrorMessage>{form.errors.suffix}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+
               {/* Is Required Input */}
               <Field name="is_required">
                 {({ field, form }) => (
@@ -116,7 +196,11 @@ const IntegerField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch colorScheme="green" size="lg" />
+                    <Switch
+                      onChange={() => setSwitchStatus(!switchStatus)}
+                      colorScheme="green"
+                      size="lg"
+                    />
                     <FormErrorMessage>
                       {form.errors.is_required}
                     </FormErrorMessage>
@@ -125,7 +209,10 @@ const IntegerField = () => {
               </Field>
 
               {/* Minimum Input */}
-              <Field name="minimum">
+              <Field
+                name="minimum"
+                validate={integerFieldValidations.validateMinimum}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
@@ -134,14 +221,17 @@ const IntegerField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="minimum">Minimum</FormLabel>
-                    <Input size="sm" id="minimum" type="number" />
+                    <Input {...field} size="sm" id="minimum" type="number" />
                     <FormErrorMessage>{form.errors.minimum}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* Maximum Input */}
-              <Field name="maximum">
+              <Field
+                name="maximum"
+                validate={integerFieldValidations.validateMaximum}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
@@ -150,11 +240,12 @@ const IntegerField = () => {
                     mb={5}
                   >
                     <FormLabel htmlFor="maximum">Maximum</FormLabel>
-                    <Input size="sm" id="maximum" type="number" />
+                    <Input {...field} size="sm" id="maximum" type="number" />
                     <FormErrorMessage>{form.errors.maximum}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+
               {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
@@ -168,27 +259,22 @@ const IntegerField = () => {
                   >
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
+                      {...field}
                       placeholder=""
                       size="sm"
                       id="description"
                       resize={'none'}
                     />
-                    <FormErrorMessage>
-                      {form.errors.column_name}
-                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  disabled={props.isSubmitting}
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Save
                 </Button>
               </Flex>
