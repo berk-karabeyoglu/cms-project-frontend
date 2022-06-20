@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import timestampFieldValidations from '../../../validations/FieldsValidation/Timestamp';
 import timestampFieldUtils from '../../../utils/FieldsUtils/timestampFieldsUtils';
-const DateField = ({onClose}) => {
+const DateField = ({ onClose }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState();

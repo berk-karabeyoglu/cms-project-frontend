@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
-const StringField = ({onClose}) => {
+const StringField = ({ onClose }) => {
   const toast = useToast();
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
@@ -187,7 +187,7 @@ const StringField = ({onClose}) => {
                     <Switch
                       colorScheme="green"
                       id="is_require"
-                      name='is_require'
+                      name="is_require"
                       size="lg"
                       onChange={() => setSwitchStatus(!switchStatus)}
                     />
@@ -197,14 +197,10 @@ const StringField = ({onClose}) => {
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Save
                 </Button>
               </Flex>

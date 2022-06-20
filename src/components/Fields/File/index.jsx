@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -15,9 +15,20 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  useToast,
 } from '@chakra-ui/react';
+import fileFieldValidations from '../../../validations/FieldsValidation/File';
+import fileFieldUtils from '../../../utils/FieldsUtils/fileFieldUtils';
+const FileField = ({ onClose }) => {
+  const toast = useToast();
+  const [columnNameText, setColumnNameText] = useState('');
+  const [switchStatus, setSwitchStatus] = useState(false);
 
-const FileField = ({onClose}) => {
+  const nameInputHandleOnBlur = (e, field) => {
+    field(e);
+    let columName = fileFieldValidations.formatFieldColumName(e.target.value);
+    setColumnNameText(columName);
+  };
   return (
     <Flex
       alignItems="center"
@@ -32,9 +43,47 @@ const FileField = ({onClose}) => {
     >
       <Formik
         initialValues={{
-          
+          type: 'file',
+          name: '',
+          column_name: { columnNameText },
+          description: '',
+          mimeTypes: '',
+          fileAmount: '',
+          fileSize: '',
         }}
-        onSubmit={values => {}}
+        onSubmit={values => {
+          fileFieldUtils.post(
+            values.type,
+            values.name,
+            values.description,
+            values.mimeTypes,
+            values.fileAmount,
+            values.fileSize,
+            columnNameText,
+            switchStatus,
+            onSuccessMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Success',
+                description: onSuccessMessage,
+                status: 'success',
+                duration: 10000,
+                isClosable: true,
+              });
+              onClose();
+            },
+            onErrorMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Error',
+                description: onErrorMessage,
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+              });
+            }
+          );
+        }}
       >
         {props => (
           <Form>
@@ -43,7 +92,10 @@ const FileField = ({onClose}) => {
             </Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
-              <Field name="name">
+              <Field
+                name="name"
+                validate={fileFieldValidations.validateFieldName}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
@@ -52,7 +104,13 @@ const FileField = ({onClose}) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="name">Name</FormLabel>
-                    <Input size="sm" id="name" type="name" />
+                    <Input
+                      {...field}
+                      size="sm"
+                      id="name"
+                      type="name"
+                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
+                    />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -70,7 +128,13 @@ const FileField = ({onClose}) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input size="sm" id="column_name" type="text" />
+                    <Input
+                      {...field}
+                      value={columnNameText}
+                      size="sm"
+                      id="column_name"
+                      type="text"
+                    />
                     <FormErrorMessage>
                       {form.errors.column_name}
                     </FormErrorMessage>
@@ -91,6 +155,7 @@ const FileField = ({onClose}) => {
                   >
                     <FormLabel htmlFor="allowed_mimes">Allowed Mimes</FormLabel>
                     <Input
+                      {...field}
                       defaultValue={'.jpg.png.pdf'}
                       size="sm"
                       id="allowed_mimes"
@@ -115,6 +180,7 @@ const FileField = ({onClose}) => {
                   >
                     <FormLabel htmlFor="max_size">Max. Size</FormLabel>
                     <Input
+                      {...field}
                       defaultValue={2048}
                       size="sm"
                       id="max_size"
@@ -135,7 +201,12 @@ const FileField = ({onClose}) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="maximum">Maximum</FormLabel>
-                    <NumberInput defaultValue={1} size={'sm'} min={1}>
+                    <NumberInput
+                      {...field}
+                      defaultValue={1}
+                      size={'sm'}
+                      min={1}
+                    >
                       <NumberInputField />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -160,6 +231,7 @@ const FileField = ({onClose}) => {
                   >
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
+                      {...field}
                       placeholder=""
                       size="sm"
                       id="description"
@@ -183,7 +255,11 @@ const FileField = ({onClose}) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch colorScheme="green" size="lg" />
+                    <Switch
+                      colorScheme="green"
+                      size="lg"
+                      onChange={() => setSwitchStatus(!switchStatus)}
+                    />
                     <FormErrorMessage>
                       {form.errors.is_required}
                     </FormErrorMessage>
@@ -191,15 +267,10 @@ const FileField = ({onClose}) => {
                 )}
               </Field>
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  disabled={props.isSubmitting}
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Submit
                 </Button>
               </Flex>

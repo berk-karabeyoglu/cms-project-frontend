@@ -15,7 +15,7 @@ import {
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
 
-const FloatField = ({onClose}) => {
+const FloatField = ({ onClose }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const toast = useToast();
@@ -41,7 +41,7 @@ const FloatField = ({onClose}) => {
     >
       <Formik
         initialValues={{
-          type: 'integer',
+          type: 'float',
           name: '',
           column_name: { columnNameText },
           description: '',
@@ -260,15 +260,10 @@ const FloatField = ({onClose}) => {
                 )}
               </Field>
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  disabled={props.isSubmitting}
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Submit
                 </Button>
               </Flex>

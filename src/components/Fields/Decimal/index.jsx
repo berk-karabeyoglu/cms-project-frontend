@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import decimalFieldValidations from '../../../validations/FieldsValidation/Decimal';
 import decimalFieldUtils from '../../../utils/FieldsUtils/decimalFieldsUtils';
-const DecimalField = ({onClose}) => {
+const DecimalField = ({ onClose }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const [selectedSeperator, setSelectedSeperator] = useState();
@@ -60,7 +60,7 @@ const DecimalField = ({onClose}) => {
           maximum: 0,
           digits: 0,
           decimal: 0,
-          seperator: '',
+          seperator: '.',
           prefix: '',
           suffix: '',
         }}
