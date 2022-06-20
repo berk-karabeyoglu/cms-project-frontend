@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import './table.css';
-import axios from 'axios';
-import { API } from '../../constants/constants';
 import {
   Button,
   Select,
@@ -44,23 +42,6 @@ export const Paginated = ({ columns, data }) => {
   );
 
   const { pageIndex, pageSize } = state;
-
-  const [resultArray, setResultArray] = useState([]);
-
-  useEffect(() => {
-    const contentTypeList = async () => {
-      await axios
-        .get(API.API_URL + '/content-types', {
-          headers: {
-            Authorization:
-              'Bearer ' +
-              JSON.parse(localStorage.getItem('access_token')).token,
-          },
-        })
-        .then(response => setResultArray(response.data.data));
-    };
-    contentTypeList();
-  }, []);
 
   return (
     <>
@@ -124,10 +105,9 @@ export const Paginated = ({ columns, data }) => {
             </strong>
           </Box>
           <Box flex="3">
-            Go to page:{' '}
+            Go to page:{''}
             <Input
               type="number"
-              defaultValue={pageIndex + 1}
               onChange={e => {
                 const pageNumber = e.target.value
                   ? Number(e.target.value) - 1

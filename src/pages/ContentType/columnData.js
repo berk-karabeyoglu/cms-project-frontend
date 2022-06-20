@@ -32,8 +32,6 @@ export const COLUMNS = [
   },
 ];
 
-// http://localhost:3000/admin/content-types/" + cell.row.values.id " "
-
 // export const GROUPED_COLUMNS = [
 //   {
 //     Header: 'Id',
