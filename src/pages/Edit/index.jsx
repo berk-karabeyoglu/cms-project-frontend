@@ -26,16 +26,10 @@ import {
   ModalFooter,
   Text
 } from '@chakra-ui/react';
-import IntegerField from "../../components/Fields/Integer"
+import BooleanField from '../../components/Fields/Boolean';
 
 const Edit = () => {
-  return (
-    <IntegerField/>
-  )
-};
-
-
-/*const [initialNameValue, setInitialNameValue] = useState('');
+const [initialNameValue, setInitialNameValue] = useState('');
 const [initialModalValue, setInitialModalValue] = useState('');
 const [initialTableValue, setInitialTableValue] = useState('');
 const [initialDescriptionValue, setInitialDescriptionValue] = useState('');
@@ -43,7 +37,7 @@ const [incomingFields, setIncomingFields] = useState([]);
 const { isOpen, onOpen, onClose } = useDisclosure();
 const toast = useToast();
 
-// This for information component which is on the left side of edit page
+//This for information component which is on the left side of edit page
 useEffect(() => {
   editPageUtils.getContentType(
     onSuccessMessage => {
@@ -56,7 +50,7 @@ useEffect(() => {
   );
 });
 
-// This for fields table which is on the right-bottom of edit page
+//This for fields table which is on the right-bottom of edit page
 useEffect(() => {
   editPageUtils.fillContentTypeFields(onSuccess => {
     setIncomingFields(onSuccess);
@@ -93,45 +87,7 @@ const clickNoOnModal = () => {}
 
 return (
   <>
-    <Flex
-      w="100%"
-      h={'50%'}
-      minW={'250px'}
-      p={6}
-      mb={6}
-      bgColor="whiteAlpha.900"
-    >
-      <Heading as={'h3'} size="md">
-        Add Field To Content Type
-      </Heading>
-      <Spacer />
-      <Button
-        size={'sm'}
-        w="20%"
-        colorScheme="red"
-        type="button"
-        onClick={onOpen}
-      >
-        Delete Content Type
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Second Chance</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text textAlign={'center'}>Are you sure about your <b>deleting</b> operation ?</Text>
-          </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="red" onClick={clickNoOnModal}>
-              Cancel
-            </Button>
-            <Button colorScheme="green"  px={6} mx={3} onClick={clickYesOnModal}>Yes</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Flex>
     <Flex w="100%" wrap={'wrap'} h={'auto'}>
       <Box
         w="40%"
@@ -276,6 +232,10 @@ return (
       </Flex>
     </Flex>
   </>
-);*/
+);
+};
+
+
+
 
 export default Edit;

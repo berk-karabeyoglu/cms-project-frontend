@@ -13,6 +13,9 @@ const post = (
   description,
   required,
   columnName,
+  digits,
+  decimal,
+  separator,
   minimum,
   maximum,
   prefix,
@@ -26,15 +29,20 @@ const post = (
   } else {
     required = 0;
   }
-  console.log('type: ' + type);
-  console.log('label: ' + label);
-  console.log('description ' + description);
-  console.log('required ' + required);
-  console.log('columName ' + columnName);
-  console.log('minimum' + minimum);
-  console.log('maximum: ' + maximum);
-  console.log('prefix ' + prefix);
-  console.log('suffix: ' + suffix);
+
+
+  console.log("type: " + type);
+  console.log("label: " + label);
+  console.log("description " + description);
+  console.log("required " + required);
+  console.log("columName " + columnName);
+  console.log("digits " + digits);
+  console.log("decimal " + decimal);
+  console.log("seperator " + separator);
+  console.log("minimum" + minimum );
+  console.log("maximum: " + maximum);
+  console.log("prefix " + prefix);
+  console.log("suffix: " + suffix);
   axios
     .post(
       API.API_URL + '/content-types/' + contentID + '/fields',
@@ -44,6 +52,9 @@ const post = (
         description,
         required,
         columnName,
+        digits,
+        decimal,
+        separator,
         minimum,
         maximum,
         prefix,

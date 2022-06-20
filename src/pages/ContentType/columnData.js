@@ -59,7 +59,7 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
         href={'http://localhost:3000/admin/content-types/fields/edit' + cell.row.values.id}
       >
         <button className="editButton" value={'Edit'}>
-          <i class="fa-solid fa-pen-to-square"></i>
+          <i className="fa-solid fa-pen-to-square"></i>
         </button>
       </a>
     ),

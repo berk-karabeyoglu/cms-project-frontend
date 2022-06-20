@@ -26,7 +26,7 @@ import { Formik, Form, Field } from 'formik';
 import modalValidations from '../../validations/ContentType/addModalValidation';
 import modalUtils from '../../utils/contentTypeModalUtils';
 
-const Navigation = () => {
+const Navigation = (props) => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -96,6 +96,7 @@ const Navigation = () => {
                         duration: 1500,
                         isClosable: true,
                       });
+                      props.onRefetchData();
                       onClose();
                     },
                     onErrorMessage => {

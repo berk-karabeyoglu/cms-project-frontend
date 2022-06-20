@@ -17,7 +17,7 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 
-const FileField = () => {
+const FileField = ({onClose}) => {
   return (
     <Flex
       alignItems="center"
@@ -191,7 +191,7 @@ const FileField = () => {
                 )}
               </Field>
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
                   Cancel
                 </Button>
                 <Button

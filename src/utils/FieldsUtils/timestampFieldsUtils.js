@@ -13,10 +13,7 @@ const post = (
   description,
   required,
   columnName,
-  minimum,
-  maximum,
-  prefix,
-  suffix,
+  format,
   onSuccess,
   onError
 ) => {
@@ -31,10 +28,8 @@ const post = (
   console.log('description ' + description);
   console.log('required ' + required);
   console.log('columName ' + columnName);
-  console.log('minimum' + minimum);
-  console.log('maximum: ' + maximum);
-  console.log('prefix ' + prefix);
-  console.log('suffix: ' + suffix);
+  console.log('format' + format);
+ 
   axios
     .post(
       API.API_URL + '/content-types/' + contentID + '/fields',
@@ -44,10 +39,7 @@ const post = (
         description,
         required,
         columnName,
-        minimum,
-        maximum,
-        prefix,
-        suffix,
+        format
       },
       {
         headers: {
