@@ -55,12 +55,12 @@ const DecimalField = ({ onClose }) => {
           type: 'decimal',
           name: '',
           description: '',
-          column_name: { columnNameText },
+          column_name: '',
           minimum: 0,
           maximum: 0,
-          digits: 0,
-          decimal: 0,
-          seperator: '.',
+          digits: 8,
+          decimal: 2,
+          seperator: '',
           prefix: '',
           suffix: '',
         }}
@@ -193,7 +193,12 @@ const DecimalField = ({ onClose }) => {
                   >
                     <FormLabel htmlFor="digits">Digits</FormLabel>
                     <NumberInput>
-                      <NumberInputField {...field} id="digits" name="digits" />
+                      <NumberInputField
+                        {...field}
+                        id="digits"
+                        name="digits"
+                        placeholder="8"
+                      />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
@@ -219,6 +224,7 @@ const DecimalField = ({ onClose }) => {
                         {...field}
                         id="decimal"
                         name="decimal"
+                        placeholder="2"
                       />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -290,8 +296,9 @@ const DecimalField = ({ onClose }) => {
                       value={selectedSeperator}
                       size="sm"
                     >
-                      <option value=".">.</option>
-                      <option value=",">,</option>
+                      <option>Select a seperator</option>
+                      <option value=".">. {''}( point)</option>
+                      <option value=",">, {''}( comma)</option>
                     </Select>
                     <FormErrorMessage>{form.errors.separator}</FormErrorMessage>
                   </FormControl>
