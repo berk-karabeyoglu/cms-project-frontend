@@ -23,7 +23,22 @@ const fillContentTypesDropdown = async onSuccess => {
 
 const fillContentsTable = async (selectedContentTypeID, onSuccess) => {
   axios
-    .get(API.API_URL + '/content-types/' + selectedContentTypeID + '/contents', {
+    .get(
+      API.API_URL + '/content-types/' + selectedContentTypeID + '/contents',
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => onSuccess(response.data))
+    .catch(error => console.log(error.response.data));
+};
+
+const getContentTypeFields = (contentTypeID, onSuccess) => {
+  axios
+    .get(API.API_URL + '/content-types/' + contentTypeID + '/fields', {
       headers: {
         Authorization:
           'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
@@ -32,10 +47,10 @@ const fillContentsTable = async (selectedContentTypeID, onSuccess) => {
     .then(response => onSuccess(response.data))
     .catch(error => console.log(error.response.data));
 };
-
 const contentPageUtils = {
   fillContentTypesDropdown,
   fillContentsTable,
+  getContentTypeFields
 };
 
 export default contentPageUtils;

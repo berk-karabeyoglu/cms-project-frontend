@@ -1,25 +1,46 @@
 import React, { useState } from 'react';
-import { Box, VStack, Flex, Spacer, Button, Select } from '@chakra-ui/react';
+import {
+  Box,
+  VStack,
+  Flex,
+  Spacer,
+  Button,
+  Select,
+  Heading,
+} from '@chakra-ui/react';
 import { useEffect } from 'react';
 import contentPageUtils from '../../utils/contentPageUtils';
 import { Paginated } from '../../pages/ContentType/table';
 import { CONTENT_COLUMNS } from '../ContentType/columnData';
+import AddContent from '../AddContent';
 const Content = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [contentTypes, setContentTypes] = useState([]);
-  const [contents,setContents] = useState([]);
+  const [contents, setContents] = useState([]);
   const [selectedContentTypeID, setSelectedContentType] = useState();
   const [listHidden, setListHidden] = useState(true);
-  const handleAddOnClick = () => {};
+  const [addHidden, setAddHidden] = useState(true);
+  const [contentTypeFields, setContentTypeFields] = useState([]);
+
+  const handleAddOnClick = () => {
+    contentPageUtils.getContentTypeFields(
+      selectedContentTypeID,
+      incomingData => {
+        setContentTypeFields(incomingData);
+      }
+    );
+    setListHidden(true);
+    setAddHidden(false);
+  };
 
   const listOnClickHandler = () => {
-    contentPageUtils.fillContentsTable(selectedContentTypeID,(incomingData) => {
-      console.log("Incoming : " + incomingData.data)
+    contentPageUtils.fillContentsTable(selectedContentTypeID, incomingData => {
       setContents(incomingData.data);
-      console.log ("Contentssss : " + contents);
-    })
+    });
     setListHidden(false);
+    setAddHidden(true);
   };
+
   useEffect(() => {
     contentPageUtils.fillContentTypesDropdown(incomingData => {
       setContentTypes(contentTypes.concat(incomingData));
@@ -31,10 +52,10 @@ const Content = () => {
     let id = 0;
 
     contentTypes.map(obj => {
-      if(obj.name === e.target.value){
-        id = obj.id
+      if (obj.name === e.target.value) {
+        id = obj.id;
       }
-    })
+    });
 
     setSelectedContentType(id);
     if (e.target.value !== 'empty') {
@@ -79,7 +100,7 @@ const Content = () => {
               type="button"
               onClick={listOnClickHandler}
             >
-              List
+              List All Contents
             </Button>
             <Spacer />
             <Button
@@ -88,7 +109,7 @@ const Content = () => {
               size={'md'}
               onClick={handleAddOnClick}
             >
-              Add
+              Create New Content
             </Button>
           </Flex>
         </VStack>
@@ -102,8 +123,19 @@ const Content = () => {
         bgColor="whiteAlpha.900"
       >
         <Box w={'100%'}>
-          <Paginated data={contents} columns={CONTENT_COLUMNS}/>
+          <Paginated data={contents} columns={CONTENT_COLUMNS} />
         </Box>
+      </Flex>
+      <Flex
+        hidden={addHidden}
+        height="auto"
+        p={5}
+        direction={'column'}
+        w="100%"
+        bgColor="whiteAlpha.900"
+      >
+        <Heading as='h5' size='md'>Create New Content</Heading>
+        <AddContent contentTypeFields={contentTypeFields} />
       </Flex>
     </VStack>
   );
