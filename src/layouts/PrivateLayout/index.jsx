@@ -7,7 +7,7 @@ import Content from '../../pages/Content';
 import EditContentType from '../../pages/Edit';
 const PrivateLayout = () => {
   const isTokenValid = authUtils.validateAccessToken();
-
+  
   return (
     <If test={isTokenValid}>
       <SidebarWithHeader>
