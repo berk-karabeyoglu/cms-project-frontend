@@ -45,22 +45,22 @@ const FileField = ({ onClose }) => {
         initialValues={{
           type: 'file',
           name: '',
-          column_name: { columnNameText },
           description: '',
-          mimeTypes: '',
-          fileAmount: '',
-          fileSize: '',
+          columName: '',
+          mimeTypes: '.jpg.png.pdf',
+          fileAmount: 1,
+          fileSize: 2048,
         }}
         onSubmit={values => {
           fileFieldUtils.post(
             values.type,
             values.name,
             values.description,
+            switchStatus,
+            columnNameText,
             values.mimeTypes,
             values.fileAmount,
             values.fileSize,
-            columnNameText,
-            switchStatus,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -117,103 +117,82 @@ const FileField = ({ onClose }) => {
               </Field>
 
               {/* Column Name Input */}
-              <Field name="column_name">
+              <Field name="columName">
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
                     minW={'200px'}
-                    isInvalid={
-                      form.errors.column_name && form.touched.column_name
-                    }
+                    isInvalid={form.errors.columName && form.touched.columName}
                     mb={5}
                   >
-                    <FormLabel htmlFor="column_name">Column Name</FormLabel>
+                    <FormLabel htmlFor="columName">Column Name</FormLabel>
                     <Input
                       {...field}
                       value={columnNameText}
                       size="sm"
-                      id="column_name"
+                      id="columName"
                       type="text"
                     />
-                    <FormErrorMessage>
-                      {form.errors.column_name}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{form.errors.columName}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* Allowed File Mimes Input */}
-              <Field name="allowed_mimes">
+              <Field name="mimeTypes">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={
-                      form.errors.allowed_mimes && form.touched.allowed_mimes
-                    }
+                    isInvalid={form.errors.mimeTypes && form.touched.mimeTypes}
                     mb={5}
                   >
-                    <FormLabel htmlFor="allowed_mimes">Allowed Mimes</FormLabel>
-                    <Input
-                      {...field}
-                      defaultValue={'.jpg.png.pdf'}
-                      size="sm"
-                      id="allowed_mimes"
-                      type=""
-                    />
+                    <FormLabel htmlFor="mimeTypes">Allowed Mimes</FormLabel>
+                    <Input {...field} size="sm" id="mimeTypes" type="text" />
 
-                    <FormErrorMessage>
-                      {form.errors.column_name}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{form.errors.mimeTypes}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
-              {/* Minimum Input */}
-              <Field name="max_size">
+              {/* Max File Size Input */}
+              <Field name="fileSize">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={form.errors.max_size && form.touched.max_size}
+                    isInvalid={form.errors.fileSize && form.touched.fileSize}
                     mb={5}
                   >
-                    <FormLabel htmlFor="max_size">Max. Size</FormLabel>
-                    <Input
-                      {...field}
-                      defaultValue={2048}
-                      size="sm"
-                      id="max_size"
-                      type=""
-                    />
+                    <FormLabel htmlFor="fileSize">Max. Size</FormLabel>
+                    <Input {...field} size="sm" id="fileSize" type="" />
                     <FormErrorMessage>{form.errors.minimum}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* Maximum Input */}
-              <Field name="maximum">
+              <Field name="fileAmount">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={form.errors.maximum && form.touched.maximum}
+                    isInvalid={
+                      form.errors.fileAmount && form.touched.fileAmount
+                    }
                     mb={5}
                   >
-                    <FormLabel htmlFor="maximum">Maximum</FormLabel>
-                    <NumberInput
-                      {...field}
-                      defaultValue={1}
-                      size={'sm'}
-                      min={1}
-                    >
+                    <FormLabel htmlFor="fileAmount">fileAmount</FormLabel>
+                    <NumberInput {...field} size={'sm'} min={1}>
                       <NumberInputField />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
                       </NumberInputStepper>
                     </NumberInput>
-                    <FormErrorMessage>{form.errors.maximum}</FormErrorMessage>
+                    <FormErrorMessage>
+                      {form.errors.fileAmount}
+                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -238,31 +217,27 @@ const FileField = ({ onClose }) => {
                       resize={'none'}
                     />
                     <FormErrorMessage>
-                      {form.errors.column_name}
+                      {form.errors.description}
                     </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
               {/* Is Required Input */}
-              <Field name="is_required">
+              <Field name="required">
                 {({ field, form }) => (
                   <FormControl
                     w={'10%'}
                     minW={'200px'}
-                    isInvalid={
-                      form.errors.is_required && form.touched.is_required
-                    }
+                    isInvalid={form.errors.required && form.touched.required}
                     mb={5}
                   >
-                    <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
+                    <FormLabel htmlFor="required">Is Required ?</FormLabel>
                     <Switch
                       colorScheme="green"
                       size="lg"
                       onChange={() => setSwitchStatus(!switchStatus)}
                     />
-                    <FormErrorMessage>
-                      {form.errors.is_required}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{form.errors.required}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>

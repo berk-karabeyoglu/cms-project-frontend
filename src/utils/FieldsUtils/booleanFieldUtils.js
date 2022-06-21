@@ -11,14 +11,17 @@ const post = (
   type,
   label,
   description,
-  required,
   columnName,
+  required,
   onLabel,
   offLabel,
   onSuccess,
   onError
 ) => {
   const contentID = getContentId();
+  console.log(columnName);
+  console.log(onLabel);
+  console.log(offLabel);
   if (required === true) {
     required = 1;
   } else {

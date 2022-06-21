@@ -12,9 +12,9 @@ import {
   Heading,
   useToast,
 } from '@chakra-ui/react';
-import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import booleanFieldUtils from '../../../utils/FieldsUtils/booleanFieldUtils';
 import booleanFieldValidations from '../../../validations/FieldsValidation/Boolean';
+import stringFieldValidations from '../../../validations/FieldsValidation/String';
 
 const BooleanField = ({ onClose }) => {
   const toast = useToast();
@@ -23,9 +23,7 @@ const BooleanField = ({ onClose }) => {
 
   const nameInputHandleOnBlur = (e, field) => {
     field(e);
-    let columName = booleanFieldValidations.formatFieldColumName(
-      e.target.value
-    );
+    let columName = stringFieldValidations.formatFieldColumName(e.target.value);
     setColumnNameText(columName);
   };
 
@@ -45,7 +43,7 @@ const BooleanField = ({ onClose }) => {
         initialValues={{
           type: 'boolean',
           name: '',
-          column_name: { columnNameText },
+          columnName: '',
           description: '',
           onLabel: '',
           offLabel: '',
@@ -115,59 +113,59 @@ const BooleanField = ({ onClose }) => {
               </Field>
 
               {/* Column Name Input */}
-              <Field name="column_name">
+              <Field name="columnName">
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
                     minW={'200px'}
                     isInvalid={
-                      form.errors.column_name && form.touched.column_name
+                      form.errors.columnName && form.touched.columnName
                     }
                     mb={5}
                   >
-                    <FormLabel htmlFor="column_name">Column Name</FormLabel>
+                    <FormLabel htmlFor="columnName">Column Name</FormLabel>
                     <Input
                       size="sm"
-                      id="column_name"
+                      id="columnName"
                       type="text"
                       {...field}
                       value={columnNameText}
                     />
                     <FormErrorMessage>
-                      {form.errors.column_name}
+                      {form.errors.columnName}
                     </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* On Input */}
-              <Field name="on">
+              <Field name="onLabel">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={form.errors.on && form.touched.on}
+                    isInvalid={form.errors.onLabel && form.touched.onLabel}
                     mb={5}
                   >
-                    <FormLabel htmlFor="on">"On" label</FormLabel>
-                    <Input size="sm" id="on" type="text" {...field} />
-                    <FormErrorMessage>{form.errors.on}</FormErrorMessage>
+                    <FormLabel htmlFor="onLabel">"On" label</FormLabel>
+                    <Input size="sm" id="onLabel" type="text" {...field} />
+                    <FormErrorMessage>{form.errors.onLabel}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* Off Input */}
-              <Field name="off">
+              <Field name="offLabel">
                 {({ field, form }) => (
                   <FormControl
                     w={'20%'}
                     minW={'200px'}
-                    isInvalid={form.errors.off && form.touched.off}
+                    isInvalid={form.errors.offLabel && form.touched.offLabel}
                     mb={5}
                   >
-                    <FormLabel htmlFor="off">"Off" label</FormLabel>
-                    <Input size="sm" id="off" type="text" {...field} />
-                    <FormErrorMessage>{form.errors.off}</FormErrorMessage>
+                    <FormLabel htmlFor="offLabel">"Off" label</FormLabel>
+                    <Input size="sm" id="offLabel" type="text" {...field} />
+                    <FormErrorMessage>{form.errors.offLabel}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>

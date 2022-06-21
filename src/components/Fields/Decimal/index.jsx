@@ -284,7 +284,6 @@ const DecimalField = ({ onClose }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="separator">Separator</FormLabel>
-                    {/* <Input size="sm" id="separator" type="text" /> */}
                     <Select
                       {...field}
                       onChange={e => selectOnChangeHandle(e)}
