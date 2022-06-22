@@ -11,6 +11,7 @@ import {
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import fileFieldValidations from '../../../validations/FieldsValidation/File';
 import fileFieldUtils from '../../../utils/FieldsUtils/fileFieldUtils';
@@ -34,7 +35,6 @@ const FileField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -43,7 +43,7 @@ const FileField = ({ onClose }) => {
           description: '',
           columName: '',
           mimeTypes: '.jpg.png.pdf',
-          fileAmount: 1,
+          fileAmount: '',
           fileSize: 2048,
         }}
         onSubmit={values => {
@@ -98,7 +98,14 @@ const FileField = ({ onClose }) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       size="sm"
@@ -177,9 +184,16 @@ const FileField = ({ onClose }) => {
                     }
                     mb={5}
                   >
-                    <FormLabel htmlFor="fileAmount">File Amount</FormLabel>
+                    <FormLabel htmlFor="fileAmount">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        File Amount
+                      </Flex>
+                    </FormLabel>
 
-                    <Input {...field} placeholder="1" />
+                    <Input {...field} />
 
                     <FormErrorMessage>
                       {form.errors.fileAmount}

@@ -43,6 +43,7 @@ const post = (
     )
     .then(response => {
       console.log(response);
+      console.log('length: ' + length);
       onSuccess(response.data.message);
     })
     .catch(error => {

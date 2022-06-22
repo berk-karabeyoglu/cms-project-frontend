@@ -7,16 +7,12 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  NumberInput,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  NumberInputField,
-  NumberInputStepper,
   Switch,
   Select,
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import decimalFieldValidations from '../../../validations/FieldsValidation/Decimal';
 import decimalFieldUtils from '../../../utils/FieldsUtils/decimalFieldsUtils';
@@ -34,10 +30,6 @@ const DecimalField = ({ onClose }) => {
     setColumnNameText(columName);
   };
 
-  const decimalInputOnChangeHandler = e => {
-    console.log('Decimal: ' + e.target.value);
-  };
-
   const selectOnChangeHandle = e => {
     console.log(e.target.value);
     setSelectedSeperator(e.target.value);
@@ -52,7 +44,6 @@ const DecimalField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -60,8 +51,8 @@ const DecimalField = ({ onClose }) => {
           name: '',
           description: ' ',
           column_name: '',
-          minimum: 0,
-          maximum: 0,
+          minimum: '',
+          maximum: '',
           digits: 8,
           decimal: 2,
           seperator: '',
@@ -123,7 +114,14 @@ const DecimalField = ({ onClose }) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
@@ -285,7 +283,14 @@ const DecimalField = ({ onClose }) => {
                     isInvalid={form.errors.separator && form.touched.separator}
                     mb={5}
                   >
-                    <FormLabel htmlFor="separator">Separator</FormLabel>
+                    <FormLabel htmlFor="separator">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Separator
+                      </Flex>
+                    </FormLabel>
                     <Select
                       {...field}
                       onChange={e => selectOnChangeHandle(e)}

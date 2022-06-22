@@ -11,6 +11,7 @@ import {
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import booleanFieldUtils from '../../../utils/FieldsUtils/booleanFieldUtils';
 import booleanFieldValidations from '../../../validations/FieldsValidation/Boolean';
@@ -37,7 +38,6 @@ const BooleanField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -99,7 +99,14 @@ const BooleanField = ({ onClose }) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       size="sm"
@@ -147,7 +154,14 @@ const BooleanField = ({ onClose }) => {
                     isInvalid={form.errors.onLabel && form.touched.onLabel}
                     mb={5}
                   >
-                    <FormLabel htmlFor="onLabel">"On" label</FormLabel>
+                    <FormLabel htmlFor="onLabel">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        On label
+                      </Flex>
+                    </FormLabel>
                     <Input size="sm" id="onLabel" type="text" {...field} />
                     <FormErrorMessage>{form.errors.onLabel}</FormErrorMessage>
                   </FormControl>
@@ -163,7 +177,14 @@ const BooleanField = ({ onClose }) => {
                     isInvalid={form.errors.offLabel && form.touched.offLabel}
                     mb={5}
                   >
-                    <FormLabel htmlFor="offLabel">"Off" label</FormLabel>
+                    <FormLabel htmlFor="offLabel">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Off label
+                      </Flex>
+                    </FormLabel>
                     <Input size="sm" id="offLabel" type="text" {...field} />
                     <FormErrorMessage>{form.errors.offLabel}</FormErrorMessage>
                   </FormControl>

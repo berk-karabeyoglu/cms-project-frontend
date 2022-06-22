@@ -11,6 +11,7 @@ import {
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
@@ -37,7 +38,6 @@ const IntegerField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -102,7 +102,14 @@ const IntegerField = ({ onClose }) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}

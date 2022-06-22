@@ -12,6 +12,7 @@ import {
   Heading,
   Select,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import timestampFieldValidations from '../../../validations/FieldsValidation/Timestamp';
 import timestampFieldUtils from '../../../utils/FieldsUtils/timestampFieldsUtils';
@@ -42,7 +43,6 @@ const DateField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -101,7 +101,14 @@ const DateField = ({ onClose }) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
@@ -152,7 +159,14 @@ const DateField = ({ onClose }) => {
                     }
                     mb={5}
                   >
-                    <FormLabel htmlFor="timestampFormat">Format</FormLabel>
+                    <FormLabel htmlFor="timestampFormat">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Format
+                      </Flex>
+                    </FormLabel>
                     <Select
                       {...field}
                       onChange={e => selectOnChangeHandle(e)}

@@ -8,14 +8,12 @@ import {
   FormErrorMessage,
   Textarea,
   NumberInput,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   NumberInputField,
-  NumberInputStepper,
   Switch,
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
@@ -40,7 +38,6 @@ const StringField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -100,7 +97,11 @@ const StringField = ({ onClose }) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text color="red">*</Text>Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       size="md"
@@ -166,13 +167,14 @@ const StringField = ({ onClose }) => {
                     isInvalid={form.errors.length && form.touched.length}
                     mb={5}
                   >
-                    <FormLabel htmlFor="length">Length</FormLabel>
+                    <FormLabel htmlFor="length">
+                      <Flex>
+                        <Text color="red">*</Text>
+                        Length
+                      </Flex>
+                    </FormLabel>
                     <NumberInput>
                       <NumberInputField {...field} id="length" name="length" />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
                     </NumberInput>
                     <FormErrorMessage>{form.errors.length}</FormErrorMessage>
                   </FormControl>
