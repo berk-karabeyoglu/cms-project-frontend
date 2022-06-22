@@ -1,16 +1,37 @@
 import axios from 'axios';
 import { API } from '../constants/constants';
 
-const getAllContentTypes =(onSuccess,onError) => {
+const getAllContentTypes = (onSuccess, onError) => {
   axios
-      .get(API.API_URL + '/content-types', {
+    .get(API.API_URL + '/content-types', {
+      headers: {
+        Authorization:
+          'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+      },
+    })
+    .then(response => onSuccess(response.data.data))
+    .catch(error => onError(error.response.data));
+};
+
+const searchContentType = search => {
+  axios
+    .get(
+      API.API_URL + '/content-types/',
+      {
         headers: {
           Authorization:
             'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
         },
-      })
-      .then(response => onSuccess(response.data.data)).catch(error => onError(error.response.data))
-}
+      },
+      []
+    )
+    .then(response => {
+      console.log(response.data.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
 
 const getContentType = (onSuccess, onError) => {
   const splittedArray = window.location.pathname.split('/');
@@ -56,11 +77,11 @@ const deleteContentType = (onSuccess, onError) => {
     });
 };
 
-const fillContentTypeFields = (onSuccess) => {
+const fillContentTypeFields = onSuccess => {
   const splittedArray = window.location.pathname.split('/');
   const contentID = splittedArray[splittedArray.length - 1];
   axios
-    .get(API.API_URL + '/content-types/' + contentID + "/fields", {
+    .get(API.API_URL + '/content-types/' + contentID + '/fields', {
       headers: {
         Authorization:
           'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
@@ -73,9 +94,7 @@ const fillContentTypeFields = (onSuccess) => {
 
 const addFieldToContentType = () => {};
 
-const getSelectedFieldTypeComponent = () => {
-
-}
+const getSelectedFieldTypeComponent = () => {};
 
 const editPageUtils = {
   getAllContentTypes,
@@ -83,6 +102,7 @@ const editPageUtils = {
   deleteContentType,
   addFieldToContentType,
   fillContentTypeFields,
-  getSelectedFieldTypeComponent
+  getSelectedFieldTypeComponent,
+  searchContentType,
 };
 export default editPageUtils;

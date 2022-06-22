@@ -10,11 +10,6 @@ import {
   Switch,
   Button,
   Heading,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   useToast,
 } from '@chakra-ui/react';
 import fileFieldValidations from '../../../validations/FieldsValidation/File';
@@ -39,7 +34,7 @@ const FileField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
+      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -67,7 +62,7 @@ const FileField = ({ onClose }) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
               onClose();
@@ -78,7 +73,7 @@ const FileField = ({ onClose }) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }
@@ -171,7 +166,7 @@ const FileField = ({ onClose }) => {
                 )}
               </Field>
 
-              {/* Maximum Input */}
+              {/* File Amount Input */}
               <Field name="fileAmount">
                 {({ field, form }) => (
                   <FormControl
@@ -182,14 +177,10 @@ const FileField = ({ onClose }) => {
                     }
                     mb={5}
                   >
-                    <FormLabel htmlFor="fileAmount">fileAmount</FormLabel>
-                    <NumberInput {...field} size={'sm'} min={1}>
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+                    <FormLabel htmlFor="fileAmount">File Amount</FormLabel>
+
+                    <Input {...field} placeholder="1" />
+
                     <FormErrorMessage>
                       {form.errors.fileAmount}
                     </FormErrorMessage>

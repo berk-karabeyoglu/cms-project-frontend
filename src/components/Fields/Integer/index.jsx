@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
-const IntegerField = ({onClose}) => {
+const IntegerField = ({ onClose }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const toast = useToast();
@@ -37,7 +37,7 @@ const IntegerField = ({onClose}) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
+      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -45,10 +45,10 @@ const IntegerField = ({onClose}) => {
           name: '',
           column_name: { columnNameText },
           description: '',
-          minimum:0,
-          maximum:0,
-          prefix:'',
-          suffix:''
+          minimum: 0,
+          maximum: 0,
+          prefix: '',
+          suffix: '',
         }}
         onSubmit={values => {
           integerFieldUtils.post(
@@ -67,7 +67,7 @@ const IntegerField = ({onClose}) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             },
@@ -77,7 +77,7 @@ const IntegerField = ({onClose}) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }

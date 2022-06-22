@@ -40,7 +40,7 @@ const StringField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
+      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -64,7 +64,7 @@ const StringField = ({ onClose }) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
               onClose();
@@ -75,7 +75,7 @@ const StringField = ({ onClose }) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }

@@ -51,7 +51,7 @@ const Edit = () => {
           h={'50%'}
           minW={'250px'}
           p={5}
-          bgColor="whiteAlpha.900"
+          // bgColor="whiteAlpha.900"
           direction={'row'}
           justifyContent={'space-evenly'}
         >

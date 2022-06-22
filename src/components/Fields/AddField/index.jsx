@@ -23,13 +23,55 @@ import FileField from '../File';
 const AddField = () => {
   const [selectedFieldType, setSelectedFieldType] = useState();
   const FIELD_TYPES = {
-    string: <StringField onClose={() => {setSelectedFieldType(undefined)}} />,
-    decimal: <DecimalField onClose={() => {setSelectedFieldType(undefined)}} />,
-    boolean: <BooleanField onClose={() => {setSelectedFieldType(undefined)}} />,
-    float: <FloatField onClose={() => {setSelectedFieldType(undefined)}} />,
-    integer: <IntegerField onClose={() => {setSelectedFieldType(undefined)}} />,
-    dateField: <DateField onClose={() => {setSelectedFieldType(undefined)}} />,
-    fileField: <FileField onClose={() => {setSelectedFieldType(undefined)}} />,
+    string: (
+      <StringField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+      />
+    ),
+    decimal: (
+      <DecimalField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+      />
+    ),
+    boolean: (
+      <BooleanField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+      />
+    ),
+    float: (
+      <FloatField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+      />
+    ),
+    integer: (
+      <IntegerField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+      />
+    ),
+    dateField: (
+      <DateField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+      />
+    ),
+    fileField: (
+      <FileField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+      />
+    ),
   };
 
   return (
@@ -44,7 +86,7 @@ const AddField = () => {
           direction={'row'}
           p={6}
           justifyContent={'space-around'}
-          bgColor="whiteAlpha.900"
+          // bgColor="whiteAlpha.900"
         >
           <Formik
             initialValues={{

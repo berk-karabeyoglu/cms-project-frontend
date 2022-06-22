@@ -34,6 +34,10 @@ const DecimalField = ({ onClose }) => {
     setColumnNameText(columName);
   };
 
+  const decimalInputOnChangeHandler = e => {
+    console.log('Decimal: ' + e.target.value);
+  };
+
   const selectOnChangeHandle = e => {
     console.log(e.target.value);
     setSelectedSeperator(e.target.value);
@@ -48,13 +52,13 @@ const DecimalField = ({ onClose }) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
+      // bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
           type: 'decimal',
           name: '',
-          description: '',
+          description: ' ',
           column_name: '',
           minimum: 0,
           maximum: 0,
@@ -84,7 +88,7 @@ const DecimalField = ({ onClose }) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             },
@@ -94,7 +98,7 @@ const DecimalField = ({ onClose }) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }
@@ -192,18 +196,14 @@ const DecimalField = ({ onClose }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="digits">Digits</FormLabel>
-                    <NumberInput>
-                      <NumberInputField
-                        {...field}
-                        id="digits"
-                        name="digits"
-                        placeholder="8"
-                      />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+
+                    <Input
+                      {...field}
+                      id="digits"
+                      name="digits"
+                      placeholder="8"
+                    />
+
                     <FormErrorMessage>{form.errors.digits}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -219,18 +219,14 @@ const DecimalField = ({ onClose }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="decimal">Decimal</FormLabel>
-                    <NumberInput>
-                      <NumberInputField
-                        {...field}
-                        id="decimal"
-                        name="decimal"
-                        placeholder="2"
-                      />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>{' '}
+
+                    <Input
+                      {...field}
+                      id="decimal"
+                      name="decimal"
+                      placeholder="2"
+                    />
+
                     <FormErrorMessage>{form.errors.decimal}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -297,8 +293,8 @@ const DecimalField = ({ onClose }) => {
                       size="sm"
                     >
                       <option>Select a seperator</option>
-                      <option value=".">. {''}( point)</option>
-                      <option value=",">, {''}( comma)</option>
+                      <option value=".">. {''}(point)</option>
+                      <option value=",">, {''}(comma)</option>
                     </Select>
                     <FormErrorMessage>{form.errors.separator}</FormErrorMessage>
                   </FormControl>
