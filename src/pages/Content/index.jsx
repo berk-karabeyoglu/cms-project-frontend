@@ -22,6 +22,12 @@ const Content = () => {
   const [addHidden, setAddHidden] = useState(true);
   const [contentTypeFields, setContentTypeFields] = useState([]);
 
+  useEffect(() => {
+    contentPageUtils.fillContentTypesDropdown(incomingData => {
+      setContentTypes(contentTypes.concat(incomingData));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const handleAddOnClick = () => {
     contentPageUtils.getContentTypeFields(
       selectedContentTypeID,
@@ -40,13 +46,6 @@ const Content = () => {
     setListHidden(false);
     setAddHidden(true);
   };
-
-  useEffect(() => {
-    contentPageUtils.fillContentTypesDropdown(incomingData => {
-      setContentTypes(contentTypes.concat(incomingData));
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const selectChangeHandler = e => {
     let id = 0;
@@ -91,7 +90,7 @@ const Content = () => {
             w={'100%'}
             wrap="wrap"
             alignItems={'center'}
-            justifyContent={'space-between'}
+            justifyContent={'space-evenly'}
           >
             <Button
               disabled={isDisabled}
@@ -134,8 +133,10 @@ const Content = () => {
         w="100%"
         bgColor="whiteAlpha.900"
       >
-        <Heading as='h5' size='md'>Create New Content</Heading>
-        <AddContent contentTypeFields={contentTypeFields} />
+        <Heading as="h5" size="md">
+          Create New Content
+        </Heading>
+        <AddContent contentTypeID={selectedContentTypeID} contentTypeFields={contentTypeFields} />
       </Flex>
     </VStack>
   );

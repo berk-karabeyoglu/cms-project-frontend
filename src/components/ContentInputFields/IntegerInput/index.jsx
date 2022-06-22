@@ -1,45 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
   FormLabel,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   FormErrorMessage,
+  Input,
 } from '@chakra-ui/react';
+import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 const IntegerInputField = () => {
+
   return (
-    <Formik initialValues={{}}>
+    <Formik
+      initialValues={{
+        numberInput: 0,
+      }}
+    >
       {props => (
         <Form>
           {/* Name Input */}
-          <Field name="number">
+          <Field
+            name="numberInput"
+            validate={integerFieldValidations.possibleMaximumValue}
+          >
             {({ field, form }) => (
               <FormControl
                 w={'40%'}
                 minW={'250px'}
-                isInvalid={form.errors.number && form.touched.number}
+                isInvalid={form.errors.numberInput && form.touched.numberInput}
                 mb={5}
               >
-                <FormLabel htmlFor="number">Number</FormLabel>
-                <NumberInput
-                  defaultValue={15}
-                  max={30}
-                  clampValueOnBlur={false}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>{' '}
-                <FormErrorMessage>{form.errors.number}</FormErrorMessage>
+                <FormLabel htmlFor="numberInput">Number</FormLabel>
+                <Input
+                  {...field}
+                  id="numberInput"
+                  type="number"
+                />
+                <FormErrorMessage>{form.errors.numberInput}</FormErrorMessage>
               </FormControl>
             )}
-          </Field>
+          </Field>{' '}
         </Form>
       )}
     </Formik>

@@ -72,16 +72,12 @@ const fillContentTypeFields = onSuccess => {
     });
 };
 
-const addFieldToContentType = () => {};
 
-const getSelectedFieldTypeComponent = () => {};
 
 const editPageUtils = {
   getAllContentTypes,
   getContentType,
   deleteContentType,
-  addFieldToContentType,
   fillContentTypeFields,
-  getSelectedFieldTypeComponent,
 };
 export default editPageUtils;
