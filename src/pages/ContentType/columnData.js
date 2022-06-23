@@ -66,3 +66,36 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
   },
 ];
 
+export const CONTENT_COLUMNS = [
+  {
+    Header: 'ID',
+    accessor: 'id',
+    sticky: 'left',
+  },
+  {
+    Header: 'Title',
+    accessor: 'title',
+    sticky: 'left',
+  },
+  {
+    Header: 'Created At',
+    accessor: 'created_at',
+    sticky: 'left',
+  },
+  {
+    Header: 'Action',
+    accessor: 'action',
+    disableFilters: true,
+    sticky: 'left',
+    Cell: ({ cell }) => (
+      <a
+        href={'http://localhost:3000/admin/content-types/fields/edit' + cell.row.values.id}
+      >
+        <button className="editButton" value={'Edit'}>
+          <i className="fa-solid fa-pen-to-square"></i>
+        </button>
+      </a>
+    ),
+  },
+];
+

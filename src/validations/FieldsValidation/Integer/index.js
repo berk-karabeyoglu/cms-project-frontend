@@ -30,11 +30,20 @@ const validateMaximum = maximum => {
   return errors.maximum;
 };
 
+const possibleMaximumValue = (numberInput) => {
+  const errors = {};
+  if(numberInput > 25){
+    errors.numberInput = "Your number can be maximum 25"
+  }
+  return errors.numberInput
+}
+
 const integerFieldValidations = {
   validateFieldName,
   formatFieldColumName,
   validateMinimum,
   validateMaximum,
+  possibleMaximumValue
 };
 
 export default integerFieldValidations;
