@@ -11,11 +11,12 @@ import {
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
 
-const FloatField = ({onClose}) => {
+const FloatField = ({ onClose, reFetchFieldsData }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const toast = useToast();
@@ -37,11 +38,10 @@ const FloatField = ({onClose}) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
-          type: 'integer',
+          type: 'float',
           name: '',
           column_name: { columnNameText },
           description: '',
@@ -67,9 +67,11 @@ const FloatField = ({onClose}) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
+              onClose();
             },
             onErrorMessage => {
               toast({
@@ -77,7 +79,7 @@ const FloatField = ({onClose}) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }
@@ -102,7 +104,14 @@ const FloatField = ({onClose}) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
@@ -260,15 +269,10 @@ const FloatField = ({onClose}) => {
                 )}
               </Field>
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  disabled={props.isSubmitting}
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Submit
                 </Button>
               </Flex>

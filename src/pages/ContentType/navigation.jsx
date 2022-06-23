@@ -1,7 +1,6 @@
 import {
   HStack,
   Flex,
-  Spacer,
   Button,
   InputRightElement,
   InputGroup,
@@ -19,14 +18,17 @@ import {
   Select,
   useDisclosure,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import modalValidations from '../../validations/ContentType/addModalValidation';
 import modalUtils from '../../utils/contentTypeModalUtils';
+import editPageUtils from '../../utils/editPageUtils';
+import './table';
 
-const Navigation = (props) => {
+const Navigation = props => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -40,7 +42,7 @@ const Navigation = (props) => {
   };
 
   return (
-    <Flex alignItems="center" height="8rem" w="100%" bgColor="whiteAlpha.900">
+    <Flex alignItems="center" height="8rem" w="100%">
       <HStack
         spacing={4}
         direction="row"
@@ -51,19 +53,35 @@ const Navigation = (props) => {
       >
         <InputGroup>
           <Input type="text" placeholder="Search Content Type" />
-          <InputRightElement
-            pointerEvents="none"
-            children={<SearchIcon color="gray.300" />}
-          />
+          <Button
+            ml="0.60rem"
+            id="search-button"
+            backgroundColor="rgb(0, 96, 144);"
+            color="whiteAlpha.900"
+            fontSize="1.1rem"
+            onClick={editPageUtils.searchContentType}
+          >
+            <SearchIcon />
+          </Button>
+
+          <InputRightElement pointerEvents="none" />
         </InputGroup>
         <Select placeholder="Filter" size="md">
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>
           <option value="option3">Option 3</option>
         </Select>
-        <Spacer />
 
-        <Button onClick={onOpen} px={6}>
+        <Button
+          id="add-button"
+          onClick={onOpen}
+          // px={6}
+          mr="2rem"
+          padding="0 1.3rem"
+          backgroundColor="rgb(0, 96, 144);"
+          color="whiteAlpha.900"
+          textAlign="center"
+        >
           Add
         </Button>
 
@@ -80,8 +98,7 @@ const Navigation = (props) => {
             <ModalCloseButton />
             <ModalBody pb={6}>
               <Formik
-                initialValues={{
-                }}
+                initialValues={{}}
                 onSubmit={values => {
                   modalUtils.createContentType(
                     values.contentTypeName,
@@ -126,7 +143,11 @@ const Navigation = (props) => {
                           }
                           mb={5}
                         >
-                          <FormLabel htmlFor="contentTypeName">Name</FormLabel>
+                          <FormLabel htmlFor="contentTypeName">
+                            <Flex>
+                              <Text color="red">*</Text>Name
+                            </Flex>
+                          </FormLabel>
                           <Input
                             {...field}
                             id="contentTypeName"
@@ -153,7 +174,7 @@ const Navigation = (props) => {
                           <Input
                             {...field}
                             id="description"
-                            placeholder="Add description about your content type"
+                            placeholder="Add description to your content type"
                           />
                           <FormErrorMessage>
                             {form.errors.description}

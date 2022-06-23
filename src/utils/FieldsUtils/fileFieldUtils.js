@@ -11,13 +11,22 @@ const post = (
   type,
   label,
   description,
-  columnName,
-  length,
   required,
+  columnName,
+  mimeTypes,
+  fileAmount,
+  fileSize,
   onSuccess,
   onError
 ) => {
   const contentID = getContentId();
+  console.log('Type:' + type);
+  console.log('Label:' + label);
+  console.log('columnName:' + columnName);
+  console.log('mimeTypes:' + mimeTypes);
+  console.log('fileAmount:' + fileAmount);
+  console.log('fileSize:' + fileSize);
+  console.log('required:' + required);
   if (required === true) {
     required = 1;
   } else {
@@ -32,7 +41,9 @@ const post = (
         description,
         required,
         columnName,
-        length,
+        mimeTypes,
+        fileAmount,
+        fileSize,
       },
       {
         headers: {
@@ -43,7 +54,6 @@ const post = (
     )
     .then(response => {
       console.log(response);
-      console.log('length: ' + length);
       onSuccess(response.data.message);
     })
     .catch(error => {

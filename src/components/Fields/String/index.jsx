@@ -8,18 +8,16 @@ import {
   FormErrorMessage,
   Textarea,
   NumberInput,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   NumberInputField,
-  NumberInputStepper,
   Switch,
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
-const StringField = ({onClose}) => {
+const StringField = ({ onClose, reFetchFieldsData }) => {
   const toast = useToast();
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
@@ -40,7 +38,6 @@ const StringField = ({onClose}) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -64,9 +61,10 @@ const StringField = ({onClose}) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
               onClose();
             },
             onErrorMessage => {
@@ -75,7 +73,7 @@ const StringField = ({onClose}) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }
@@ -100,7 +98,11 @@ const StringField = ({onClose}) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text color="red">*</Text>Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       size="md"
@@ -166,13 +168,14 @@ const StringField = ({onClose}) => {
                     isInvalid={form.errors.length && form.touched.length}
                     mb={5}
                   >
-                    <FormLabel htmlFor="length">Length</FormLabel>
+                    <FormLabel htmlFor="length">
+                      <Flex>
+                        <Text color="red">*</Text>
+                        Length
+                      </Flex>
+                    </FormLabel>
                     <NumberInput>
                       <NumberInputField {...field} id="length" name="length" />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
                     </NumberInput>
                     <FormErrorMessage>{form.errors.length}</FormErrorMessage>
                   </FormControl>
@@ -187,7 +190,7 @@ const StringField = ({onClose}) => {
                     <Switch
                       colorScheme="green"
                       id="is_require"
-                      name='is_require'
+                      name="is_require"
                       size="lg"
                       onChange={() => setSwitchStatus(!switchStatus)}
                     />
@@ -197,14 +200,10 @@ const StringField = ({onClose}) => {
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Save
                 </Button>
               </Flex>

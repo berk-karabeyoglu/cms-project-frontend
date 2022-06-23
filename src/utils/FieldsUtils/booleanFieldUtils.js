@@ -12,12 +12,16 @@ const post = (
   label,
   description,
   columnName,
-  length,
   required,
+  onLabel,
+  offLabel,
   onSuccess,
   onError
 ) => {
   const contentID = getContentId();
+  console.log(columnName);
+  console.log(onLabel);
+  console.log(offLabel);
   if (required === true) {
     required = 1;
   } else {
@@ -32,7 +36,8 @@ const post = (
         description,
         required,
         columnName,
-        length,
+        onLabel,
+        offLabel,
       },
       {
         headers: {
@@ -43,7 +48,6 @@ const post = (
     )
     .then(response => {
       console.log(response);
-      console.log('length: ' + length);
       onSuccess(response.data.message);
     })
     .catch(error => {
