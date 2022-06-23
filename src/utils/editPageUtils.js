@@ -13,23 +13,25 @@ const getAllContentTypes = (onSuccess, onError) => {
     .catch(error => onError(error.response.data));
 };
 
-const searchContentType = search => {
+const searchContentType = (search, onSuccess, onError) => {
   axios
-    .get(
-      API.API_URL + '/content-types/',
+    .post(
+      API.API_URL + '/content-types',
+      {
+        search,
+      },
       {
         headers: {
           Authorization:
             'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
         },
-      },
-      []
+      }
     )
     .then(response => {
-      console.log(response.data.data);
+      onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error);
+      onError(error.response.data.message);
     });
 };
 

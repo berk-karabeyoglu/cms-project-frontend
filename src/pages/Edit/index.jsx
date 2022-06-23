@@ -32,15 +32,20 @@ const Edit = () => {
         setInitialTableValue(onSuccessMessage.table_name);
         setInitialDescriptionValue(onSuccessMessage.description);
       },
-      onErrorMessage => {}
+      onErrorMessage => {
+        console.log('err in pages/Edit/index.js');
+      }
     );
   });
+  const fetchFieldsData = () => {
+    editPageUtils.fillContentTypeFields(onSuccessResult => {
+      setIncomingFields(onSuccessResult);
+    });
+  };
 
   //This for fields table which is on the right-bottom of edit page
   useEffect(() => {
-    editPageUtils.fillContentTypeFields(onSuccess => {
-      setIncomingFields(onSuccess);
-    });
+    fetchFieldsData();
   }, []);
 
   return (
@@ -51,7 +56,6 @@ const Edit = () => {
           h={'50%'}
           minW={'250px'}
           p={5}
-          // bgColor="whiteAlpha.900"
           direction={'row'}
           justifyContent={'space-evenly'}
         >
@@ -180,7 +184,7 @@ const Edit = () => {
           minW={'200px'}
           justifyContent={'space-evenly'}
         >
-          <AddField />
+          <AddField reFetchFieldsData={fetchFieldsData} />
           <br />
           <Paginated
             data={incomingFields}

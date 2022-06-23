@@ -16,7 +16,7 @@ import {
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
 
-const FloatField = ({ onClose }) => {
+const FloatField = ({ onClose, reFetchFieldsData }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const toast = useToast();
@@ -70,6 +70,8 @@ const FloatField = ({ onClose }) => {
                 duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
+              onClose();
             },
             onErrorMessage => {
               toast({

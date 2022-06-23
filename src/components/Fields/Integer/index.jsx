@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
-const IntegerField = ({ onClose }) => {
+const IntegerField = ({ onClose, reFetchFieldsData }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const toast = useToast();
@@ -70,6 +70,8 @@ const IntegerField = ({ onClose }) => {
                 duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
+              onClose();
             },
             onErrorMessage => {
               toast({

@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
-const StringField = ({ onClose }) => {
+const StringField = ({ onClose, reFetchFieldsData }) => {
   const toast = useToast();
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
@@ -64,6 +64,7 @@ const StringField = ({ onClose }) => {
                 duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
               onClose();
             },
             onErrorMessage => {

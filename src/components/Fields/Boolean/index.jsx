@@ -17,11 +17,10 @@ import booleanFieldUtils from '../../../utils/FieldsUtils/booleanFieldUtils';
 import booleanFieldValidations from '../../../validations/FieldsValidation/Boolean';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 
-const BooleanField = ({ onClose }) => {
+const BooleanField = ({ onClose, reFetchFieldsData }) => {
   const toast = useToast();
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
-
   const nameInputHandleOnBlur = (e, field) => {
     field(e);
     let columName = stringFieldValidations.formatFieldColumName(e.target.value);
@@ -66,6 +65,7 @@ const BooleanField = ({ onClose }) => {
                 duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
               onClose();
             },
             onErrorMessage => {

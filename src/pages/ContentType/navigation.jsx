@@ -1,7 +1,6 @@
 import {
   HStack,
   Flex,
-  Spacer,
   Button,
   InputRightElement,
   InputGroup,
@@ -19,7 +18,7 @@ import {
   Select,
   useDisclosure,
   useToast,
-  Box,
+  Text,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react';
@@ -144,7 +143,11 @@ const Navigation = props => {
                           }
                           mb={5}
                         >
-                          <FormLabel htmlFor="contentTypeName">Name</FormLabel>
+                          <FormLabel htmlFor="contentTypeName">
+                            <Flex>
+                              <Text color="red">*</Text>Name
+                            </Flex>
+                          </FormLabel>
                           <Input
                             {...field}
                             id="contentTypeName"
@@ -171,7 +174,7 @@ const Navigation = props => {
                           <Input
                             {...field}
                             id="description"
-                            placeholder="Add description about your content type"
+                            placeholder="Add description to your content type"
                           />
                           <FormErrorMessage>
                             {form.errors.description}

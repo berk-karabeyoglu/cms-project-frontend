@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import decimalFieldValidations from '../../../validations/FieldsValidation/Decimal';
 import decimalFieldUtils from '../../../utils/FieldsUtils/decimalFieldsUtils';
-const DecimalField = ({ onClose }) => {
+const DecimalField = ({ onClose, reFetchFieldsData }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const [selectedSeperator, setSelectedSeperator] = useState();
@@ -82,6 +82,8 @@ const DecimalField = ({ onClose }) => {
                 duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
+              onClose();
             },
             onErrorMessage => {
               toast({

@@ -20,14 +20,13 @@ import BooleanField from '../Boolean';
 import DateField from '../Date';
 import FileField from '../File';
 
-const AddField = () => {
+const AddField = props => {
   const [selectedFieldType, setSelectedFieldType] = useState();
   const FIELD_TYPES = {
     string: (
       <StringField
-        onClose={() => {
-          setSelectedFieldType(undefined);
-        }}
+        onClose={() => setSelectedFieldType(undefined)}
+        reFetchFieldsData={props.reFetchFieldsData}
       />
     ),
     decimal: (
@@ -35,6 +34,7 @@ const AddField = () => {
         onClose={() => {
           setSelectedFieldType(undefined);
         }}
+        reFetchFieldsData={props.reFetchFieldsData}
       />
     ),
     boolean: (
@@ -42,6 +42,7 @@ const AddField = () => {
         onClose={() => {
           setSelectedFieldType(undefined);
         }}
+        reFetchFieldsData={props.reFetchFieldsData}
       />
     ),
     float: (
@@ -49,6 +50,7 @@ const AddField = () => {
         onClose={() => {
           setSelectedFieldType(undefined);
         }}
+        reFetchFieldsData={props.reFetchFieldsData}
       />
     ),
     integer: (
@@ -56,6 +58,7 @@ const AddField = () => {
         onClose={() => {
           setSelectedFieldType(undefined);
         }}
+        reFetchFieldsData={props.reFetchFieldsData}
       />
     ),
     dateField: (
@@ -63,6 +66,7 @@ const AddField = () => {
         onClose={() => {
           setSelectedFieldType(undefined);
         }}
+        reFetchFieldsData={props.reFetchFieldsData}
       />
     ),
     fileField: (
@@ -70,6 +74,7 @@ const AddField = () => {
         onClose={() => {
           setSelectedFieldType(undefined);
         }}
+        reFetchFieldsData={props.reFetchFieldsData}
       />
     ),
   };
@@ -86,7 +91,6 @@ const AddField = () => {
           direction={'row'}
           p={6}
           justifyContent={'space-around'}
-          // bgColor="whiteAlpha.900"
         >
           <Formik
             initialValues={{

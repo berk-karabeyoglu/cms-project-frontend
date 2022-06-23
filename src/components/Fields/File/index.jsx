@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import fileFieldValidations from '../../../validations/FieldsValidation/File';
 import fileFieldUtils from '../../../utils/FieldsUtils/fileFieldUtils';
-const FileField = ({ onClose }) => {
+const FileField = ({ onClose, reFetchFieldsData }) => {
   const toast = useToast();
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
@@ -65,6 +65,7 @@ const FileField = ({ onClose }) => {
                 duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
               onClose();
             },
             onErrorMessage => {
