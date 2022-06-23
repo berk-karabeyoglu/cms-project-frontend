@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import contentPageUtils from '../../utils/contentPageUtils';
 import { Paginated } from '../../pages/ContentType/table';
 import { CONTENT_COLUMNS } from '../ContentType/columnData';
+import If from '../../components/If';
 import AddContent from '../AddContent';
 const Content = () => {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -48,8 +49,9 @@ const Content = () => {
   };
 
   const selectChangeHandler = e => {
+    setListHidden(true);
+    setAddHidden(true);
     let id = 0;
-
     contentTypes.map(obj => {
       if (obj.name === e.target.value) {
         id = obj.id;
@@ -114,30 +116,37 @@ const Content = () => {
         </VStack>
       </Flex>
 
-      <Flex
-        hidden={listHidden}
-        height="auto"
-        p={5}
-        w="100%"
-        bgColor="whiteAlpha.900"
-      >
-        <Box w={'100%'}>
-          <Paginated data={contents} columns={CONTENT_COLUMNS} />
-        </Box>
-      </Flex>
-      <Flex
-        hidden={addHidden}
-        height="auto"
-        p={5}
-        direction={'column'}
-        w="100%"
-        bgColor="whiteAlpha.900"
-      >
-        <Heading as="h5" size="md">
-          Create New Content
-        </Heading>
-        <AddContent contentTypeID={selectedContentTypeID} contentTypeFields={contentTypeFields} />
-      </Flex>
+      <If test={!listHidden}>
+        <Flex
+          hidden={listHidden}
+          height="auto"
+          p={5}
+          w="100%"
+          bgColor="whiteAlpha.900"
+        >
+          <Box w={'100%'}>
+            <Paginated data={contents} columns={CONTENT_COLUMNS} />
+          </Box>
+        </Flex>
+      </If>
+      <If test={!addHidden}>
+        <Flex
+          hidden={addHidden}
+          height="auto"
+          p={5}
+          direction={'column'}
+          w="100%"
+          bgColor="whiteAlpha.900"
+        >
+          <Heading as="h5" size="md">
+            Create New Content
+          </Heading>
+          <AddContent
+            contentTypeID={selectedContentTypeID}
+            contentTypeFields={{ ...contentTypeFields }}
+          />
+        </Flex>
+      </If>
     </VStack>
   );
 };

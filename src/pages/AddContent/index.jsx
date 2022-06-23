@@ -1,4 +1,13 @@
-import { Button, Flex, Spinner, useToast } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Spinner,
+  useToast,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+} from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
 import StringInputField from '../../components/ContentInputFields/StringInput';
 import IntegerInputField from '../../components/ContentInputFields/IntegerInput';
 import DecimalInputField from '../../components/ContentInputFields/DecimalInput';
@@ -6,47 +15,38 @@ import BooleanInputField from '../../components/ContentInputFields/BooleanInput'
 import TimestampInputField from '../../components/ContentInputFields/DateInput';
 import FileInputField from '../../components/ContentInputFields/FileInput';
 import If from '../../components/If';
-import { useState } from 'react';
 import addContentUtils from '../../utils/addContentUtils';
 
+
 const AddContent = ({ contentTypeID, contentTypeFields }) => {
-  const [inputName, setInputName] = useState('');
   const toast = useToast();
-  const FIELDS = {
-    string: <StringInputField inputName={inputName} />,
-    decimal: <DecimalInputField />,
-    integer: <IntegerInputField />,
-    float: <IntegerInputField />,
-    boolean: <BooleanInputField />,
-    timestamp: <TimestampInputField />,
-    file: <FileInputField />,
+  const getFields = (field, type) => {
+    if (type === 'string') return <StringInputField field={field} />;
+    if (type === 'decimal') return <DecimalInputField field={field} />;
+    if (type === 'integer') return <IntegerInputField field={field} />;
+    if (type === 'float') return <IntegerInputField field={field} />;
+    if (type === 'boolean') return <BooleanInputField field={field} />;
+    if (type === 'timestamp') return <TimestampInputField field={field} />;
+    if (type === 'file') return <FileInputField field={field} />;
+    if (type === 'html') return <StringInputField field={field} />;
   };
 
-  const onSaveClickHandler = () => {
-    addContentUtils.addContent(
-      contentTypeID,
-      onSuccessResult => {
-        toast({
-          position: 'bottom-right',
-          title: 'Success',
-          description: onSuccessResult,
-          status: 'success',
-          duration: 10000,
-          isClosable: true,
-        });
-      },
-      onErrorResult => {
-        toast({
-          position: 'bottom-right',
-          title: 'Error',
-          description: onErrorResult,
-          status: 'error',
-          duration: 10000,
-          isClosable: true,
-        });
-      }
-    );
+  const generateInitialValues = () => {
+    let initialValues = {};
+    contentTypeFields.data?.forEach(element => {
+      initialValues[element.column_name] = '';
+    });
+    return initialValues;
   };
+
+  const validateFieldName = (column_name, value) => {
+    const errors = {};
+    if (!value) {
+      errors[column_name] = 'Field ' + column_name + ' is required';
+    }
+    return errors[column_name];
+  };
+
   return (
     <Flex
       alignItems="center"
@@ -62,29 +62,93 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
         <Spinner />
       </If>
       <If test={!!contentTypeFields.data}>
-        {contentTypeFields.data?.map(data => {
-          return FIELDS[data.type];
-        })}
-        <Flex
-          direction={'row'}
-          justifyContent={'space-evenly'}
-          alignItems={'center'}
-          wrap={'wrap'}
-          gap={2}
-          p={5}
-          w="100%"
+        <Formik
+          initialValues={generateInitialValues()}
+          onSubmit={values => {
+            addContentUtils.addContent(
+              values,
+              contentTypeID,
+              onSuccessResult => {
+                toast({
+                  position: 'bottom-right',
+                  title: 'Success',
+                  description: onSuccessResult,
+                  status: 'success',
+                  duration: 10000,
+                  isClosable: true,
+                });
+              },
+              onErrorResult => {
+                toast({
+                  position: 'bottom-right',
+                  title: 'Error',
+                  description: onErrorResult,
+                  status: 'error',
+                  duration: 10000,
+                  isClosable: true,
+                });
+              }
+            );
+          }}
         >
-          <Button
-            minW={'250px'}
-            w='50%'
-            size={'md'}
-            colorScheme="blue"
-            type="button"
-            onClick={onSaveClickHandler}
-          >
-            Save
-          </Button>
-        </Flex>
+          {props => (
+            <Form>
+              {/* Name Input */}
+              {contentTypeFields.data?.map(data => {
+                return (
+                  <>
+                    <Field
+                      name={data.column_name}
+                      validate={e => {
+                        if (data.is_required) {
+                          return validateFieldName(data.column_name, e);
+                        }
+                      }}
+                    >
+                      {({ field, form }) => (
+                        <FormControl
+                          w={'40%'}
+                          minW={'250px'}
+                          isInvalid={
+                            form.errors[data.column_name] &&
+                            form.touched[data.column_name]
+                          }
+                          isRequired={data.is_required}
+                          mb={5}
+                        >
+                          <FormLabel>{data.label}</FormLabel>
+                          {getFields({ ...field }, data.type)}
+                          <FormErrorMessage>
+                            {form.errors[data.column_name]}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                  </>
+                );
+              })}
+              <Flex
+                direction={'row'}
+                justifyContent={'space-evenly'}
+                alignItems={'center'}
+                wrap={'wrap'}
+                gap={2}
+                p={5}
+                w="100%"
+              >
+                <Button
+                  minW={'250px'}
+                  w="50%"
+                  size={'md'}
+                  colorScheme="blue"
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Flex>
+            </Form>
+          )}
+        </Formik>
       </If>
     </Flex>
   );

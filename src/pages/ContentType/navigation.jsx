@@ -26,7 +26,7 @@ import { Formik, Form, Field } from 'formik';
 import modalValidations from '../../validations/ContentType/addModalValidation';
 import modalUtils from '../../utils/contentTypeModalUtils';
 
-const Navigation = (props) => {
+const Navigation = props => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -80,8 +80,7 @@ const Navigation = (props) => {
             <ModalCloseButton />
             <ModalBody pb={6}>
               <Formik
-                initialValues={{
-                }}
+                initialValues={{}}
                 onSubmit={values => {
                   modalUtils.createContentType(
                     values.contentTypeName,

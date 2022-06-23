@@ -18,19 +18,21 @@ const FileInputField = ({ maximumFieldAmount }) => {
   };
   // eslint-disable-next-line no-lone-blocks
   {
-    console.log("maximum:" , maximumFieldAmount)
     if (maximumFieldAmount === 1) {
-    console.log("===1 e girdi")
       return (
         <label className="custom-file-upload">
           <input type="file" accept=".pdf,.jpg,.png" onChange={onChange} />
         </label>
       );
     } else {
-        console.log("multiple kismina girdi")
       return (
         <label className="custom-file-upload">
-          <input type="file" accept=".pdf,.jpg,.png" multiple onChange={onChange} />
+          <input
+            type="file"
+            accept=".pdf,.jpg,.png"
+            multiple
+            onChange={onChange}
+          />
         </label>
       );
     }
