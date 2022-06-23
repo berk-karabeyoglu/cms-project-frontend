@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { API } from '../constants/constants';
 
+<<<<<<< HEAD
 const getAllContentTypes = async (onSuccess, onError) => {
   await axios
+=======
+const getAllContentTypes = (onSuccess, onError) => {
+  axios
+>>>>>>> develop
     .get(API.API_URL + '/content-types', {
       headers: {
         Authorization:
@@ -12,6 +17,31 @@ const getAllContentTypes = async (onSuccess, onError) => {
     .then(response => onSuccess(response.data.data))
     .catch(error => onError(error.response.data));
 };
+<<<<<<< HEAD
+=======
+
+const searchContentType = (search, onSuccess, onError) => {
+  axios
+    .post(
+      API.API_URL + '/content-types',
+      {
+        search,
+      },
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => {
+      onSuccess(response.data.message);
+    })
+    .catch(error => {
+      onError(error.response.data.message);
+    });
+};
+>>>>>>> develop
 
 const getContentType = (onSuccess, onError) => {
   const splittedArray = window.location.pathname.split('/');
@@ -73,11 +103,20 @@ const fillContentTypeFields = onSuccess => {
 };
 
 
+<<<<<<< HEAD
+=======
+const getSelectedFieldTypeComponent = () => {};
+>>>>>>> develop
 
 const editPageUtils = {
   getAllContentTypes,
   getContentType,
   deleteContentType,
   fillContentTypeFields,
+<<<<<<< HEAD
+=======
+  getSelectedFieldTypeComponent,
+  searchContentType,
+>>>>>>> develop
 };
 export default editPageUtils;

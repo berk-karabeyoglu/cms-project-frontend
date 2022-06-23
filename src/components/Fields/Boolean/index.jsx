@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -10,10 +10,23 @@ import {
   Switch,
   Button,
   Heading,
+  useToast,
+  Text,
 } from '@chakra-ui/react';
+import booleanFieldUtils from '../../../utils/FieldsUtils/booleanFieldUtils';
+import booleanFieldValidations from '../../../validations/FieldsValidation/Boolean';
+import stringFieldValidations from '../../../validations/FieldsValidation/String';
 
+const BooleanField = ({ onClose, reFetchFieldsData }) => {
+  const toast = useToast();
+  const [columnNameText, setColumnNameText] = useState('');
+  const [switchStatus, setSwitchStatus] = useState(false);
+  const nameInputHandleOnBlur = (e, field) => {
+    field(e);
+    let columName = stringFieldValidations.formatFieldColumName(e.target.value);
+    setColumnNameText(columName);
+  };
 
-const BooleanField = ({onClose}) => {
   return (
     <Flex
       alignItems="center"
@@ -24,13 +37,49 @@ const BooleanField = ({onClose}) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
-         
+          type: 'boolean',
+          name: '',
+          columnName: '',
+          description: '',
+          onLabel: '',
+          offLabel: '',
         }}
-        onSubmit={values => {}}
+        onSubmit={values => {
+          booleanFieldUtils.post(
+            values.type,
+            values.name,
+            values.description,
+            columnNameText,
+            switchStatus,
+            values.onLabel,
+            values.offLabel,
+            onSuccessMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Success',
+                description: onSuccessMessage,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+              });
+              reFetchFieldsData();
+              onClose();
+            },
+            onErrorMessage => {
+              toast({
+                position: 'bottom-right',
+                title: 'Error',
+                description: onErrorMessage,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+              });
+            }
+          );
+        }}
       >
         {props => (
           <Form>
@@ -39,7 +88,10 @@ const BooleanField = ({onClose}) => {
             </Heading>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
-              <Field name="name">
+              <Field
+                name="name"
+                validate={booleanFieldValidations.validateFieldName}
+              >
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
@@ -47,61 +99,94 @@ const BooleanField = ({onClose}) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
-                    <Input size="sm" id="name" type="name" />
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
+                    <Input
+                      {...field}
+                      size="sm"
+                      id="name"
+                      type="name"
+                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
+                    />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* Column Name Input */}
-              <Field name="column_name">
+              <Field name="columnName">
                 {({ field, form }) => (
                   <FormControl
                     w={'40%'}
                     minW={'200px'}
                     isInvalid={
-                      form.errors.column_name && form.touched.column_name
+                      form.errors.columnName && form.touched.columnName
                     }
                     mb={5}
                   >
-                    <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input size="sm" id="column_name" type="text" />
+                    <FormLabel htmlFor="columnName">Column Name</FormLabel>
+                    <Input
+                      size="sm"
+                      id="columnName"
+                      type="text"
+                      {...field}
+                      value={columnNameText}
+                    />
                     <FormErrorMessage>
-                      {form.errors.column_name}
+                      {form.errors.columnName}
                     </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* On Input */}
-              <Field name="on">
+              <Field name="onLabel">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={form.errors.on && form.touched.on}
+                    isInvalid={form.errors.onLabel && form.touched.onLabel}
                     mb={5}
                   >
-                    <FormLabel htmlFor="on">"On" label</FormLabel>
-                    <Input size="sm" id="on" type="text" />
-                    <FormErrorMessage>{form.errors.on}</FormErrorMessage>
+                    <FormLabel htmlFor="onLabel">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        On label
+                      </Flex>
+                    </FormLabel>
+                    <Input size="sm" id="onLabel" type="text" {...field} />
+                    <FormErrorMessage>{form.errors.onLabel}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
               {/* Off Input */}
-              <Field name="off">
+              <Field name="offLabel">
                 {({ field, form }) => (
                   <FormControl
                     w={'20%'}
                     minW={'200px'}
-                    isInvalid={form.errors.off && form.touched.off}
+                    isInvalid={form.errors.offLabel && form.touched.offLabel}
                     mb={5}
                   >
-                    <FormLabel htmlFor="off">"Off" label</FormLabel>
-                    <Input size="sm" id="off" type="text" />
-                    <FormErrorMessage>{form.errors.off}</FormErrorMessage>
+                    <FormLabel htmlFor="offLabel">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Off label
+                      </Flex>
+                    </FormLabel>
+                    <Input size="sm" id="offLabel" type="text" {...field} />
+                    <FormErrorMessage>{form.errors.offLabel}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -118,7 +203,12 @@ const BooleanField = ({onClose}) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch colorScheme="green" size="lg" />
+                    <Switch
+                      colorScheme="green"
+                      size="lg"
+                      name="is_require"
+                      onChange={() => setSwitchStatus(!switchStatus)}
+                    />
                     <FormErrorMessage>
                       {form.errors.is_required}
                     </FormErrorMessage>
@@ -139,6 +229,7 @@ const BooleanField = ({onClose}) => {
                   >
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
+                      {...field}
                       placeholder=""
                       size="sm"
                       id="description"
@@ -153,15 +244,10 @@ const BooleanField = ({onClose}) => {
 
               {/* Buttons Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red" disabled={props.isSubmitting}>
+                <Button w="20%" onClick={onClose} colorScheme="red">
                   Cancel
                 </Button>
-                <Button
-                  w="20%"
-                  colorScheme="blue"
-                  disabled={props.isSubmitting}
-                  type="submit"
-                >
+                <Button w="20%" colorScheme="blue" type="submit">
                   Save
                 </Button>
               </Flex>

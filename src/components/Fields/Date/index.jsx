@@ -12,10 +12,11 @@ import {
   Heading,
   Select,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import timestampFieldValidations from '../../../validations/FieldsValidation/Timestamp';
 import timestampFieldUtils from '../../../utils/FieldsUtils/timestampFieldsUtils';
-const DateField = ({onClose}) => {
+const DateField = ({ onClose, reFetchFieldsData }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState();
@@ -42,7 +43,6 @@ const DateField = ({onClose}) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
@@ -66,9 +66,11 @@ const DateField = ({onClose}) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
+              onClose();
             },
             onErrorMessage => {
               toast({
@@ -76,7 +78,7 @@ const DateField = ({onClose}) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }
@@ -101,7 +103,14 @@ const DateField = ({onClose}) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
@@ -152,13 +161,21 @@ const DateField = ({onClose}) => {
                     }
                     mb={5}
                   >
-                    <FormLabel htmlFor="timestampFormat">Format</FormLabel>
+                    <FormLabel htmlFor="timestampFormat">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Format
+                      </Flex>
+                    </FormLabel>
                     <Select
                       {...field}
                       onChange={e => selectOnChangeHandle(e)}
                       value={selectedFormat}
                       size="sm"
                     >
+                      <option>Select a date format</option>
                       <option value="d_m_Y">d-m-Y</option>
                       <option value="m/d/Y">m/d/Y</option>
                       <option value="Y-m-d">Y-m-d</option>

@@ -20,16 +20,63 @@ import BooleanField from '../Boolean';
 import DateField from '../Date';
 import FileField from '../File';
 
-const AddField = () => {
+const AddField = props => {
   const [selectedFieldType, setSelectedFieldType] = useState();
   const FIELD_TYPES = {
-    string: <StringField onClose={() => {setSelectedFieldType(undefined)}} />,
-    decimal: <DecimalField onClose={() => {setSelectedFieldType(undefined)}} />,
-    boolean: <BooleanField onClose={() => {setSelectedFieldType(undefined)}} />,
-    float: <FloatField onClose={() => {setSelectedFieldType(undefined)}} />,
-    integer: <IntegerField onClose={() => {setSelectedFieldType(undefined)}} />,
-    dateField: <DateField onClose={() => {setSelectedFieldType(undefined)}} />,
-    fileField: <FileField onClose={() => {setSelectedFieldType(undefined)}} />,
+    string: (
+      <StringField
+        onClose={() => setSelectedFieldType(undefined)}
+        reFetchFieldsData={props.reFetchFieldsData}
+      />
+    ),
+    decimal: (
+      <DecimalField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+        reFetchFieldsData={props.reFetchFieldsData}
+      />
+    ),
+    boolean: (
+      <BooleanField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+        reFetchFieldsData={props.reFetchFieldsData}
+      />
+    ),
+    float: (
+      <FloatField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+        reFetchFieldsData={props.reFetchFieldsData}
+      />
+    ),
+    integer: (
+      <IntegerField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+        reFetchFieldsData={props.reFetchFieldsData}
+      />
+    ),
+    dateField: (
+      <DateField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+        reFetchFieldsData={props.reFetchFieldsData}
+      />
+    ),
+    fileField: (
+      <FileField
+        onClose={() => {
+          setSelectedFieldType(undefined);
+        }}
+        reFetchFieldsData={props.reFetchFieldsData}
+      />
+    ),
   };
 
   return (
@@ -44,7 +91,6 @@ const AddField = () => {
           direction={'row'}
           p={6}
           justifyContent={'space-around'}
-          bgColor="whiteAlpha.900"
         >
           <Formik
             initialValues={{

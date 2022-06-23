@@ -7,20 +7,16 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  NumberInput,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  NumberInputField,
-  NumberInputStepper,
   Switch,
   Select,
   Button,
   Heading,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import decimalFieldValidations from '../../../validations/FieldsValidation/Decimal';
 import decimalFieldUtils from '../../../utils/FieldsUtils/decimalFieldsUtils';
-const DecimalField = ({onClose}) => {
+const DecimalField = ({ onClose, reFetchFieldsData }) => {
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
   const [selectedSeperator, setSelectedSeperator] = useState();
@@ -47,18 +43,17 @@ const DecimalField = ({onClose}) => {
       direction={'row'}
       p={6}
       justifyContent={'space-around'}
-      bgColor="whiteAlpha.900"
     >
       <Formik
         initialValues={{
           type: 'decimal',
           name: '',
-          description: '',
-          column_name: { columnNameText },
-          minimum: 0,
-          maximum: 0,
-          digits: 0,
-          decimal: 0,
+          description: ' ',
+          column_name: '',
+          minimum: '',
+          maximum: '',
+          digits: 8,
+          decimal: 2,
           seperator: '',
           prefix: '',
           suffix: '',
@@ -83,9 +78,11 @@ const DecimalField = ({onClose}) => {
                 title: 'Success',
                 description: onSuccessMessage,
                 status: 'success',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
+              reFetchFieldsData();
+              onClose();
             },
             onErrorMessage => {
               toast({
@@ -93,7 +90,7 @@ const DecimalField = ({onClose}) => {
                 title: 'Error',
                 description: onErrorMessage,
                 status: 'error',
-                duration: 10000,
+                duration: 3000,
                 isClosable: true,
               });
             }
@@ -118,7 +115,14 @@ const DecimalField = ({onClose}) => {
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
+                      </Flex>
+                    </FormLabel>
                     <Input
                       {...field}
                       onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
@@ -191,13 +195,14 @@ const DecimalField = ({onClose}) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="digits">Digits</FormLabel>
-                    <NumberInput>
-                      <NumberInputField {...field} id="digits" name="digits" />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+
+                    <Input
+                      {...field}
+                      id="digits"
+                      name="digits"
+                      placeholder="8"
+                    />
+
                     <FormErrorMessage>{form.errors.digits}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -213,17 +218,14 @@ const DecimalField = ({onClose}) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="decimal">Decimal</FormLabel>
-                    <NumberInput>
-                      <NumberInputField
-                        {...field}
-                        id="decimal"
-                        name="decimal"
-                      />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>{' '}
+
+                    <Input
+                      {...field}
+                      id="decimal"
+                      name="decimal"
+                      placeholder="2"
+                    />
+
                     <FormErrorMessage>{form.errors.decimal}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -282,16 +284,23 @@ const DecimalField = ({onClose}) => {
                     isInvalid={form.errors.separator && form.touched.separator}
                     mb={5}
                   >
-                    <FormLabel htmlFor="separator">Separator</FormLabel>
-                    {/* <Input size="sm" id="separator" type="text" /> */}
+                    <FormLabel htmlFor="separator">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Separator
+                      </Flex>
+                    </FormLabel>
                     <Select
                       {...field}
                       onChange={e => selectOnChangeHandle(e)}
                       value={selectedSeperator}
                       size="sm"
                     >
-                      <option value=".">.</option>
-                      <option value=",">,</option>
+                      <option>Select a seperator</option>
+                      <option value=".">. {''}(point)</option>
+                      <option value=",">, {''}(comma)</option>
                     </Select>
                     <FormErrorMessage>{form.errors.separator}</FormErrorMessage>
                   </FormControl>
