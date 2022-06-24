@@ -13,28 +13,6 @@ const getAllContentTypes = (onSuccess, onError) => {
     .catch(error => onError(error.response.data));
 };
 
-const searchContentType = (search, onSuccess, onError) => {
-  axios
-    .post(
-      API.API_URL + '/content-types',
-      {
-        search,
-      },
-      {
-        headers: {
-          Authorization:
-            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
-        },
-      }
-    )
-    .then(response => {
-      onSuccess(response.data.message);
-    })
-    .catch(error => {
-      onError(error.response.data.message);
-    });
-};
-
 const getContentType = (onSuccess, onError) => {
   const splittedArray = window.location.pathname.split('/');
   const contentID = splittedArray[splittedArray.length - 1];
@@ -105,6 +83,5 @@ const editPageUtils = {
   addFieldToContentType,
   fillContentTypeFields,
   getSelectedFieldTypeComponent,
-  searchContentType,
 };
 export default editPageUtils;

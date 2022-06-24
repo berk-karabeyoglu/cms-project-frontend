@@ -1,20 +1,24 @@
+import React from 'react';
 export const COLUMNS = [
   {
     Header: 'ID',
     accessor: 'id',
     disableFilters: true,
     sticky: 'left',
+    sort: 'asc',
   },
   {
     Header: 'Name',
     accessor: 'name',
     disableFilters: true,
     sticky: 'left',
+    sort: 'asc',
   },
   {
     Header: 'Description',
     accessor: 'description',
     sticky: 'left',
+    sort: 'asc',
   },
   {
     Header: 'Action',
@@ -22,7 +26,9 @@ export const COLUMNS = [
     sticky: 'left',
     Cell: ({ cell }) => (
       <a
-        href={'http://localhost:3000/admin/content-types/edit/' + cell.row.values.id}
+        href={
+          'http://localhost:3000/admin/content-types/edit/' + cell.row.values.id
+        }
       >
         <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
@@ -56,7 +62,10 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     sticky: 'left',
     Cell: ({ cell }) => (
       <a
-        href={'http://localhost:3000/admin/content-types/fields/edit' + cell.row.values.id}
+        href={
+          'http://localhost:3000/admin/content-types/fields/edit' +
+          cell.row.values.id
+        }
       >
         <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
@@ -65,4 +74,3 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     ),
   },
 ];
-

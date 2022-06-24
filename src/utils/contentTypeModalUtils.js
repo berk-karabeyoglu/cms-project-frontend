@@ -16,6 +16,28 @@ const capitalizeWords = nameField => {
   });
 };
 
+const searchContentType = (search, onSuccess, onError) => {
+  axios
+    .get(
+      API.API_URL + '/content-types',
+      {
+        search,
+      },
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => {
+      onSuccess(response.data.message);
+    })
+    .catch(error => {
+      onError(error.response.data.message);
+    });
+};
+
 const createContentType = (
   name,
   description,
@@ -49,6 +71,7 @@ const createContentType = (
 const modalUtils = {
   setModalName,
   createContentType,
+  searchContentType,
 };
 
 export default modalUtils;

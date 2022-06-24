@@ -7,7 +7,7 @@ import If from '../../components/If';
 const ContentType = () => {
   const [dataIncome, setDataIncome] = useState([]);
 
-  const fetchData = () => {
+  const fetchData = filter => {
     editPageUtils.getAllContentTypes(onSuccessResult => {
       setDataIncome(onSuccessResult);
     });
