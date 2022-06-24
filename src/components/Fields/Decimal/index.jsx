@@ -31,7 +31,6 @@ const DecimalField = ({ onClose, reFetchFieldsData }) => {
   };
 
   const selectOnChangeHandle = e => {
-    console.log(e.target.value);
     setSelectedSeperator(e.target.value);
   };
   return (
