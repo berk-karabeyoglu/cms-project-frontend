@@ -41,7 +41,7 @@ export const Paginated = ({ columns, data }) => {
   );
 
   const { pageIndex, pageSize } = state;
-  
+
   return (
     <>
       <Table {...getTableProps()}>

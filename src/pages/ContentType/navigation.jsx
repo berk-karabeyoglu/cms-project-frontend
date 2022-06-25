@@ -25,7 +25,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import modalValidations from '../../validations/ContentType/addModalValidation';
 import modalUtils from '../../utils/contentTypeModalUtils';
-import editPageUtils from '../../utils/editPageUtils';
+
 import './table';
 
 const Navigation = props => {
@@ -40,6 +40,10 @@ const Navigation = props => {
     let text = modalUtils.setModalName(e.target.value);
     setModalNameText(text);
   };
+  const searchHandle = () => {
+    const searchInputValue = document.getElementById('searchInput').value;
+    props.onRefetchData(searchInputValue);
+  };
 
   return (
     <Flex alignItems="center" height="8rem" w="100%">
@@ -52,14 +56,18 @@ const Navigation = props => {
         justifyContent="space-between"
       >
         <InputGroup>
-          <Input type="text" placeholder="Search Content Type" />
+          <Input
+            id="searchInput"
+            type="search"
+            placeholder="Search Content Type"
+          />
           <Button
             ml="0.60rem"
             id="search-button"
             backgroundColor="rgb(0, 96, 144);"
             color="whiteAlpha.900"
             fontSize="1.1rem"
-            onClick={editPageUtils.searchContentType}
+            onClick={searchHandle}
           >
             <SearchIcon />
           </Button>
@@ -75,7 +83,6 @@ const Navigation = props => {
         <Button
           id="add-button"
           onClick={onOpen}
-          // px={6}
           mr="2rem"
           padding="0 1.3rem"
           backgroundColor="rgb(0, 96, 144);"

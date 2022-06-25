@@ -1,22 +1,29 @@
+<<<<<<< HEAD
 import contentPageUtils from '../../utils/contentPageUtils';
 
+=======
+import React from 'react';
+>>>>>>> develop
 export const COLUMNS = [
   {
     Header: 'ID',
     accessor: 'id',
     disableFilters: true,
     sticky: 'left',
+    sort: 'asc',
   },
   {
     Header: 'Name',
     accessor: 'name',
     disableFilters: true,
     sticky: 'left',
+    sort: 'asc',
   },
   {
     Header: 'Description',
     accessor: 'description',
     sticky: 'left',
+    sort: 'asc',
   },
   {
     Header: 'Action',
@@ -61,8 +68,12 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     Cell: ({ cell }) => (
       <a
         href={
+<<<<<<< HEAD
           'http://localhost:3000/admin/content-types/edit/' +
           '/fields/' +
+=======
+          'http://localhost:3000/admin/content-types/fields/edit' +
+>>>>>>> develop
           cell.row.values.id
         }
       >
@@ -105,9 +116,13 @@ export const CONTENT_COLUMNS = [
     Cell: ({ cell }) => (
       <a
         href={
+<<<<<<< HEAD
           'http://localhost:3000/admin/content-types/edit/' +
           contentTypeID+
           '/contents/' +
+=======
+          'http://localhost:3000/admin/content-types/fields/edit' +
+>>>>>>> develop
           cell.row.values.id
         }
       >

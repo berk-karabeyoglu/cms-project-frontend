@@ -13,6 +13,8 @@ const getAllContentTypes = (onSuccess, onError) => {
     .catch(error => onError(error.response.data));
 };
 
+<<<<<<< HEAD
+=======
 const searchContentType = (search, onSuccess, onError) => {
   axios
     .post(
@@ -35,6 +37,7 @@ const searchContentType = (search, onSuccess, onError) => {
     });
 };
 
+>>>>>>> develop
 const getContentType = (onSuccess, onError) => {
   const splittedArray = window.location.pathname.split('/');
   const contentID = splittedArray[splittedArray.length - 1];
@@ -103,6 +106,13 @@ const editPageUtils = {
   deleteContentType,
   fillContentTypeFields,
   getSelectedFieldTypeComponent,
+<<<<<<< HEAD
+=======
   searchContentType,
+<<<<<<< HEAD
+=======
+>>>>>>> develop
+>>>>>>> develop
+>>>>>>> develop
 };
 export default editPageUtils;
