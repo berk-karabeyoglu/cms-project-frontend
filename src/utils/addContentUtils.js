@@ -2,6 +2,7 @@ import axios from 'axios';
 import { API } from '../constants/constants';
 
 const addContent = (values, contentTypeID, onSuccess, onError) => {
+  console.log(values)
   axios
     .post(
       API.API_URL + '/content-types/' + contentTypeID + '/contents',

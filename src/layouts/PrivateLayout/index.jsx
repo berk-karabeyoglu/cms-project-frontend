@@ -5,6 +5,7 @@ import SidebarWithHeader from '../../components/Sidebar';
 import ContentType from '../../pages/ContentType';
 import Content from '../../pages/Content';
 import EditContentType from '../../pages/Edit';
+import EditField from "../../pages/ContentEdit"
 const PrivateLayout = () => {
   const isTokenValid = authUtils.validateAccessToken();
   
@@ -16,6 +17,7 @@ const PrivateLayout = () => {
           <Route path="/contents" element={<Content />} />
           <Route path="/content-types" element={<ContentType />} />
           <Route path="/content-types/edit/:content_type_id" element={<EditContentType />} />
+          <Route path="/content-types/edit/:content_type_id/contents/:content_id" element={<EditField />} />
         </Routes>
       </SidebarWithHeader>
     </If>
