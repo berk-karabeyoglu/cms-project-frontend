@@ -17,9 +17,27 @@ import FileInputField from '../../components/ContentInputFields/FileInput';
 import If from '../../components/If';
 import addContentUtils from '../../utils/addContentUtils';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import contentPageUtils from '../../utils/contentPageUtils';
 
-const AddContent = ({ contentTypeID, contentTypeFields }) => {
-  // const [fileAmount,setFileAmount] = useState(1);
+const EditContentFields = () => {
+  const [contentTypeID, setContentTypeID] = useState(0);
+  const [contentTypeFields, setContentTypeFields] = useState([]);
+  console.log(contentTypeFields?.data)
+  const getContentTypeID = () => {
+    const splittedArray = window.location.pathname.split('/');
+    const contentTypeID = splittedArray[4];
+    console.log(contentTypeID);
+    setContentTypeID(contentTypeID);
+  };
+
+  useEffect(() => {
+    getContentTypeID();
+    contentPageUtils.getContentTypeFields(contentTypeID, incomingData => {
+      setContentTypeFields(incomingData);
+    });
+  }, [contentTypeID]);
+
   const toast = useToast();
   const getFields = (field, type) => {
     if (type === 'string') return <StringInputField field={field} />;
@@ -28,14 +46,15 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'float') return <IntegerInputField field={field} />;
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
-    if (type === 'file') return <FileInputField maximumFieldAmount={1} field={field} />;
+    if (type === 'file')
+      return <FileInputField maximumFieldAmount={1} field={field} />;
     if (type === 'html') return <StringInputField field={field} />;
   };
 
   const generateInitialValues = () => {
     let initialValues = {};
     contentTypeFields.data?.forEach(element => {
-      initialValues[element.column_name] = '';
+      initialValues[element.column_name] = element.column_name;
     });
     return initialValues;
   };
@@ -48,11 +67,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     return errors[column_name];
   };
 
-  // const checkIsFieldIsFile = (type) => {
-  //   if(type === "file"){
-  //     setFileAmount()
-  //   }
-  // }
+  const deleteOnClickHandler = () => {};
   return (
     <Flex
       alignItems="center"
@@ -68,6 +83,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
         <Spinner />
       </If>
       <If test={!!contentTypeFields.data}>
+        <Button onClick={deleteOnClickHandler}>Delete Field</Button>
         <Formik
           initialValues={generateInitialValues()}
           onSubmit={values => {
@@ -99,7 +115,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
         >
           {props => (
             <Form>
-              {/* Name Input */}
               {contentTypeFields.data?.map(data => {
                 return (
                   <>
@@ -124,7 +139,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                           mb={5}
                         >
                           <FormLabel>{data.label}</FormLabel>
-                          {/* {checkIsFieldIsFile(data.type)} */}
                           {getFields({ ...field }, data.type)}
                           <FormErrorMessage>
                             {form.errors[data.column_name]}
@@ -162,4 +176,4 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
   );
 };
 
-export default AddContent;
+export default EditContentFields;

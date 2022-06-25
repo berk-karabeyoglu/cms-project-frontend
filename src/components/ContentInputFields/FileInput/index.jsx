@@ -11,6 +11,7 @@ const FileInputField = ({ maximumFieldAmount }) => {
       filesArr = Array.prototype.slice.call(files);
       console.log(filesArr);
       setFiles([...files, ...filesArr]);
+      return files;
     } else {
       alert('You have to stop');
       return;

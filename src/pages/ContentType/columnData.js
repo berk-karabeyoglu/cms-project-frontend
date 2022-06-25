@@ -1,3 +1,5 @@
+import contentPageUtils from '../../utils/contentPageUtils';
+
 export const COLUMNS = [
   {
     Header: 'ID',
@@ -22,7 +24,9 @@ export const COLUMNS = [
     sticky: 'left',
     Cell: ({ cell }) => (
       <a
-        href={'http://localhost:3000/admin/content-types/edit/' + cell.row.values.id}
+        href={
+          'http://localhost:3000/admin/content-types/edit/' + cell.row.values.id
+        }
       >
         <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
@@ -56,7 +60,11 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     sticky: 'left',
     Cell: ({ cell }) => (
       <a
-        href={'http://localhost:3000/admin/content-types/fields/edit' + cell.row.values.id}
+        href={
+          'http://localhost:3000/admin/content-types/edit/' +
+          '/fields/' +
+          cell.row.values.id
+        }
       >
         <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
@@ -65,6 +73,13 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     ),
   },
 ];
+
+
+var contentTypeID = 0;
+export const getContentTypeID = selectedContentTypeID => {
+  // eslint-disable-next-line no-const-assign
+  contentTypeID = selectedContentTypeID;
+};
 
 export const CONTENT_COLUMNS = [
   {
@@ -89,7 +104,12 @@ export const CONTENT_COLUMNS = [
     sticky: 'left',
     Cell: ({ cell }) => (
       <a
-        href={'http://localhost:3000/admin/content-types/fields/edit' + cell.row.values.id}
+        href={
+          'http://localhost:3000/admin/content-types/edit/' +
+          contentTypeID+
+          '/contents/' +
+          cell.row.values.id
+        }
       >
         <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
@@ -98,4 +118,3 @@ export const CONTENT_COLUMNS = [
     ),
   },
 ];
-
