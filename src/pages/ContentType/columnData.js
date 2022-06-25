@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-import contentPageUtils from '../../utils/contentPageUtils';
-
-=======
 import React from 'react';
->>>>>>> develop
 export const COLUMNS = [
   {
     Header: 'ID',
@@ -68,12 +63,7 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     Cell: ({ cell }) => (
       <a
         href={
-<<<<<<< HEAD
-          'http://localhost:3000/admin/content-types/edit/' +
-          '/fields/' +
-=======
           'http://localhost:3000/admin/content-types/fields/edit' +
->>>>>>> develop
           cell.row.values.id
         }
       >
@@ -84,7 +74,6 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     ),
   },
 ];
-
 
 var contentTypeID = 0;
 export const getContentTypeID = selectedContentTypeID => {
@@ -116,13 +105,9 @@ export const CONTENT_COLUMNS = [
     Cell: ({ cell }) => (
       <a
         href={
-<<<<<<< HEAD
           'http://localhost:3000/admin/content-types/edit/' +
-          contentTypeID+
+          contentTypeID +
           '/contents/' +
-=======
-          'http://localhost:3000/admin/content-types/fields/edit' +
->>>>>>> develop
           cell.row.values.id
         }
       >

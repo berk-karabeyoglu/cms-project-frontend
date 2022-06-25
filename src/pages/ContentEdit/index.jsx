@@ -20,10 +20,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import contentPageUtils from '../../utils/contentPageUtils';
 
-const EditContentFields = () => {
+const EditContent = () => {
   const [contentTypeID, setContentTypeID] = useState(0);
   const [contentTypeFields, setContentTypeFields] = useState([]);
-  console.log(contentTypeFields?.data)
+  console.log(contentTypeFields?.data);
   const getContentTypeID = () => {
     const splittedArray = window.location.pathname.split('/');
     const contentTypeID = splittedArray[4];
@@ -67,7 +67,6 @@ const EditContentFields = () => {
     return errors[column_name];
   };
 
-  const deleteOnClickHandler = () => {};
   return (
     <Flex
       alignItems="center"
@@ -83,7 +82,6 @@ const EditContentFields = () => {
         <Spinner />
       </If>
       <If test={!!contentTypeFields.data}>
-        <Button onClick={deleteOnClickHandler}>Delete Field</Button>
         <Formik
           initialValues={generateInitialValues()}
           onSubmit={values => {
@@ -176,4 +174,4 @@ const EditContentFields = () => {
   );
 };
 
-export default EditContentFields;
+export default EditContent;

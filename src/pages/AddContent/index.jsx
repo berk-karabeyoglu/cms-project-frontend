@@ -48,11 +48,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     return errors[column_name];
   };
 
-  // const checkIsFieldIsFile = (type) => {
-  //   if(type === "file"){
-  //     setFileAmount()
-  //   }
-  // }
   return (
     <Flex
       alignItems="center"
