@@ -42,12 +42,9 @@ const post = (
       }
     )
     .then(response => {
-      console.log(response);
-      console.log('length: ' + length);
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response);
       onError(error.response.data.message);
     });
 };

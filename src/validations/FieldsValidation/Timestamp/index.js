@@ -16,7 +16,6 @@ const formatFieldColumName = column_name => {
 };
 
 // const checkDateFormat = timestampFormat => {
-//   console.log(timestampFormat);
 //   let flag = false;
 //   const errors = {};
 //   Object.keys(TIMESTAMP_VALUES).map(_key => {

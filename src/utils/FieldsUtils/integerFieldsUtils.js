@@ -26,15 +26,6 @@ const post = (
   } else {
     required = 0;
   }
-  console.log('type: ' + type);
-  console.log('label: ' + label);
-  console.log('description ' + description);
-  console.log('required ' + required);
-  console.log('columName ' + columnName);
-  console.log('minimum' + minimum);
-  console.log('maximum: ' + maximum);
-  console.log('prefix ' + prefix);
-  console.log('suffix: ' + suffix);
   axios
     .post(
       API.API_URL + '/content-types/' + contentID + '/fields',
@@ -57,11 +48,9 @@ const post = (
       }
     )
     .then(response => {
-      console.log(response);
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response);
       onError(error.response.data.message);
     });
 };
