@@ -20,13 +20,6 @@ const post = (
   onError
 ) => {
   const contentID = getContentId();
-  console.log('Type:' + type);
-  console.log('Label:' + label);
-  console.log('columnName:' + columnName);
-  console.log('mimeTypes:' + mimeTypes);
-  console.log('fileAmount:' + fileAmount);
-  console.log('fileSize:' + fileSize);
-  console.log('required:' + required);
   if (required === true) {
     required = 1;
   } else {
@@ -53,11 +46,9 @@ const post = (
       }
     )
     .then(response => {
-      console.log(response);
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response);
       onError(error.response.data.message);
     });
 };

@@ -38,6 +38,9 @@ export const COLUMNS = [
   },
 ];
 
+const splittedArray = window.location.pathname.split('/');
+let contentTypeIDForFieldsEdit = splittedArray[splittedArray.length - 1];
+
 export const CONTENT_TYPE_FIELDS_COLUMNS = [
   {
     Header: '#',
@@ -63,11 +66,16 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     Cell: ({ cell }) => (
       <a
         href={
-          'http://localhost:3000/admin/content-types/fields/edit' +
+          'http://localhost:3000/admin/content-types/edit/' +
+          contentTypeIDForFieldsEdit +
+          '/fields/' +
           cell.row.values.id
         }
       >
-        <button className="editButton" value={'Edit'}>
+        <button
+          className="editButton"
+          value={'Edit'}
+        >
           <i className="fa-solid fa-pen-to-square"></i>
         </button>
       </a>
