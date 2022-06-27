@@ -94,7 +94,6 @@ const fillContentTypeFields = onSuccess => {
     });
 };
 
-
 const getSelectedFieldTypeComponent = () => {};
 
 const editPageUtils = {
