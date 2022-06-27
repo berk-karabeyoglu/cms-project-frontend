@@ -15,6 +15,7 @@ import DecimalInputField from '../../components/ContentInputFields/DecimalInput'
 import BooleanInputField from '../../components/ContentInputFields/BooleanInput';
 import TimestampInputField from '../../components/ContentInputFields/DateInput';
 import FileInputField from '../../components/ContentInputFields/FileInput';
+import HTMLInputField from '../../components/ContentInputFields/HtmlInput';
 import If from '../../components/If';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -67,7 +68,7 @@ const EditContent = () => {
     if (type === 'timestamp') return <TimestampInputField field={field} />;
     if (type === 'file')
       return <FileInputField maximumFieldAmount={1} field={field} />;
-    if (type === 'html') return <StringInputField field={field} />;
+    if (type === 'html') return <HTMLInputField field={field} />;
   };
 
   const generateInitialValues = () => {
@@ -101,7 +102,7 @@ const EditContent = () => {
       gap={3}
       direction={'column'}
       p={6}
-      bgColor="whiteAlpha.900"
+      marginLeft="20rem"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -126,7 +127,7 @@ const EditContent = () => {
                   title: 'Success',
                   description: onSuccessResult,
                   status: 'success',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
               },
@@ -136,7 +137,7 @@ const EditContent = () => {
                   title: 'Error',
                   description: onErrorResult,
                   status: 'error',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
               }
@@ -200,6 +201,7 @@ const EditContent = () => {
                   size={'md'}
                   colorScheme="blue"
                   type="submit"
+                  marginRight="42rem"
                 >
                   Update
                 </Button>

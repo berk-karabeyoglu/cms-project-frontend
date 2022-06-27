@@ -34,7 +34,7 @@ const FieldEdit = () => {
   const [checker, setChecker] = useState(false);
   const fieldObj = {};
   const FIELD_TYPES = {
-    string: <StringField fieldMetas={fieldObj}/>,
+    string: <StringField fieldMetas={fieldObj} />,
     decimal: <DecimalField />,
     boolean: <BooleanField />,
     float: <FloatField />,
@@ -83,7 +83,6 @@ const FieldEdit = () => {
         direction={'row'}
         p={6}
         justifyContent={'space-around'}
-        bgColor="whiteAlpha.900"
       >
         {fieldName !== undefined ? (
           FIELD_TYPES[fieldName]

@@ -16,6 +16,7 @@ import DecimalInputField from '../../components/ContentInputFields/DecimalInput'
 import BooleanInputField from '../../components/ContentInputFields/BooleanInput';
 import TimestampInputField from '../../components/ContentInputFields/DateInput';
 import FileInputField from '../../components/ContentInputFields/FileInput';
+import HTMLInputField from '../../components/ContentInputFields/HtmlInput';
 import If from '../../components/If';
 import addContentUtils from '../../utils/addContentUtils';
 
@@ -31,7 +32,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'timestamp') return <TimestampInputField field={field} />;
     if (type === 'file')
       return <FileInputField field={field} maximumFieldAmount={1} />;
-    if (type === 'html') return <StringInputField field={field} />;
+    if (type === 'html') return <HTMLInputField field={field} />;
   };
   const [checkboxStatus, setCheckBoxStatus] = useState(true);
 
@@ -40,9 +41,9 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     contentTypeFields.data?.forEach(element => {
       if (element.type === 'boolean') {
         initialValues[element.column_name] = true;
-      } else if(element.type==="file"){
-        initialValues[element.column_name] = []
-      }else {
+      } else if (element.type === 'file') {
+        initialValues[element.column_name] = [];
+      } else {
         initialValues[element.column_name] = '';
       }
     });
@@ -70,7 +71,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
       gap={3}
       direction={'column'}
       p={6}
-      // bgColor="whiteAlpha.900"
+      marginLeft="20rem"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -168,6 +169,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   size={'md'}
                   colorScheme="blue"
                   type="submit"
+                  marginRight="42rem"
                 >
                   Save
                 </Button>
