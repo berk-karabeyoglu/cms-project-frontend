@@ -17,7 +17,6 @@ import FileInputField from '../../components/ContentInputFields/FileInput';
 import If from '../../components/If';
 import addContentUtils from '../../utils/addContentUtils';
 
-
 const AddContent = ({ contentTypeID, contentTypeFields }) => {
   const toast = useToast();
   const getFields = (field, type) => {
@@ -56,7 +55,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
       gap={3}
       direction={'column'}
       p={6}
-      bgColor="whiteAlpha.900"
+      // bgColor="whiteAlpha.900"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -74,7 +73,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   title: 'Success',
                   description: onSuccessResult,
                   status: 'success',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
               },
@@ -84,7 +83,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   title: 'Error',
                   description: onErrorResult,
                   status: 'error',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
               }

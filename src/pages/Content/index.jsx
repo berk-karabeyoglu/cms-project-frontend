@@ -75,7 +75,7 @@ const Content = () => {
         height="auto"
         p={5}
         w="100%"
-        bgColor="whiteAlpha.900"
+        // bgColor="whiteAlpha.900"
       >
         <VStack w={'100%'}>
           <Select onChange={e => selectChangeHandler(e)} size="md">
@@ -122,7 +122,7 @@ const Content = () => {
           height="auto"
           p={5}
           w="100%"
-          bgColor="whiteAlpha.900"
+          // bgColor="whiteAlpha.900"
         >
           <Box w={'100%'}>
             <Paginated data={contents} columns={CONTENT_COLUMNS} />
@@ -136,7 +136,7 @@ const Content = () => {
           p={5}
           direction={'column'}
           w="100%"
-          bgColor="whiteAlpha.900"
+          // bgColor="whiteAlpha.900"
         >
           <Heading as="h5" size="md">
             Create New Content
