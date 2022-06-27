@@ -8,9 +8,9 @@ const addContent = (values, contentTypeID, onSuccess, onError) => {
       values,
       {
         headers: {
-          Authorization:
-            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
           'Content-Type': 'multipart/form-data',
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token
         },
       }
     )

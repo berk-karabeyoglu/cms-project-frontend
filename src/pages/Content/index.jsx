@@ -11,7 +11,7 @@ import {
 import { useEffect } from 'react';
 import contentPageUtils from '../../utils/contentPageUtils';
 import { Paginated } from '../../pages/ContentType/table';
-import { CONTENT_COLUMNS } from '../ContentType/columnData';
+import { CONTENT_COLUMNS, getContentTypeID } from '../ContentType/columnData';
 import If from '../../components/If';
 import AddContent from '../AddContent';
 const Content = () => {
@@ -22,7 +22,6 @@ const Content = () => {
   const [listHidden, setListHidden] = useState(true);
   const [addHidden, setAddHidden] = useState(true);
   const [contentTypeFields, setContentTypeFields] = useState([]);
-
   useEffect(() => {
     contentPageUtils.fillContentTypesDropdown(incomingData => {
       setContentTypes(contentTypes.concat(incomingData));
@@ -59,11 +58,14 @@ const Content = () => {
     });
 
     setSelectedContentType(id);
+    getContentTypeID(id)
     if (e.target.value !== 'empty') {
       setIsDisabled(false);
     }
   };
 
+
+  
   return (
     <VStack>
       <Flex
@@ -118,7 +120,6 @@ const Content = () => {
 
       <If test={!listHidden}>
         <Flex
-          hidden={listHidden}
           height="auto"
           p={5}
           w="100%"
@@ -131,7 +132,6 @@ const Content = () => {
       </If>
       <If test={!addHidden}>
         <Flex
-          hidden={addHidden}
           height="auto"
           p={5}
           direction={'column'}

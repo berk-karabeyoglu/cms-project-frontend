@@ -101,7 +101,6 @@ const editPageUtils = {
   getContentType,
   deleteContentType,
   fillContentTypeFields,
-
   getSelectedFieldTypeComponent,
   searchContentType,
 };

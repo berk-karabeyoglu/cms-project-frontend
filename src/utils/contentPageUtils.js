@@ -37,6 +37,7 @@ const fillContentsTable = async (selectedContentTypeID, onSuccess) => {
 };
 
 const getContentTypeFields = (contentTypeID, onSuccess) => {
+  console.log("Api istegine giden content type id : " + contentTypeID)
   axios
     .get(API.API_URL + '/content-types/' + contentTypeID + '/fields', {
       headers: {

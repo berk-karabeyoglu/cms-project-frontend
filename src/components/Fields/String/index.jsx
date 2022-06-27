@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
-const StringField = ({ onClose, reFetchFieldsData }) => {
+const StringField = ({ onClose, reFetchFieldsData,fieldMetas }) => {
   const toast = useToast();
   const [columnNameText, setColumnNameText] = useState('');
   const [switchStatus, setSwitchStatus] = useState(false);
@@ -28,6 +28,11 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
     setColumnNameText(columName);
   };
 
+  const setInitialValues = () => {
+    let initialValues = {};
+    console.log("FİELD METAS FROM STRİNG ",fieldMetas)
+    return initialValues;
+  }
   return (
     <Flex
       alignItems="center"
@@ -40,13 +45,7 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
       justifyContent={'space-around'}
     >
       <Formik
-        initialValues={{
-          type: 'string',
-          name: '',
-          column_name: { columnNameText },
-          description: '',
-          length: '',
-        }}
+        initialValues={setInitialValues()}
         onSubmit={values => {
           stringFieldsUtils.post(
             values.type,

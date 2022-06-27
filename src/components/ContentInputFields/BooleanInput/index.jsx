@@ -1,8 +1,8 @@
 import { Checkbox } from '@chakra-ui/react';
-const BooleanInputField = () => {
+const BooleanInputField = ({field}) => {
   return (
-    <Checkbox size="md" colorScheme="green" defaultChecked>
-      Data Coming from API
+    <Checkbox {...field} size="md" colorScheme="green" defaultChecked>
+     
     </Checkbox>
   );
 };

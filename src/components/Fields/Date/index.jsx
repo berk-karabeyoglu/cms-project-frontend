@@ -176,7 +176,7 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                       size="sm"
                     >
                       <option>Select a date format</option>
-                      <option value="d_m_Y">d-m-Y</option>
+                      <option value="d-m-Y">d-m-Y</option>
                       <option value="m/d/Y">m/d/Y</option>
                       <option value="Y-m-d">Y-m-d</option>
                     </Select>

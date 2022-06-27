@@ -25,27 +25,6 @@ const formatFieldColumName = column_name => {
   return column_name;
 };
 
-// Input validations when creating content
-// const validateInputRequired = column_name => {
-//   console.log('COLUMN NAME' + column_name);
-//   const errors = {};
-//   const $param = column_name
-//   if (!column_name) {
-//     errors.$param = 'This input is required';
-//   }
-//   return errors.$param;
-// };
-
-// const validateInputLength = column_name => {
-//   const errors = {};
-//   if (column_name < 3) {
-//     errors.column_name = 'Input length cannot be lower than 3.';
-//   } else if (column_name > 255) {
-//     errors.column_name = 'Input length be greater than 255.';
-//   }
-//   return errors.input;
-// };
-
 const stringFieldValidations = {
   validateFieldName,
   validateFieldLength,

@@ -5,9 +5,11 @@ import SidebarWithHeader from '../../components/Sidebar';
 import ContentType from '../../pages/ContentType';
 import Content from '../../pages/Content';
 import EditContentType from '../../pages/Edit';
+import EditContent from '../../pages/ContentEdit';
+import FieldEdit from '../../pages/FieldEdit';
+
 const PrivateLayout = () => {
   const isTokenValid = authUtils.validateAccessToken();
-  
   return (
     <If test={isTokenValid}>
       <SidebarWithHeader>
@@ -16,6 +18,8 @@ const PrivateLayout = () => {
           <Route path="/contents" element={<Content />} />
           <Route path="/content-types" element={<ContentType />} />
           <Route path="/content-types/edit/:content_type_id" element={<EditContentType />} />
+          <Route path="/content-types/edit/:content_type_id/contents/:content_id" element={<EditContent />} />
+          <Route path="/content-types/edit/:content_type_id/fields/:field_id" element={<FieldEdit />} />
         </Routes>
       </SidebarWithHeader>
     </If>

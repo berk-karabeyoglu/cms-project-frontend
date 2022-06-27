@@ -19,9 +19,6 @@ const post = (
   onError
 ) => {
   const contentID = getContentId();
-  console.log(columnName);
-  console.log(onLabel);
-  console.log(offLabel);
   if (required === true) {
     required = 1;
   } else {
@@ -47,11 +44,9 @@ const post = (
       }
     )
     .then(response => {
-      console.log(response);
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response);
       onError(error.response.data.message);
     });
 };

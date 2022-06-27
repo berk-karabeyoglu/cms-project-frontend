@@ -1,4 +1,3 @@
-import { React, useState } from 'react';
 import {
   Button,
   Flex,
@@ -17,11 +16,48 @@ import BooleanInputField from '../../components/ContentInputFields/BooleanInput'
 import TimestampInputField from '../../components/ContentInputFields/DateInput';
 import FileInputField from '../../components/ContentInputFields/FileInput';
 import If from '../../components/If';
-import addContentUtils from '../../utils/addContentUtils';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import contentPageUtils from '../../utils/contentPageUtils';
+import contentEditUtils from '../../utils/contentEditUtils';
+import editContentUtils from '../../utils/contentEditUtils';
 
-const AddContent = ({ contentTypeID, contentTypeFields }) => {
-  // const [fileAmount,setFileAmount] = useState(1);
+const EditContent = () => {
+  const [contentTypeID, setContentTypeID] = useState(0);
+  const [contentID, setContentID] = useState(0);
+  const [contentTypeFields, setContentTypeFields] = useState([]);
+  const [contentDatas, setContentDatas] = useState({});
+  let publishStatus = false;
   const toast = useToast();
+
+  useEffect(() => {
+    getContentTypeID();
+    getContentID();
+    contentPageUtils.getContentTypeFields(contentTypeID, incomingData => {
+      setContentTypeFields(incomingData);
+    });
+
+    contentEditUtils.getSingleContent(
+      contentTypeID,
+      contentID,
+      incomingData => {
+        setContentDatas(incomingData);
+      }
+    );
+  }, [contentTypeID, contentID]);
+
+  const getContentTypeID = () => {
+    const splittedArray = window.location.pathname.split('/');
+    const contentTypeID = splittedArray[4];
+    setContentTypeID(contentTypeID);
+  };
+
+  const getContentID = () => {
+    const splittedArray = window.location.pathname.split('/');
+    const contentID = splittedArray[splittedArray.length - 1];
+    setContentID(contentID);
+  };
+
   const getFields = (field, type) => {
     if (type === 'string') return <StringInputField field={field} />;
     if (type === 'decimal') return <DecimalInputField field={field} />;
@@ -30,22 +66,18 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
     if (type === 'file')
-      return <FileInputField field={field} maximumFieldAmount={1} />;
+      return <FileInputField maximumFieldAmount={1} field={field} />;
     if (type === 'html') return <StringInputField field={field} />;
   };
-  const [checkboxStatus, setCheckBoxStatus] = useState(true);
 
   const generateInitialValues = () => {
     let initialValues = {};
     contentTypeFields.data?.forEach(element => {
-      if (element.type === 'boolean') {
-        initialValues[element.column_name] = true;
-      } else if(element.type==="file"){
-        initialValues[element.column_name] = []
-      }else {
-        initialValues[element.column_name] = '';
-      }
+      initialValues[element.column_name] = contentDatas[element.column_name];
     });
+    if (contentDatas['published_at'] !== null) {
+      publishStatus = true;
+    }
     return initialValues;
   };
 
@@ -58,9 +90,8 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
   };
 
   const checkboxClickHandler = e => {
-    setCheckBoxStatus(e.target.checked);
+    publishStatus = e.target.checked;
   };
-
   return (
     <Flex
       alignItems="center"
@@ -70,30 +101,32 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
       gap={3}
       direction={'column'}
       p={6}
-      // bgColor="whiteAlpha.900"
+      bgColor="whiteAlpha.900"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
       </If>
       <If test={!!contentTypeFields.data}>
         <Formik
+          enableReinitialize
           initialValues={generateInitialValues()}
           onSubmit={values => {
-            if (checkboxStatus === true) {
-              values['publish'] = checkboxStatus;
+            if (publishStatus === true) {
+              values['publish'] = publishStatus;
             } else {
               delete values.publish;
             }
-            addContentUtils.addContent(
+            editContentUtils.updateContent(
               values,
               contentTypeID,
+              contentID,
               onSuccessResult => {
                 toast({
                   position: 'bottom-right',
                   title: 'Success',
                   description: onSuccessResult,
                   status: 'success',
-                  duration: 3000,
+                  duration: 10000,
                   isClosable: true,
                 });
               },
@@ -103,7 +136,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   title: 'Error',
                   description: onErrorResult,
                   status: 'error',
-                  duration: 3000,
+                  duration: 10000,
                   isClosable: true,
                 });
               }
@@ -112,7 +145,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
         >
           {props => (
             <Form>
-              {/* Name Input */}
               {contentTypeFields.data?.map(data => {
                 return (
                   <>
@@ -148,7 +180,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                 );
               })}
               <Checkbox
-                defaultChecked={checkboxStatus}
+                defaultChecked={publishStatus}
                 onChange={e => checkboxClickHandler(e)}
               >
                 Is Published ?
@@ -169,7 +201,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   colorScheme="blue"
                   type="submit"
                 >
-                  Save
+                  Update
                 </Button>
               </Flex>
             </Form>
@@ -180,4 +212,4 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
   );
 };
 
-export default AddContent;
+export default EditContent;
