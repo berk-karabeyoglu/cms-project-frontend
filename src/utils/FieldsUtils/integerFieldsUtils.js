@@ -55,8 +55,56 @@ const post = (
     });
 };
 
-const stringFieldsUtils = {
-  post,
+
+const update = (
+  type,
+  label,
+  description,
+  required,
+  minimum,
+  maximum,
+  prefix,
+  suffix,
+  onSuccess,
+  onError
+) => {
+  const contentID = getContentId();
+  if (required === true) {
+    required = 1;
+  } else {
+    required = 0;
+  }
+  axios
+    .post(
+      API.API_URL + '/content-types/' + contentID + '/fields',
+      {
+        type,
+        label,
+        description,
+        required,
+        minimum,
+        maximum,
+        prefix,
+        suffix,
+      },
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => {
+      onSuccess(response.data.message);
+    })
+    .catch(error => {
+      onError(error.response.data.message);
+    });
 };
 
-export default stringFieldsUtils;
+const integerFieldUtils = {
+  post,
+  update,
+};
+
+export default integerFieldUtils;

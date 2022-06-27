@@ -1,30 +1,14 @@
 import { Flex, Spinner } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import BooleanField from '../../components/Fields/Boolean';
-import DateField from '../../components/Fields/Date';
-import DecimalField from '../../components/Fields/Decimal';
-import FileField from '../../components/Fields/File';
-import FloatField from '../../components/Fields/Float';
-import IntegerField from '../../components/Fields/Integer';
-import StringField from '../../components/Fields/String';
 import contentPageUtils from '../../utils/contentPageUtils';
-import If from '../../components/If';
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  Textarea,
-  NumberInput,
-  NumberInputField,
-  Switch,
-  Button,
-  Heading,
-  useToast,
-  Text,
-} from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
+import StringUpdateField from '../../components/FieldForUpdates/String';
+import IntegerUpdateField from '../../components/FieldForUpdates/Integer';
+import DecimalUpdateField from '../../components/FieldForUpdates/Decimal';
+import FloatUpdateField from '../../components/FieldForUpdates/Float';
+import DateUpdateField from '../../components/FieldForUpdates/Date';
+import FileUpdateField from '../../components/FieldForUpdates/File';
+import BooleanUpdateField from '../../components/FieldForUpdates/Boolean';
 
 const FieldEdit = () => {
   const [selectedTypeID, setSelectedTypeID] = useState();
@@ -32,15 +16,16 @@ const FieldEdit = () => {
   const [selectedFieldId, setSelectedFieldID] = useState();
   const [contentTypeFields, setContentTypeFields] = useState([]);
   const [checker, setChecker] = useState(false);
-  const fieldObj = {};
+  const [fieldObj, setFieldObj] = useState({});
+  const [sendingFieldsObject, setSendingFieldsObject] = useState({});
   const FIELD_TYPES = {
-    string: <StringField fieldMetas={fieldObj}/>,
-    decimal: <DecimalField />,
-    boolean: <BooleanField />,
-    float: <FloatField />,
-    integer: <IntegerField />,
-    dateField: <DateField />,
-    fileField: <FileField />,
+    string: <StringUpdateField fieldObj={sendingFieldsObject} />,
+    decimal: <DecimalUpdateField fieldObj={sendingFieldsObject} />,
+    boolean: <BooleanUpdateField fieldObj={sendingFieldsObject} />,
+    float: <FloatUpdateField />,
+    integer: <IntegerUpdateField />,
+    dateField: <DateUpdateField />,
+    fileField: <FileUpdateField />,
   };
 
   useEffect(() => {
@@ -51,27 +36,34 @@ const FieldEdit = () => {
     setSelectedFieldID(fieldID);
     if (selectedTypeID !== undefined) {
       contentPageUtils.getContentTypeFields(selectedTypeID, incomingData => {
-        console.log(incomingData);
         setContentTypeFields(incomingData);
         setChecker(true);
       });
     }
     if (checker) {
+      console.log('APIDEN GELEN FİELDLAR : ', contentTypeFields.data);
       contentTypeFields.data?.map(field => {
         if (field.id == selectedFieldId) {
           setFieldName(field.type);
-          fieldObj['label'] = field.label;
-          fieldObj['colum_name'] = field.column_name;
-          fieldObj['description'] = field.description;
-          fieldObj['is_required'] = field.is_required;
+          setFieldObj({
+            label: field.label,
+            column_name: field.column_name,
+            description: field.description,
+            is_required: field.is_required,
+          });
+          const fieldMetasObject = {};
+          Object.entries(field.meta).map(item => {
+            fieldMetasObject[item[0]] = item[1];
+          });
+          var sendingObject = Object.assign({},fieldObj,fieldMetasObject)
+          setSendingFieldsObject(sendingObject);
+          console.log('Spreadle birlestirilen: ', sendingObject);
+          console.log('Props olarak gecilen: !', sendingFieldsObject);
         }
       });
     }
   }, [selectedTypeID, fieldName, checker]);
 
-  const nameInputHandleOnBlur = (e, field) => {
-    field(e);
-  };
   return (
     <>
       <Flex
@@ -85,50 +77,7 @@ const FieldEdit = () => {
         justifyContent={'space-around'}
         bgColor="whiteAlpha.900"
       >
-        {fieldName !== undefined ? (
-          FIELD_TYPES[fieldName]
-        ) : (
-          // <Formik initialValues={{}} onSubmit={values => {}}>
-          //   {props => (
-          //     <Form>
-          //       <Heading as={'h4'} size="md" mb={6}>
-          //         Update Field
-          //       </Heading>
-          //       <Flex
-          //         wrap={'wrap'}
-          //         minW={'250px'}
-          //         justifyContent={'space-evenly'}
-          //       >
-          //         <Field name="">
-          //           {({ field, form }) => (
-          //             <FormControl
-          //               w={'40%'}
-          //               minW={'250px'}
-          //               isInvalid={form.errors.name && form.touched.name}
-          //               mb={5}
-          //             >
-          //               <FormLabel htmlFor="">
-          //                 <Flex>
-          //                   <Text color="red">*</Text>Name
-          //                 </Flex>
-          //               </FormLabel>
-          //               <Input
-          //                 {...field}
-          //                 size="md"
-          //                 id=""
-          //                 type=""
-          //                 onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
-          //               />
-          //               <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-          //             </FormControl>
-          //           )}
-          //         </Field>
-          //       </Flex>
-          //     </Form>
-          //   )}
-          // </Formik>
-          <Spinner />
-        )}
+        {fieldName !== undefined ? FIELD_TYPES[fieldName] : <Spinner />}
       </Flex>
     </>
   );

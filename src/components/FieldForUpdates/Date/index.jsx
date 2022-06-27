@@ -7,27 +7,25 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  NumberInput,
-  NumberInputField,
   Switch,
   Button,
   Heading,
+  Select,
   useToast,
   Text,
 } from '@chakra-ui/react';
-import stringFieldValidations from '../../../validations/FieldsValidation/String';
-import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
-const StringField = ({ onClose, reFetchFieldsData }) => {
-  const toast = useToast();
-  const [columnNameText, setColumnNameText] = useState('');
+import timestampFieldValidations from '../../../validations/FieldsValidation/Timestamp';
+import timestampFieldUtils from '../../../utils/FieldsUtils/timestampFieldsUtils';
+const DateUpdateField = ({ onClose, reFetchFieldsData }) => {
   const [switchStatus, setSwitchStatus] = useState(false);
+  const [selectedFormat, setSelectedFormat] = useState();
+  const toast = useToast();
 
-  const nameInputHandleOnBlur = (e, field) => {
-    field(e);
-    let columName = stringFieldValidations.formatFieldColumName(e.target.value);
-    setColumnNameText(columName);
+
+
+  const selectOnChangeHandle = e => {
+    setSelectedFormat(e.target.value);
   };
-
   return (
     <Flex
       alignItems="center"
@@ -41,20 +39,15 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
     >
       <Formik
         initialValues={{
-          type: 'string',
-          name: '',
-          column_name: { columnNameText },
-          description: '',
-          length: '',
+
         }}
         onSubmit={values => {
-          stringFieldsUtils.post(
+          timestampFieldUtils.post(
             values.type,
             values.name,
             values.description,
-            columnNameText,
-            values.length,
             switchStatus,
+            selectedFormat,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -82,33 +75,35 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h4'} size="md" mb={6}>
-              Add Text Field
+            <Heading as={'h3'} size="md" mb={6}>
+              Update Date Field
             </Heading>
-            <Flex wrap={'wrap'} minW={'250px'} justifyContent={'space-evenly'}>
+            <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
                 name="name"
-                validate={stringFieldValidations.validateFieldName}
+                validate={timestampFieldValidations.validateFieldName}
               >
                 {({ field, form }) => (
                   <FormControl
-                    w={'40%'}
-                    minW={'250px'}
+                    w={'30%'}
+                    minW={'200px'}
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
                   >
                     <FormLabel htmlFor="name">
                       <Flex>
-                        <Text color="red">*</Text>Name
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Name
                       </Flex>
                     </FormLabel>
                     <Input
                       {...field}
-                      size="md"
+                      size="sm"
                       id="name"
                       type="name"
-                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
                     />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
@@ -119,23 +114,88 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
               <Field name="column_name">
                 {({ field, form }) => (
                   <FormControl
-                    w={'40%'}
-                    minW={'250px'}
+                    w={'30%'}
+                    minW={'200px'}
                     isInvalid={
                       form.errors.column_name && form.touched.column_name
                     }
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input
+                    <Text
+                      fontSize="6xl"
                       {...field}
-                      value={columnNameText}
+                      disabled
                       size="md"
                       id="column_name"
                       type="text"
-                    />
+                    >
+                      {/* Buraya degerini yazdıracaksın */}
+                    </Text>
                     <FormErrorMessage>
                       {form.errors.column_name}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              {/* Format Input */}
+              <Field name="timestampFormat">
+                {({ field, form }) => (
+                  <FormControl
+                    w={'30%'}
+                    minW={'200px'}
+                    isInvalid={
+                      form.errors.timestampFormat &&
+                      form.touched.timestampFormat
+                    }
+                    mb={5}
+                  >
+                    <FormLabel htmlFor="timestampFormat">
+                      <Flex>
+                        <Text colorScheme="none" color="red">
+                          *
+                        </Text>
+                        Format
+                      </Flex>
+                    </FormLabel>
+                    <Select
+                      {...field}
+                      onChange={e => selectOnChangeHandle(e)}
+                      value={selectedFormat}
+                      size="sm"
+                    >
+                      <option>Select a date format</option>
+                      <option value="d-m-Y">d-m-Y</option>
+                      <option value="m/d/Y">m/d/Y</option>
+                      <option value="Y-m-d">Y-m-d</option>
+                    </Select>
+                    <FormErrorMessage>
+                      {form.errors.timestampFormat}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              {/* Is Required Input */}
+              <Field name="is_required">
+                {({ field, form }) => (
+                  <FormControl
+                    w={'5%'}
+                    minW={'200px'}
+                    isInvalid={
+                      form.errors.is_required && form.touched.is_required
+                    }
+                    mb={5}
+                  >
+                    <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
+                    <Switch
+                      onChange={() => setSwitchStatus(!switchStatus)}
+                      colorScheme="green"
+                      size="lg"
+                    />
+                    <FormErrorMessage>
+                      {form.errors.is_required}
                     </FormErrorMessage>
                   </FormControl>
                 )}
@@ -144,55 +204,14 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
               {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
-                  <FormControl w={'40%'} minW={'250px'} mb={5}>
+                  <FormControl w={'65%'} minW={'200px'} mb={5}>
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
                       {...field}
                       placeholder=""
                       size="sm"
+                      id="description"
                       resize={'none'}
-                    />
-                  </FormControl>
-                )}
-              </Field>
-
-              {/* Length Input */}
-              <Field
-                name="length"
-                validate={stringFieldValidations.validateFieldLength}
-              >
-                {({ field, form }) => (
-                  <FormControl
-                    w={'40%'}
-                    minW={'250px'}
-                    isInvalid={form.errors.length && form.touched.length}
-                    mb={5}
-                  >
-                    <FormLabel htmlFor="length">
-                      <Flex>
-                        <Text color="red">*</Text>
-                        Length
-                      </Flex>
-                    </FormLabel>
-                    <NumberInput>
-                      <NumberInputField {...field} id="length" name="length" />
-                    </NumberInput>
-                    <FormErrorMessage>{form.errors.length}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-
-              {/* Is Required Input */}
-              <Field name="is_required">
-                {({ field, form }) => (
-                  <FormControl minW={'250px'} display={'flex'} mb={5}>
-                    <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch
-                      colorScheme="green"
-                      id="is_require"
-                      name="is_require"
-                      size="lg"
-                      onChange={() => setSwitchStatus(!switchStatus)}
                     />
                   </FormControl>
                 )}
@@ -204,7 +223,7 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
                   Cancel
                 </Button>
                 <Button w="20%" colorScheme="blue" type="submit">
-                  Save
+                  Update
                 </Button>
               </Flex>
             </Flex>
@@ -215,4 +234,4 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
   );
 };
 
-export default StringField;
+export default DateUpdateField;
