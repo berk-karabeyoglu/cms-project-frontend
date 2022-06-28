@@ -1,55 +1,56 @@
-import { Field, useFormikContext } from 'formik';
+import React, { Component } from 'react';
+class App extends Component {
+  state = {
+    selectedFile: null,
+  };
 
-const { useState } = require('react');
+  onFileChange = event => {
+    //* Update the state
+    this.setState({ selectedFile: event.target.files[0] });
+  };
 
-const FileInputField = ({ field, maximumFieldAmount }) => {
-  const [files, setFiles] = useState([]);
-  const { setFieldValue } = useFormikContext();
-  const [filename, setFileName] = useState('');
-  const onChange = e => {
-    var files = '';
-    var filesArr = [];
-    if (filesArr.length < 2) {
-      files = e.target.files;
-      filesArr = Array.prototype.slice.call(files);
-      setFiles([...files, ...filesArr]);
-      setFieldValue(field.name, filesArr);
-      setFileName(filesArr[0].name);
-      return files;
+  //* On file upload (click the upload button)
+  onFileUpload = () => {
+    const formData = new FormData();
+
+    formData.append(
+      'myFile',
+      this.state.selectedFile,
+      this.state.selectedFile.name
+    );
+
+    console.log(this.state.selectedFile);
+  };
+
+  fileData = () => {
+    if (this.state.selectedFile) {
+      return (
+        <div style={{ marginTop: '1rem' }}>
+          <b>File Details:</b>
+
+          {/* <p>File Name: {this.state.selectedFile.name}</p> */}
+          <p>File Type: {this.state.selectedFile.type}</p>
+          <p>
+            Last Modified:{' '}
+            {this.state.selectedFile.lastModifiedDate.toDateString()}
+          </p>
+        </div>
+      );
     } else {
-      alert('You have to stop');
-      return;
+      return <div></div>;
     }
   };
-  // eslint-disable-next-line no-lone-blocks
-  {
-    if (maximumFieldAmount === 1) {
-      return (
-        <label className="custom-file-upload">
-          <input
-            {...field}
-            type="file"
-            value=''
-            accept=".pdf,.jpg,.png"
-            onChange={onChange}
-          />
-        </label>
-      );
-    } else {
-      return (
-        <label className="custom-file-upload">
-          <input
-            {...field}
-            type="file"
-            value=""
-            accept=".pdf,.jpg,.png"
-            multiple
-            onChange={onChange}
-          />
-        </label>
-      );
-    }
-  }
-};
 
-export default FileInputField;
+  render() {
+    return (
+      <div>
+        <div>
+          <input type="file" onChange={this.onFileChange} />
+        </div>
+        {this.fileData()}
+      </div>
+    );
+  }
+}
+
+export default App;

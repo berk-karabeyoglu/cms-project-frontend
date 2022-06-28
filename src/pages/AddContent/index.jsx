@@ -30,8 +30,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'float') return <IntegerInputField field={field} />;
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
-    if (type === 'file')
-      return <FileInputField field={field} maximumFieldAmount={1} />;
+    if (type === 'file') return <FileInputField field={field} />;
     if (type === 'html') return <HTMLInputField field={field} />;
   };
   const [checkboxStatus, setCheckBoxStatus] = useState(true);
@@ -65,13 +64,12 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
   return (
     <Flex
       alignItems="center"
-      justifyContent={'space-evenly'}
+      justifyContent="center"
       w="100%"
       h={'auto'}
       gap={3}
       direction={'column'}
       p={6}
-      marginLeft="20rem"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -169,7 +167,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   size={'md'}
                   colorScheme="blue"
                   type="submit"
-                  marginRight="42rem"
                 >
                   Save
                 </Button>

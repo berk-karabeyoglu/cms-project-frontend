@@ -66,8 +66,7 @@ const EditContent = () => {
     if (type === 'float') return <IntegerInputField field={field} />;
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
-    if (type === 'file')
-      return <FileInputField maximumFieldAmount={1} field={field} />;
+    if (type === 'file') return <FileInputField field={field} />;
     if (type === 'html') return <HTMLInputField field={field} />;
   };
 
@@ -96,13 +95,12 @@ const EditContent = () => {
   return (
     <Flex
       alignItems="center"
-      justifyContent={'space-evenly'}
+      justifyContent="center"
       w="100%"
       h={'auto'}
       gap={3}
       direction={'column'}
       p={6}
-      marginLeft="20rem"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -201,7 +199,6 @@ const EditContent = () => {
                   size={'md'}
                   colorScheme="blue"
                   type="submit"
-                  marginRight="42rem"
                 >
                   Update
                 </Button>
