@@ -14,6 +14,7 @@ import { Paginated } from '../../pages/ContentType/table';
 import { CONTENT_COLUMNS, getContentTypeID } from '../ContentType/columnData';
 import If from '../../components/If';
 import AddContent from '../AddContent';
+
 const Content = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [contentTypes, setContentTypes] = useState([]);
@@ -23,6 +24,7 @@ const Content = () => {
   const [addHidden, setAddHidden] = useState(true);
   const [contentTypeFields, setContentTypeFields] = useState([]);
   useEffect(() => {
+    console.log("render")
     contentPageUtils.fillContentTypesDropdown(incomingData => {
       setContentTypes(contentTypes.concat(incomingData));
     });
@@ -58,13 +60,11 @@ const Content = () => {
     });
 
     setSelectedContentType(id);
-    getContentTypeID(id)
+    getContentTypeID(id);
     if (e.target.value !== 'empty') {
       setIsDisabled(false);
     }
   };
-
-
   
   return (
     <VStack>
@@ -122,9 +122,13 @@ const Content = () => {
         <Flex
           height="auto"
           p={5}
+          direction={'column'}
           w="100%"
           bgColor="whiteAlpha.900"
         >
+          <Heading as="h5" size="md">
+            All Contents
+          </Heading>
           <Box w={'100%'}>
             <Paginated data={contents} columns={CONTENT_COLUMNS} />
           </Box>

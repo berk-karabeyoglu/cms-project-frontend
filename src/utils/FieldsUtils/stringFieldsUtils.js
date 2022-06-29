@@ -92,7 +92,7 @@ const update = (
 
 const stringFieldsUtils = {
   post,
-  update
+  update,
 };
 
 export default stringFieldsUtils;

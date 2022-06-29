@@ -7,18 +7,32 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  Switch,
   Button,
   Heading,
   useToast,
   Text,
+  Checkbox,
+  Spacer,
 } from '@chakra-ui/react';
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
-const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
-  const [switchStatus, setSwitchStatus] = useState(false);
+import { Link, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import DeleteAlert from '../../AlertDialog';
+const IntegerUpdateField = ({ fieldObj }) => {
   const toast = useToast();
+  const [switchStatus, setSwitchStatus] = useState(false);
+  const [defaultColumnName, setDefaultColumnName] = useState();
+  const contentTypeID = useParams().content_type_id;
+  const fieldID = useParams().field_id;
 
+  useEffect(() => {
+    console.log('Maximum : ', fieldObj.max);
+    setDefaultColumnName(fieldObj.column_name);
+    if (fieldObj.is_required === 1) {
+      setSwitchStatus(true);
+    } else setSwitchStatus(false);
+  }, [fieldObj]);
   return (
     <Flex
       alignItems="center"
@@ -31,11 +45,20 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
       justifyContent={'space-around'}
     >
       <Formik
+        enableReinitialize
         initialValues={{
-          
+          type: 'integer',
+          name: fieldObj.label,
+          description: fieldObj.description,
+          column_name: fieldObj.column_name,
+          is_required: fieldObj.is_required,
+          minimum: fieldObj.min,
+          maximum: fieldObj.max,
+          prefix: fieldObj.prefix,
+          suffix: fieldObj.suffix,
         }}
         onSubmit={values => {
-          integerFieldUtils.post(
+          integerFieldUtils.update(
             values.type,
             values.name,
             values.description,
@@ -44,6 +67,8 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
             values.maximum,
             values.prefix,
             values.suffix,
+            contentTypeID,
+            fieldID,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -53,7 +78,6 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
                 duration: 3000,
                 isClosable: true,
               });
-              onClose();
             },
             onErrorMessage => {
               toast({
@@ -70,9 +94,13 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>
-              Update Integer Field
-            </Heading>
+            <Flex>
+              <Heading as={'h3'} size="md" mb={6}>
+                Update Integer Field
+              </Heading>
+              <Spacer />
+              <DeleteAlert deletedItem={'integer field'} />
+            </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -94,12 +122,7 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
                         Name
                       </Flex>
                     </FormLabel>
-                    <Input
-                      {...field}
-                      size="sm"
-                      id="name"
-                      type="name"
-                    />
+                    <Input {...field} size="sm" id="name" type="name" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -118,14 +141,14 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
                     <Text
-                      fontSize="6xl"
+                      fontSize="lg"
                       {...field}
                       disabled
                       size="md"
                       id="column_name"
                       type="text"
                     >
-                      {/* Buraya degerini yazdıracaksın */}
+                      {defaultColumnName}
                     </Text>
                     <FormErrorMessage>
                       {form.errors.column_name}
@@ -189,11 +212,14 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch
-                      onChange={() => setSwitchStatus(!switchStatus)}
+                    <Checkbox
+                      {...field}
                       colorScheme="green"
+                      id="is_require"
                       size="lg"
-                    />
+                      isChecked={switchStatus}
+                      onChange={e => setSwitchStatus(e.target.checked)}
+                    ></Checkbox>
                     <FormErrorMessage>
                       {form.errors.is_required}
                     </FormErrorMessage>
@@ -264,9 +290,14 @@ const IntegerUpdateField = ({ onClose, reFetchFieldsData }) => {
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red">
-                  Cancel
-                </Button>
+                <Link
+                  w={'20%'}
+                  to={`/admin/content-types/edit/${contentTypeID}`}
+                >
+                  <Button w="100%" colorScheme="red">
+                    Cancel
+                  </Button>
+                </Link>
                 <Button w="20%" colorScheme="blue" type="submit">
                   Update
                 </Button>

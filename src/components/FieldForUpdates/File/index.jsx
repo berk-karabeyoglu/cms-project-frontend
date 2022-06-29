@@ -7,18 +7,39 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  Switch,
   Button,
   Heading,
   useToast,
   Text,
+  Checkbox,
+  Spacer,
 } from '@chakra-ui/react';
 import fileFieldValidations from '../../../validations/FieldsValidation/File';
 import fileFieldUtils from '../../../utils/FieldsUtils/fileFieldUtils';
-const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import DeleteAlert from '../../AlertDialog';
+const FileUpdateField = ({ fieldObj }) => {
   const toast = useToast();
   const [switchStatus, setSwitchStatus] = useState(false);
+  const [incomingMimeTypes, setMimeTypes] = useState('');
+  const [defaultColumnName, setDefaultColumnName] = useState();
+  const contentTypeID = useParams().content_type_id;
+  const fieldID = useParams().field_id;
 
+  useEffect(() => {
+    setDefaultColumnName(fieldObj.column_name);
+    if (fieldObj.is_required === 1) {
+      setSwitchStatus(true);
+    } else setSwitchStatus(false);
+    console.log(fieldObj);
+    if (fieldObj !== undefined) {
+      fieldObj.mimeTypes.map(mime => {
+        setMimeTypes(mime);
+      });
+      console.log(incomingMimeTypes);
+    }
+  }, [fieldObj, incomingMimeTypes]);
   return (
     <Flex
       alignItems="center"
@@ -32,10 +53,17 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
     >
       <Formik
         initialValues={{
-          
+          type: 'file',
+          name: fieldObj.label,
+          description: fieldObj.description,
+          column_name: fieldObj.column_name,
+          is_required: fieldObj.is_required,
+          fileAmount: fieldObj.fileAmount,
+          fileSize: fieldObj.fileSize,
+          mime_types: incomingMimeTypes,
         }}
         onSubmit={values => {
-          fileFieldUtils.post(
+          fileFieldUtils.update(
             values.type,
             values.name,
             values.description,
@@ -43,6 +71,8 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
             values.mimeTypes,
             values.fileAmount,
             values.fileSize,
+            contentTypeID,
+            fieldID,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -52,8 +82,6 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
                 duration: 3000,
                 isClosable: true,
               });
-              reFetchFieldsData();
-              onClose();
             },
             onErrorMessage => {
               toast({
@@ -70,9 +98,13 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>
-              Update File Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update File Field
+              </Heading>
+              <Spacer />
+              <DeleteAlert deletedItem={'file field'} />
+            </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -94,12 +126,7 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
                         Name
                       </Flex>
                     </FormLabel>
-                    <Input
-                      {...field}
-                      size="sm"
-                      id="name"
-                      type="name"
-                    />
+                    <Input {...field} size="sm" id="name" type="name" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -116,14 +143,14 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
                   >
                     <FormLabel htmlFor="columName">Column Name</FormLabel>
                     <Text
-                      fontSize="6xl"
+                      fontSize="lg"
                       {...field}
                       disabled
                       size="md"
                       id="column_name"
                       type="text"
                     >
-                      {/* Buraya degerini yazdıracaksın */}
+                      {defaultColumnName}
                     </Text>
                     <FormErrorMessage>{form.errors.columName}</FormErrorMessage>
                   </FormControl>
@@ -131,18 +158,22 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
               </Field>
 
               {/* Allowed File Mimes Input */}
-              <Field name="mimeTypes">
+              <Field name="mime_types">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={form.errors.mimeTypes && form.touched.mimeTypes}
+                    isInvalid={
+                      form.errors.mime_types && form.touched.mime_types
+                    }
                     mb={5}
                   >
-                    <FormLabel htmlFor="mimeTypes">Allowed Mimes</FormLabel>
-                    <Input {...field} size="sm" id="mimeTypes" type="text" />
+                    <FormLabel htmlFor="mime_types">Allowed Mimes</FormLabel>
+                    <Input {...field} size="sm" id="mime_types" type="text" />
 
-                    <FormErrorMessage>{form.errors.mimeTypes}</FormErrorMessage>
+                    <FormErrorMessage>
+                      {form.errors.mime_types}
+                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -227,19 +258,27 @@ const FileUpdateField = ({ onClose, reFetchFieldsData }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="required">Is Required ?</FormLabel>
-                    <Switch
+                    <Checkbox
+                      {...field}
                       colorScheme="green"
+                      id="is_require"
                       size="lg"
-                      onChange={() => setSwitchStatus(!switchStatus)}
-                    />
+                      isChecked={switchStatus}
+                      onChange={e => setSwitchStatus(e.target.checked)}
+                    ></Checkbox>
                     <FormErrorMessage>{form.errors.required}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red">
-                  Cancel
-                </Button>
+                <Link
+                  w={'20%'}
+                  to={`/admin/content-types/edit/${contentTypeID}`}
+                >
+                  <Button w="100%" colorScheme="red">
+                    Cancel
+                  </Button>
+                </Link>
                 <Button w="20%" colorScheme="blue" type="submit">
                   Update
                 </Button>

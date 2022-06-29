@@ -14,14 +14,18 @@ import {
   useToast,
   Text,
   Checkbox,
+  Spacer,
 } from '@chakra-ui/react';
 import decimalFieldValidations from '../../../validations/FieldsValidation/Decimal';
 import decimalFieldUtils from '../../../utils/FieldsUtils/decimalFieldsUtils';
 import { useEffect } from 'react';
+import DeleteAlert from '../../AlertDialog';
 const DecimalUpdateField = ({ fieldObj }) => {
   const toast = useToast();
   const [switchStatus, setSwitchStatus] = useState(false);
-  const [selectedSeperator, setSelectedSeperator] = useState(fieldObj.separator);
+  const [selectedSeperator, setSelectedSeperator] = useState(
+    fieldObj.separator
+  );
   const [defaultColumnName, setDefaultColumnName] = useState();
   const contentTypeID = useParams().content_type_id;
   const fieldID = useParams().field_id;
@@ -31,8 +35,8 @@ const DecimalUpdateField = ({ fieldObj }) => {
     if (fieldObj.is_required === 1) {
       setSwitchStatus(true);
     } else setSwitchStatus(false);
-    console.log(fieldObj)
-  },[fieldObj]);
+    console.log(fieldObj);
+  }, [fieldObj]);
 
   const selectOnChangeHandle = e => {
     setSelectedSeperator(e.target.value);
@@ -100,9 +104,13 @@ const DecimalUpdateField = ({ fieldObj }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>
-              Update Decimal Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update Decimal Field
+              </Heading>
+              <Spacer />
+              <DeleteAlert deletedItem={'decimal field'}  />
+            </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -171,7 +179,7 @@ const DecimalUpdateField = ({ fieldObj }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-              
+
                     <Checkbox
                       {...field}
                       colorScheme="green"
@@ -319,7 +327,10 @@ const DecimalUpdateField = ({ fieldObj }) => {
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Link w={'20%'} to={`/admin/content-types/edit/${contentTypeID}`}>
+                <Link
+                  w={'20%'}
+                  to={`/admin/content-types/edit/${contentTypeID}`}
+                >
                   <Button w="100%" colorScheme="red">
                     Cancel
                   </Button>

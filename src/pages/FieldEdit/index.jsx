@@ -23,9 +23,9 @@ const FieldEdit = () => {
     decimal: <DecimalUpdateField fieldObj={sendingFieldsObject} />,
     boolean: <BooleanUpdateField fieldObj={sendingFieldsObject} />,
     float: <FloatUpdateField />,
-    integer: <IntegerUpdateField />,
-    dateField: <DateUpdateField />,
-    fileField: <FileUpdateField />,
+    integer: <IntegerUpdateField fieldObj={sendingFieldsObject} />,
+    timestamp: <DateUpdateField fieldObj={sendingFieldsObject} />,
+    file: <FileUpdateField fieldObj={sendingFieldsObject} />,
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const FieldEdit = () => {
           Object.entries(field.meta).map(item => {
             fieldMetasObject[item[0]] = item[1];
           });
-          var sendingObject = Object.assign({},fieldObj,fieldMetasObject)
+          var sendingObject = Object.assign({}, fieldObj, fieldMetasObject);
           setSendingFieldsObject(sendingObject);
           console.log('Spreadle birlestirilen: ', sendingObject);
           console.log('Props olarak gecilen: !', sendingFieldsObject);

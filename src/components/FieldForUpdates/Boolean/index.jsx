@@ -7,17 +7,18 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  Switch,
   Button,
   Heading,
   useToast,
   Text,
   Checkbox,
+  Spacer,
 } from '@chakra-ui/react';
 import booleanFieldUtils from '../../../utils/FieldsUtils/booleanFieldUtils';
 import booleanFieldValidations from '../../../validations/FieldsValidation/Boolean';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import DeleteAlert from '../../AlertDialog';
 
 const BooleanUpdateField = ({ fieldObj }) => {
   const toast = useToast();
@@ -27,7 +28,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
   const fieldID = useParams().field_id;
 
   useEffect(() => {
-    console.log("Geldi")
+    console.log(fieldObj.label);
     setDefaultColumnName(fieldObj.column_name);
     if (fieldObj.is_required === 1) {
       setSwitchStatus(true);
@@ -48,7 +49,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
       <Formik
         initialValues={{
           type: 'boolean',
-          name:fieldObj.label,
+          name: fieldObj.label,
           description: fieldObj.description,
           columnName: fieldObj.column_name,
           is_required: fieldObj.is_required,
@@ -90,9 +91,13 @@ const BooleanUpdateField = ({ fieldObj }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>
-              Update Boolean Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update Boolean Field
+              </Heading>
+              <Spacer />
+              <DeleteAlert deletedItem={'boolean field'} />
+            </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -111,7 +116,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
                         <Text color="red">*</Text>Name
                       </Flex>
                     </FormLabel>
-                    <Input {...field} name="name" size="md" id="name" type="text" />
+                    <Input {...field} size="md" id="name" type="name" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -246,9 +251,14 @@ const BooleanUpdateField = ({ fieldObj }) => {
 
               {/* Buttons Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" colorScheme="red">
-                  Cancel
-                </Button>
+              <Link
+                  w={'20%'}
+                  to={`/admin/content-types/edit/${contentTypeID}`}
+                >
+                  <Button w="100%" colorScheme="red">
+                    Cancel
+                  </Button>
+                </Link>
                 <Button w="20%" colorScheme="blue" type="submit">
                   Update
                 </Button>

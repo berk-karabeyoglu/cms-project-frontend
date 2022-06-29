@@ -12,9 +12,12 @@ import {
   Heading,
   useToast,
   Text,
+  Spacer,
 } from '@chakra-ui/react';
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
+import DeleteAlert from '../../AlertDialog';
+import { Link } from 'react-router-dom';
 
 const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
   const [switchStatus, setSwitchStatus] = useState(false);
@@ -32,9 +35,7 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
       justifyContent={'space-around'}
     >
       <Formik
-        initialValues={{
- 
-        }}
+        initialValues={{}}
         onSubmit={values => {
           integerFieldUtils.update(
             values.type,
@@ -71,9 +72,13 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>
-              Update Float Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update Float Field
+              </Heading>
+              <Spacer />
+              <DeleteAlert deletedItem={'float field'} />
+            </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -95,12 +100,7 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
                         Name
                       </Flex>
                     </FormLabel>
-                    <Input
-                      {...field}
-                      size="sm"
-                      id="name"
-                      type="name"
-                    />
+                    <Input {...field} size="sm" id="name" type="name" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -254,7 +254,7 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
                 )}
               </Field>
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red">
+                <Button w="100%" colorScheme="red">
                   Cancel
                 </Button>
                 <Button w="20%" colorScheme="blue" type="submit">

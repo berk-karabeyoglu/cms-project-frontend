@@ -13,9 +13,12 @@ import {
   Heading,
   useToast,
   Text,
+  Spacer,
 } from '@chakra-ui/react';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
+import DeleteAlert from '../../AlertDialog';
+import If from '../../If';
 const StringUpdateField = ({ fieldObj }) => {
   const toast = useToast();
   const [switchStatus, setSwitchStatus] = useState(true);
@@ -24,7 +27,6 @@ const StringUpdateField = ({ fieldObj }) => {
   const fieldID = useParams().field_id;
 
   useEffect(() => {
-    console.log(fieldObj.label)
     setDefaultColumnName(fieldObj.column_name);
     if (fieldObj.is_required === 1) {
       setSwitchStatus(true);
@@ -34,7 +36,6 @@ const StringUpdateField = ({ fieldObj }) => {
   return (
     <Flex
       alignItems="center"
-      height="8rem"
       w="100%"
       wrap={'wrap'}
       h={'auto'}
@@ -86,9 +87,15 @@ const StringUpdateField = ({ fieldObj }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h4'} size="md" mb={6}>
-              Update Text Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update Text Field
+              </Heading>
+              <Spacer />
+              <If test={fieldObj.column_name !== 'title'}>
+                <DeleteAlert deletedItem={'string field'} />
+              </If>
+            </Flex>
             <Flex wrap={'wrap'} minW={'250px'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -208,7 +215,10 @@ const StringUpdateField = ({ fieldObj }) => {
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Link w={'20%'} to={`/admin/content-types/edit/`}>
+                <Link
+                  w={'20%'}
+                  to={`/admin/content-types/edit/${contentTypeID}`}
+                >
                   <Button w="100%" colorScheme="red">
                     Cancel
                   </Button>

@@ -13,8 +13,8 @@ const post = (
   description,
   required,
   columnName,
-  minimum,
-  maximum,
+  min,
+  max,
   prefix,
   suffix,
   onSuccess,
@@ -35,8 +35,8 @@ const post = (
         description,
         required,
         columnName,
-        minimum,
-        maximum,
+        min,
+        max,
         prefix,
         suffix,
       },
@@ -55,35 +55,35 @@ const post = (
     });
 };
 
-
 const update = (
   type,
   label,
   description,
-  required,
-  minimum,
-  maximum,
+  is_required,
+  min,
+  max,
   prefix,
   suffix,
+  contentTypeID,
+  fieldID,
   onSuccess,
   onError
 ) => {
-  const contentID = getContentId();
-  if (required === true) {
-    required = 1;
+  if (is_required === true) {
+    is_required = 1;
   } else {
-    required = 0;
+    is_required = 0;
   }
   axios
-    .post(
-      API.API_URL + '/content-types/' + contentID + '/fields',
+    .put(
+      API.API_URL + '/content-types/' + contentTypeID + '/fields/' + fieldID,
       {
         type,
         label,
         description,
-        required,
-        minimum,
-        maximum,
+        is_required,
+        min,
+        max,
         prefix,
         suffix,
       },
