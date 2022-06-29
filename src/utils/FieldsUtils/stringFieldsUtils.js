@@ -42,18 +42,57 @@ const post = (
       }
     )
     .then(response => {
-      console.log(response);
-      console.log('length: ' + length);
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response);
+      onError(error.response.data.message);
+    });
+};
+
+const update = (
+  type,
+  label,
+  description,
+  length,
+  is_required,
+  contentTypeID,
+  fieldID,
+  onSuccess,
+  onError
+) => {
+  if (is_required === true) {
+    is_required = 1;
+  } else {
+    is_required = 0;
+  }
+  axios
+    .put(
+      API.API_URL + '/content-types/' + contentTypeID + '/fields/' + fieldID,
+      {
+        type,
+        label,
+        description,
+        is_required,
+        length,
+      },
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => {
+      onSuccess(response.data.message);
+    })
+    .catch(error => {
       onError(error.response.data.message);
     });
 };
 
 const stringFieldsUtils = {
   post,
+  update,
 };
 
 export default stringFieldsUtils;

@@ -13,8 +13,8 @@ const post = (
   description,
   required,
   columnName,
-  minimum,
-  maximum,
+  min,
+  max,
   prefix,
   suffix,
   onSuccess,
@@ -26,15 +26,6 @@ const post = (
   } else {
     required = 0;
   }
-  console.log('type: ' + type);
-  console.log('label: ' + label);
-  console.log('description ' + description);
-  console.log('required ' + required);
-  console.log('columName ' + columnName);
-  console.log('minimum' + minimum);
-  console.log('maximum: ' + maximum);
-  console.log('prefix ' + prefix);
-  console.log('suffix: ' + suffix);
   axios
     .post(
       API.API_URL + '/content-types/' + contentID + '/fields',
@@ -44,8 +35,8 @@ const post = (
         description,
         required,
         columnName,
-        minimum,
-        maximum,
+        min,
+        max,
         prefix,
         suffix,
       },
@@ -57,17 +48,63 @@ const post = (
       }
     )
     .then(response => {
-      console.log(response);
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(error.response);
       onError(error.response.data.message);
     });
 };
 
-const stringFieldsUtils = {
-  post,
+const update = (
+  type,
+  label,
+  description,
+  is_required,
+  min,
+  max,
+  prefix,
+  suffix,
+  contentTypeID,
+  fieldID,
+  onSuccess,
+  onError
+) => {
+  if (is_required === true) {
+    is_required = 1;
+  } else {
+    is_required = 0;
+  }
+  axios
+    .put(
+      API.API_URL + '/content-types/' + contentTypeID + '/fields/' + fieldID,
+      {
+        type,
+        label,
+        description,
+        is_required,
+        min,
+        max,
+        prefix,
+        suffix,
+      },
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => {
+      onSuccess(response.data.message);
+    })
+    .catch(error => {
+      onError(error.response.data.message);
+    });
 };
 
-export default stringFieldsUtils;
+const integerFieldUtils = {
+  post,
+  update,
+};
+
+export default integerFieldUtils;

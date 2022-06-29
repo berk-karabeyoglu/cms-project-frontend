@@ -1,3 +1,5 @@
+import { React, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -6,6 +8,7 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
+  Checkbox,
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import StringInputField from '../../components/ContentInputFields/StringInput';
@@ -16,11 +19,10 @@ import TimestampInputField from '../../components/ContentInputFields/DateInput';
 import FileInputField from '../../components/ContentInputFields/FileInput';
 import If from '../../components/If';
 import addContentUtils from '../../utils/addContentUtils';
-import { useState } from 'react';
 
 const AddContent = ({ contentTypeID, contentTypeFields }) => {
-  // const [fileAmount,setFileAmount] = useState(1);
   const toast = useToast();
+  const navigate = useNavigate();
   const getFields = (field, type) => {
     if (type === 'string') return <StringInputField field={field} />;
     if (type === 'decimal') return <DecimalInputField field={field} />;
@@ -28,14 +30,22 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'float') return <IntegerInputField field={field} />;
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
-    if (type === 'file') return <FileInputField maximumFieldAmount={1} field={field} />;
+    if (type === 'file')
+      return <FileInputField field={field} maximumFieldAmount={1} />;
     if (type === 'html') return <StringInputField field={field} />;
   };
+  const [checkboxStatus, setCheckBoxStatus] = useState(true);
 
   const generateInitialValues = () => {
     let initialValues = {};
     contentTypeFields.data?.forEach(element => {
-      initialValues[element.column_name] = '';
+      if (element.type === 'boolean') {
+        initialValues[element.column_name] = true;
+      } else if (element.type === 'file') {
+        initialValues[element.column_name] = [];
+      } else {
+        initialValues[element.column_name] = '';
+      }
     });
     return initialValues;
   };
@@ -46,6 +56,10 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
       errors[column_name] = 'Field ' + column_name + ' is required';
     }
     return errors[column_name];
+  };
+
+  const checkboxClickHandler = e => {
+    setCheckBoxStatus(e.target.checked);
   };
 
   return (
@@ -66,6 +80,11 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
         <Formik
           initialValues={generateInitialValues()}
           onSubmit={values => {
+            if (checkboxStatus === true) {
+              values['publish'] = checkboxStatus;
+            } else {
+              delete values.publish;
+            }
             addContentUtils.addContent(
               values,
               contentTypeID,
@@ -78,6 +97,9 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   duration: 10000,
                   isClosable: true,
                 });
+                setTimeout(() => {
+                  window.location.reload(false)
+                }, 2000);
               },
               onErrorResult => {
                 toast({
@@ -119,7 +141,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                           mb={5}
                         >
                           <FormLabel>{data.label}</FormLabel>
-                          {/* {checkIsFieldIsFile(data.type)} */}
                           {getFields({ ...field }, data.type)}
                           <FormErrorMessage>
                             {form.errors[data.column_name]}
@@ -130,6 +151,12 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   </>
                 );
               })}
+              <Checkbox
+                defaultChecked={checkboxStatus}
+                onChange={e => checkboxClickHandler(e)}
+              >
+                Is Published ?
+              </Checkbox>
               <Flex
                 direction={'row'}
                 justifyContent={'space-evenly'}

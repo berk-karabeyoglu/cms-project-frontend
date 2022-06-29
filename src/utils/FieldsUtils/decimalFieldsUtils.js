@@ -29,19 +29,6 @@ const post = (
   } else {
     required = 0;
   }
-
-  console.log('type: ' + type);
-  console.log('label: ' + label);
-  console.log('description: ' + description);
-  console.log('required: ' + required);
-  console.log('columName: ' + columnName);
-  console.log('digits: ' + digits);
-  console.log('decimal: ' + decimal);
-  console.log('seperator: ' + separator);
-  console.log('minimum: ' + minimum);
-  console.log('maximum: ' + maximum);
-  console.log('prefix: ' + prefix);
-  console.log('suffix: ' + suffix);
   axios
     .post(
       API.API_URL + '/content-types/' + contentID + '/fields',
@@ -67,19 +54,67 @@ const post = (
       }
     )
     .then(response => {
-      console.log(response);
-
       onSuccess(response.data.message);
     })
     .catch(error => {
-      console.log(description);
-      console.log(error.response);
+      onError(error.response.data.message);
+    });
+};
+
+const update = (
+  type,
+  label,
+  description,
+  is_required,
+  separator,
+  min,
+  max,
+  prefix,
+  suffix,
+  contentTypeID,
+  fieldID,
+  onSuccess,
+  onError
+) => {
+  console.log("Minimum:", min)
+  console.log("Maximum:", max)
+  if (is_required === true) {
+    is_required = 1;
+  } else {
+    is_required = 0;
+  }
+  axios
+    .put(
+      API.API_URL + '/content-types/' + contentTypeID + '/fields/' + fieldID,
+      {
+        type,
+        label,
+        description,
+        is_required,
+        separator,
+        min,
+        max,
+        prefix,
+        suffix,
+      },
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => {
+      onSuccess(response.data.message);
+    })
+    .catch(error => {
       onError(error.response.data.message);
     });
 };
 
 const stringFieldsUtils = {
   post,
+  update
 };
 
 export default stringFieldsUtils;

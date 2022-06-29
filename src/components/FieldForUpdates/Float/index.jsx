@@ -10,29 +10,19 @@ import {
   Switch,
   Button,
   Heading,
-  Select,
   useToast,
   Text,
+  Spacer,
 } from '@chakra-ui/react';
-import timestampFieldValidations from '../../../validations/FieldsValidation/Timestamp';
-import timestampFieldUtils from '../../../utils/FieldsUtils/timestampFieldsUtils';
-const DateField = ({ onClose, reFetchFieldsData }) => {
-  const [columnNameText, setColumnNameText] = useState('');
+import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
+import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
+import DeleteAlert from '../../AlertDialog';
+import { Link } from 'react-router-dom';
+
+const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
   const [switchStatus, setSwitchStatus] = useState(false);
-  const [selectedFormat, setSelectedFormat] = useState();
   const toast = useToast();
 
-  const nameInputHandleOnBlur = (e, field) => {
-    field(e);
-    let columName = timestampFieldValidations.formatFieldColumName(
-      e.target.value
-    );
-    setColumnNameText(columName);
-  };
-
-  const selectOnChangeHandle = e => {
-    setSelectedFormat(e.target.value);
-  };
   return (
     <Flex
       alignItems="center"
@@ -45,21 +35,17 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
       justifyContent={'space-around'}
     >
       <Formik
-        initialValues={{
-          type: 'timestamp',
-          name: '',
-          description: '',
-          timestampFormat: '',
-          column_name: { columnNameText },
-        }}
+        initialValues={{}}
         onSubmit={values => {
-          timestampFieldUtils.post(
+          integerFieldUtils.update(
             values.type,
             values.name,
             values.description,
             switchStatus,
-            columnNameText,
-            selectedFormat,
+            values.minimum,
+            values.maximum,
+            values.prefix,
+            values.suffix,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -69,7 +55,6 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                 duration: 3000,
                 isClosable: true,
               });
-              reFetchFieldsData();
               onClose();
             },
             onErrorMessage => {
@@ -87,18 +72,22 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>
-              Manage Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update Float Field
+              </Heading>
+              <Spacer />
+              <DeleteAlert deletedItem={'float field'} />
+            </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
                 name="name"
-                validate={timestampFieldValidations.validateFieldName}
+                validate={integerFieldValidations.validateFieldName}
               >
                 {({ field, form }) => (
                   <FormControl
-                    w={'30%'}
+                    w={'40%'}
                     minW={'200px'}
                     isInvalid={form.errors.name && form.touched.name}
                     mb={5}
@@ -111,13 +100,7 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                         Name
                       </Flex>
                     </FormLabel>
-                    <Input
-                      {...field}
-                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
-                      size="sm"
-                      id="name"
-                      type="name"
-                    />
+                    <Input {...field} size="sm" id="name" type="name" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -127,7 +110,7 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
               <Field name="column_name">
                 {({ field, form }) => (
                   <FormControl
-                    w={'30%'}
+                    w={'40%'}
                     minW={'200px'}
                     isInvalid={
                       form.errors.column_name && form.touched.column_name
@@ -135,13 +118,16 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input
+                    <Text
+                      fontSize="6xl"
                       {...field}
-                      value={columnNameText}
-                      size="sm"
+                      disabled
+                      size="md"
                       id="column_name"
                       type="text"
-                    />
+                    >
+                      {/* Buraya degerini yazdıracaksın */}
+                    </Text>
                     <FormErrorMessage>
                       {form.errors.column_name}
                     </FormErrorMessage>
@@ -149,49 +135,53 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                 )}
               </Field>
 
-              {/* Format Input */}
-              <Field name="timestampFormat">
+              {/* Prefix Input */}
+              <Field name="prefix">
                 {({ field, form }) => (
                   <FormControl
                     w={'30%'}
                     minW={'200px'}
-                    isInvalid={
-                      form.errors.timestampFormat &&
-                      form.touched.timestampFormat
-                    }
+                    isInvalid={form.errors.prefix && form.touched.prefix}
                     mb={5}
                   >
-                    <FormLabel htmlFor="timestampFormat">
-                      <Flex>
-                        <Text colorScheme="none" color="red">
-                          *
-                        </Text>
-                        Format
-                      </Flex>
-                    </FormLabel>
-                    <Select
+                    <FormLabel htmlFor="prefix">Prefix</FormLabel>
+                    <Input
                       {...field}
-                      onChange={e => selectOnChangeHandle(e)}
-                      value={selectedFormat}
                       size="sm"
-                    >
-                      <option>Select a date format</option>
-                      <option value="d-m-Y">d-m-Y</option>
-                      <option value="m/d/Y">m/d/Y</option>
-                      <option value="Y-m-d">Y-m-d</option>
-                    </Select>
-                    <FormErrorMessage>
-                      {form.errors.timestampFormat}
-                    </FormErrorMessage>
+                      id="prefix"
+                      type="text"
+                      placeholder="$"
+                    />
+                    <FormErrorMessage>{form.errors.prefix}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
-
+              {/* Suffix */}
+              <Field name="suffix">
+                {({ field, form }) => (
+                  <FormControl
+                    w={'20%'}
+                    minW={'200px'}
+                    isInvalid={form.errors.suffix && form.touched.suffix}
+                    mb={5}
+                  >
+                    <FormLabel htmlFor="suffix">Suffix</FormLabel>
+                    <Input
+                      {...field}
+                      size="sm"
+                      id="suffix"
+                      type="text"
+                      placeholder="USD"
+                    />
+                    <FormErrorMessage>{form.errors.suffix}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
               {/* Is Required Input */}
               <Field name="is_required">
                 {({ field, form }) => (
                   <FormControl
-                    w={'5%'}
+                    w={'10%'}
                     minW={'200px'}
                     isInvalid={
                       form.errors.is_required && form.touched.is_required
@@ -211,29 +201,64 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                 )}
               </Field>
 
+              {/* Minimum Input */}
+              <Field
+                name="minimum"
+                validate={integerFieldValidations.validateMinimum}
+              >
+                {({ field, form }) => (
+                  <FormControl
+                    w={'30%'}
+                    minW={'200px'}
+                    isInvalid={form.errors.minimum && form.touched.minimum}
+                    mb={5}
+                  >
+                    <FormLabel htmlFor="minimum">Minimum</FormLabel>
+                    <Input {...field} size="sm" id="minimum" type="number" />
+                    <FormErrorMessage>{form.errors.minimum}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              {/* Maximum Input */}
+              <Field
+                name="maximum"
+                validate={integerFieldValidations.validateMaximum}
+              >
+                {({ field, form }) => (
+                  <FormControl
+                    w={'30%'}
+                    minW={'200px'}
+                    isInvalid={form.errors.maximum && form.touched.maximum}
+                    mb={5}
+                  >
+                    <FormLabel htmlFor="maximum">Maximum</FormLabel>
+                    <Input {...field} size="sm" id="maximum" type="number" />
+                    <FormErrorMessage>{form.errors.maximum}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
               {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
-                  <FormControl w={'65%'} minW={'200px'} mb={5}>
+                  <FormControl w={'40%'} minW={'200px'} mb={5}>
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
-                      {...field}
                       placeholder=""
                       size="sm"
+                      {...field}
                       id="description"
                       resize={'none'}
                     />
                   </FormControl>
                 )}
               </Field>
-
-              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red">
+                <Button w="100%" colorScheme="red">
                   Cancel
                 </Button>
                 <Button w="20%" colorScheme="blue" type="submit">
-                  Save
+                  Update
                 </Button>
               </Flex>
             </Flex>
@@ -244,4 +269,4 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
   );
 };
 
-export default DateField;
+export default FloatUpdateField;

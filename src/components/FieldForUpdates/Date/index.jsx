@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -7,29 +7,34 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  Switch,
   Button,
   Heading,
   Select,
   useToast,
   Text,
+  Checkbox,
+  Spacer,
 } from '@chakra-ui/react';
 import timestampFieldValidations from '../../../validations/FieldsValidation/Timestamp';
 import timestampFieldUtils from '../../../utils/FieldsUtils/timestampFieldsUtils';
-const DateField = ({ onClose, reFetchFieldsData }) => {
-  const [columnNameText, setColumnNameText] = useState('');
+import { Link, useParams } from 'react-router-dom';
+import DeleteAlert from '../../AlertDialog';
+const DateUpdateField = ({ fieldObj }) => {
   const [switchStatus, setSwitchStatus] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState();
   const toast = useToast();
 
-  const nameInputHandleOnBlur = (e, field) => {
-    field(e);
-    let columName = timestampFieldValidations.formatFieldColumName(
-      e.target.value
-    );
-    setColumnNameText(columName);
-  };
+  const [defaultColumnName, setDefaultColumnName] = useState();
+  const contentTypeID = useParams().content_type_id;
+  const fieldID = useParams().field_id;
 
+  useEffect(() => {
+    setDefaultColumnName(fieldObj.column_name);
+    if (fieldObj.is_required === 1) {
+      setSwitchStatus(true);
+    } else setSwitchStatus(false);
+    console.log(fieldObj);
+  }, [fieldObj]);
   const selectOnChangeHandle = e => {
     setSelectedFormat(e.target.value);
   };
@@ -47,19 +52,21 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
       <Formik
         initialValues={{
           type: 'timestamp',
-          name: '',
-          description: '',
-          timestampFormat: '',
-          column_name: { columnNameText },
+          name: fieldObj.label,
+          description: fieldObj.description,
+          column_name: fieldObj.column_name,
+          is_required: fieldObj.is_required,
+          format: fieldObj.format,
         }}
         onSubmit={values => {
-          timestampFieldUtils.post(
+          timestampFieldUtils.update(
             values.type,
             values.name,
             values.description,
             switchStatus,
-            columnNameText,
             selectedFormat,
+            contentTypeID,
+            fieldID,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -69,8 +76,6 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                 duration: 3000,
                 isClosable: true,
               });
-              reFetchFieldsData();
-              onClose();
             },
             onErrorMessage => {
               toast({
@@ -87,9 +92,13 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h3'} size="md" mb={6}>
-              Manage Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update Date Field
+              </Heading>
+              <Spacer />
+              <DeleteAlert deletedItem={'timestamp field'} />
+            </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -111,13 +120,7 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                         Name
                       </Flex>
                     </FormLabel>
-                    <Input
-                      {...field}
-                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
-                      size="sm"
-                      id="name"
-                      type="name"
-                    />
+                    <Input {...field} size="sm" id="name" type="name" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -135,15 +138,45 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input
+                    <Text
+                      fontSize="lg"
                       {...field}
-                      value={columnNameText}
-                      size="sm"
+                      disabled
+                      size="md"
                       id="column_name"
                       type="text"
-                    />
+                    >
+                      {defaultColumnName}
+                    </Text>
                     <FormErrorMessage>
                       {form.errors.column_name}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              {/* Is Required Input */}
+              <Field name="is_required">
+                {({ field, form }) => (
+                  <FormControl
+                    w={'5%'}
+                    minW={'200px'}
+                    isInvalid={
+                      form.errors.is_required && form.touched.is_required
+                    }
+                    mb={5}
+                  >
+                    <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
+                    <Checkbox
+                      {...field}
+                      colorScheme="green"
+                      id="is_require"
+                      size="lg"
+                      isChecked={switchStatus}
+                      onChange={e => setSwitchStatus(e.target.checked)}
+                    ></Checkbox>
+                    <FormErrorMessage>
+                      {form.errors.is_required}
                     </FormErrorMessage>
                   </FormControl>
                 )}
@@ -172,7 +205,7 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                     <Select
                       {...field}
                       onChange={e => selectOnChangeHandle(e)}
-                      value={selectedFormat}
+                      defaultValue={fieldObj.format}
                       size="sm"
                     >
                       <option>Select a date format</option>
@@ -182,30 +215,6 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
                     </Select>
                     <FormErrorMessage>
                       {form.errors.timestampFormat}
-                    </FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-
-              {/* Is Required Input */}
-              <Field name="is_required">
-                {({ field, form }) => (
-                  <FormControl
-                    w={'5%'}
-                    minW={'200px'}
-                    isInvalid={
-                      form.errors.is_required && form.touched.is_required
-                    }
-                    mb={5}
-                  >
-                    <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch
-                      onChange={() => setSwitchStatus(!switchStatus)}
-                      colorScheme="green"
-                      size="lg"
-                    />
-                    <FormErrorMessage>
-                      {form.errors.is_required}
                     </FormErrorMessage>
                   </FormControl>
                 )}
@@ -229,11 +238,16 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red">
-                  Cancel
-                </Button>
+                <Link
+                  w={'20%'}
+                  to={`/admin/content-types/edit/${contentTypeID}`}
+                >
+                  <Button w="100%" colorScheme="red">
+                    Cancel
+                  </Button>
+                </Link>
                 <Button w="20%" colorScheme="blue" type="submit">
-                  Save
+                  Update
                 </Button>
               </Flex>
             </Flex>
@@ -244,4 +258,4 @@ const DateField = ({ onClose, reFetchFieldsData }) => {
   );
 };
 
-export default DateField;
+export default DateUpdateField;

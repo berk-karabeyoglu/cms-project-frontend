@@ -37,6 +37,11 @@ export const COLUMNS = [
     ),
   },
 ];
+const contentTypeIDForFieldsEditMethod = () => {
+  const splittedArray = window.location.pathname.split('/');
+  const contentTypeIDForFieldsEdit = splittedArray[splittedArray.length - 1];
+  return contentTypeIDForFieldsEdit;
+};
 
 export const CONTENT_TYPE_FIELDS_COLUMNS = [
   {
@@ -63,7 +68,9 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
     Cell: ({ cell }) => (
       <a
         href={
-          'http://localhost:3000/admin/content-types/fields/edit' +
+          'http://localhost:3000/admin/content-types/edit/' +
+          contentTypeIDForFieldsEditMethod() +
+          '/fields/' +
           cell.row.values.id
         }
       >
