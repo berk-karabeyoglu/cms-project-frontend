@@ -37,9 +37,11 @@ export const COLUMNS = [
     ),
   },
 ];
-
-const splittedArray = window.location.pathname.split('/');
-let contentTypeIDForFieldsEdit = splittedArray[splittedArray.length - 1];
+const contentTypeIDForFieldsEditMethod = () => {
+  const splittedArray = window.location.pathname.split('/');
+  const contentTypeIDForFieldsEdit = splittedArray[splittedArray.length - 1];
+  return contentTypeIDForFieldsEdit;
+}
 
 export const CONTENT_TYPE_FIELDS_COLUMNS = [
   {
@@ -67,7 +69,7 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
       <a
         href={
           'http://localhost:3000/admin/content-types/edit/' +
-          contentTypeIDForFieldsEdit +
+          contentTypeIDForFieldsEditMethod() +
           '/fields/' +
           cell.row.values.id
         }
@@ -93,6 +95,45 @@ export const CONTENT_COLUMNS = [
   {
     Header: 'ID',
     accessor: 'id',
+    sticky: 'left',
+  },
+  {
+    Header: 'Title',
+    accessor: 'title',
+    sticky: 'left',
+  },
+  {
+    Header: 'Created At',
+    accessor: 'created_at',
+    sticky: 'left',
+  },
+  {
+    Header: 'Action',
+    accessor: 'action',
+    disableFilters: true,
+    sticky: 'left',
+    Cell: ({ cell }) => (
+      <a
+        href={
+          'http://localhost:3000/admin/content-types/edit/' +
+          contentTypeID +
+          '/contents/' +
+          cell.row.values.id
+        }
+      >
+        <button className="editButton" value={'Edit'}>
+          <i className="fa-solid fa-pen-to-square"></i>
+        </button>
+      </a>
+    ),
+  },
+];
+
+
+export const VERSIONS = [
+  {
+    Header: 'Version ID',
+    accessor: 'version_id',
     sticky: 'left',
   },
   {

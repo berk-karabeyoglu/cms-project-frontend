@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -7,31 +8,34 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  NumberInput,
-  NumberInputField,
-  Switch,
+  Checkbox,
   Button,
   Heading,
   useToast,
   Text,
+  Spacer,
 } from '@chakra-ui/react';
 import stringFieldValidations from '../../../validations/FieldsValidation/String';
 import stringFieldsUtils from '../../../utils/FieldsUtils/stringFieldsUtils';
-const StringField = ({ onClose, reFetchFieldsData }) => {
+import DeleteAlert from '../../AlertDialog';
+import If from '../../If';
+const StringUpdateField = ({ fieldObj }) => {
   const toast = useToast();
-  const [columnNameText, setColumnNameText] = useState('');
-  const [switchStatus, setSwitchStatus] = useState(false);
+  const [switchStatus, setSwitchStatus] = useState(true);
+  const [defaultColumnName, setDefaultColumnName] = useState();
+  const contentTypeID = useParams().content_type_id;
+  const fieldID = useParams().field_id;
 
-  const nameInputHandleOnBlur = (e, field) => {
-    field(e);
-    let columName = stringFieldValidations.formatFieldColumName(e.target.value);
-    setColumnNameText(columName);
-  };
+  useEffect(() => {
+    setDefaultColumnName(fieldObj.column_name);
+    if (fieldObj.is_required === 1) {
+      setSwitchStatus(true);
+    } else setSwitchStatus(false);
+  }, [fieldObj]);
 
   return (
     <Flex
       alignItems="center"
-      height="8rem"
       w="100%"
       wrap={'wrap'}
       h={'auto'}
@@ -40,21 +44,24 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
       justifyContent={'space-around'}
     >
       <Formik
+        enableReinitialize
         initialValues={{
           type: 'string',
-          name: '',
-          column_name: { columnNameText },
-          description: '',
-          length: '',
+          name: fieldObj.label,
+          description: fieldObj.description,
+          column_name: fieldObj.column_name,
+          is_required: fieldObj.is_required,
+          length: fieldObj.length,
         }}
         onSubmit={values => {
-          stringFieldsUtils.post(
+          stringFieldsUtils.update(
             values.type,
             values.name,
             values.description,
-            columnNameText,
             values.length,
             switchStatus,
+            contentTypeID,
+            fieldID,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -64,8 +71,6 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
                 duration: 3000,
                 isClosable: true,
               });
-              reFetchFieldsData();
-              onClose();
             },
             onErrorMessage => {
               toast({
@@ -82,9 +87,15 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
       >
         {props => (
           <Form>
-            <Heading as={'h4'} size="md" mb={6}>
-              Add Text Field
-            </Heading>
+            <Flex>
+              <Heading as={'h4'} size="md" mb={6}>
+                Update Text Field
+              </Heading>
+              <Spacer />
+              <If test={fieldObj.column_name !== 'title'}>
+                <DeleteAlert deletedItem={'string field'} />
+              </If>
+            </Flex>
             <Flex wrap={'wrap'} minW={'250px'} justifyContent={'space-evenly'}>
               {/* Name Input */}
               <Field
@@ -103,13 +114,7 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
                         <Text color="red">*</Text>Name
                       </Flex>
                     </FormLabel>
-                    <Input
-                      {...field}
-                      size="md"
-                      id="name"
-                      type="name"
-                      onBlur={e => nameInputHandleOnBlur(e, field.onBlur)}
-                    />
+                    <Input {...field} size="md" id="name" type="text" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -127,13 +132,16 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
-                    <Input
+                    <Text
+                      fontSize="lg"
                       {...field}
-                      value={columnNameText}
                       size="md"
+                      name="column_name"
                       id="column_name"
                       type="text"
-                    />
+                    >
+                      {defaultColumnName}
+                    </Text>
                     <FormErrorMessage>
                       {form.errors.column_name}
                     </FormErrorMessage>
@@ -174,9 +182,14 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
                         Length
                       </Flex>
                     </FormLabel>
-                    <NumberInput>
-                      <NumberInputField {...field} id="length" name="length" />
-                    </NumberInput>
+
+                    <Input
+                      {...field}
+                      id="length"
+                      type={'number'}
+                      name="length"
+                    />
+
                     <FormErrorMessage>{form.errors.length}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -187,24 +200,31 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
                 {({ field, form }) => (
                   <FormControl minW={'250px'} display={'flex'} mb={5}>
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch
+
+                    <Checkbox
+                      {...field}
                       colorScheme="green"
                       id="is_require"
-                      name="is_require"
                       size="lg"
-                      onChange={() => setSwitchStatus(!switchStatus)}
-                    />
+                      isChecked={switchStatus}
+                      onChange={e => setSwitchStatus(e.target.checked)}
+                    ></Checkbox>
                   </FormControl>
                 )}
               </Field>
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="20%" onClick={onClose} colorScheme="red">
-                  Cancel
-                </Button>
+                <Link
+                  w={'20%'}
+                  to={`/admin/content-types/edit/${contentTypeID}`}
+                >
+                  <Button w="100%" colorScheme="red">
+                    Cancel
+                  </Button>
+                </Link>
                 <Button w="20%" colorScheme="blue" type="submit">
-                  Save
+                  Update
                 </Button>
               </Flex>
             </Flex>
@@ -215,4 +235,4 @@ const StringField = ({ onClose, reFetchFieldsData }) => {
   );
 };
 
-export default StringField;
+export default StringUpdateField;

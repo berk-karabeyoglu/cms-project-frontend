@@ -7,6 +7,8 @@ import {
   FormLabel,
   FormErrorMessage,
   Checkbox,
+  Heading,
+  Spacer,
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import StringInputField from '../../components/ContentInputFields/StringInput';
@@ -21,18 +23,21 @@ import { useEffect } from 'react';
 import contentPageUtils from '../../utils/contentPageUtils';
 import contentEditUtils from '../../utils/contentEditUtils';
 import editContentUtils from '../../utils/contentEditUtils';
-
+import DeleteAlertForContent from '../../components/AlertDialogContent';
+import VersionsComponent from '../../components/Versions';
+import { useParams } from 'react-router-dom';
 const EditContent = () => {
-  const [contentTypeID, setContentTypeID] = useState(0);
-  const [contentID, setContentID] = useState(0);
+  // const [contentTypeID, setContentTypeID] = useState(0);
+  // const [contentID, setContentID] = useState(0);
   const [contentTypeFields, setContentTypeFields] = useState([]);
   const [contentDatas, setContentDatas] = useState({});
   let publishStatus = false;
   const toast = useToast();
-
+  const contentTypeID = useParams().content_type_id;
+  const contentID = useParams().content_id;
   useEffect(() => {
-    getContentTypeID();
-    getContentID();
+    // getContentTypeID();
+    // getContentID();
     contentPageUtils.getContentTypeFields(contentTypeID, incomingData => {
       setContentTypeFields(incomingData);
     });
@@ -44,19 +49,9 @@ const EditContent = () => {
         setContentDatas(incomingData);
       }
     );
-  }, [contentTypeID, contentID]);
+  }, []);
 
-  const getContentTypeID = () => {
-    const splittedArray = window.location.pathname.split('/');
-    const contentTypeID = splittedArray[4];
-    setContentTypeID(contentTypeID);
-  };
 
-  const getContentID = () => {
-    const splittedArray = window.location.pathname.split('/');
-    const contentID = splittedArray[splittedArray.length - 1];
-    setContentID(contentID);
-  };
 
   const getFields = (field, type) => {
     if (type === 'string') return <StringInputField field={field} />;
@@ -95,10 +90,9 @@ const EditContent = () => {
   return (
     <Flex
       alignItems="center"
-      justifyContent={'space-evenly'}
       w="100%"
+      wrap={'wrap'}
       h={'auto'}
-      gap={3}
       direction={'column'}
       p={6}
       bgColor="whiteAlpha.900"
@@ -144,67 +138,79 @@ const EditContent = () => {
           }}
         >
           {props => (
-            <Form>
-              {contentTypeFields.data?.map(data => {
-                return (
-                  <>
-                    <Field
-                      name={data.column_name}
-                      validate={e => {
-                        if (data.is_required) {
-                          return validateFieldName(data.column_name, e);
-                        }
-                      }}
-                    >
-                      {({ field, form }) => (
-                        <FormControl
-                          key={data.id}
-                          w={'40%'}
-                          minW={'250px'}
-                          isInvalid={
-                            form.errors[data.column_name] &&
-                            form.touched[data.column_name]
-                          }
-                          isRequired={data.is_required}
-                          mb={5}
-                        >
-                          <FormLabel>{data.label}</FormLabel>
-                          {getFields({ ...field }, data.type)}
-                          <FormErrorMessage>
-                            {form.errors[data.column_name]}
-                          </FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                  </>
-                );
-              })}
-              <Checkbox
-                defaultChecked={publishStatus}
-                onChange={e => checkboxClickHandler(e)}
-              >
-                Is Published ?
-              </Checkbox>
-              <Flex
-                direction={'row'}
-                justifyContent={'space-evenly'}
-                alignItems={'center'}
-                wrap={'wrap'}
-                gap={2}
-                p={5}
-                w="100%"
-              >
-                <Button
-                  minW={'250px'}
-                  w="50%"
-                  size={'md'}
-                  colorScheme="blue"
-                  type="submit"
-                >
-                  Update
-                </Button>
+            <>
+              <Flex w={'100%'} justifyContent={'space-between'} gap={4}>
+                <Heading as={'h4'} size="md" mb={6}>
+                  Update Content
+                </Heading>
+                <Spacer />
+                <DeleteAlertForContent
+                  deletedItem={`Content ID:${contentID}`}
+                />
+                <VersionsComponent />
               </Flex>
-            </Form>
+              <Form>
+                {contentTypeFields.data?.map(data => {
+                  return (
+                    <>
+                      <Field
+                        name={data.column_name}
+                        validate={e => {
+                          if (data.is_required) {
+                            return validateFieldName(data.column_name, e);
+                          }
+                        }}
+                      >
+                        {({ field, form }) => (
+                          <FormControl
+                            key={data.id}
+                            w={'40%'}
+                            minW={'250px'}
+                            isInvalid={
+                              form.errors[data.column_name] &&
+                              form.touched[data.column_name]
+                            }
+                            isRequired={data.is_required}
+                            mb={5}
+                          >
+                            <FormLabel>{data.label}</FormLabel>
+                            {getFields({ ...field }, data.type)}
+                            <FormErrorMessage>
+                              {form.errors[data.column_name]}
+                            </FormErrorMessage>
+                          </FormControl>
+                        )}
+                      </Field>
+                    </>
+                  );
+                })}
+                <Checkbox
+                  defaultChecked={publishStatus}
+                  onChange={e => checkboxClickHandler(e)}
+                >
+                  Is Published ?
+                </Checkbox>
+                <Flex
+                  direction={'row'}
+                  justifyContent={'space-evenly'}
+                  alignItems={'center'}
+                  wrap={'wrap'}
+                  gap={2}
+                  p={5}
+                  w="100%"
+                >
+                  <Button
+                    minW={'250px'}
+                    w="50%"
+                    size={'md'}
+                    colorScheme="blue"
+                    type="submit"
+                  >
+                    Update
+                  </Button>
+                </Flex>
+              </Form>
+            </>
           )}
         </Formik>
       </If>

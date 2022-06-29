@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -20,8 +21,8 @@ import If from '../../components/If';
 import addContentUtils from '../../utils/addContentUtils';
 
 const AddContent = ({ contentTypeID, contentTypeFields }) => {
-  // const [fileAmount,setFileAmount] = useState(1);
   const toast = useToast();
+  const navigate = useNavigate();
   const getFields = (field, type) => {
     if (type === 'string') return <StringInputField field={field} />;
     if (type === 'decimal') return <DecimalInputField field={field} />;
@@ -40,9 +41,9 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     contentTypeFields.data?.forEach(element => {
       if (element.type === 'boolean') {
         initialValues[element.column_name] = true;
-      } else if(element.type==="file"){
-        initialValues[element.column_name] = []
-      }else {
+      } else if (element.type === 'file') {
+        initialValues[element.column_name] = [];
+      } else {
         initialValues[element.column_name] = '';
       }
     });
@@ -96,6 +97,9 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   duration: 10000,
                   isClosable: true,
                 });
+                setTimeout(() => {
+                  window.location.reload(false)
+                }, 2000);
               },
               onErrorResult => {
                 toast({
