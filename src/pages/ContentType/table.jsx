@@ -79,7 +79,7 @@ export const Paginated = ({ columns, data }) => {
       </Table>
 
       <Box>
-        <Flex mt="1rem">
+        <Flex mt="1.3rem">
           <Box ml="0.1rem">
             <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
               {'<<'}
@@ -103,7 +103,7 @@ export const Paginated = ({ columns, data }) => {
               {pageIndex + 1} of {pageOptions.length}
             </strong>
           </Box>
-          <Box flex="3">
+          <Box flex="3" ml="3rem">
             Go to page:{' '}
             <Input
               type="number"
@@ -117,7 +117,7 @@ export const Paginated = ({ columns, data }) => {
               style={{ width: '4rem', textAlign: 'center' }}
             />
           </Box>
-          <Box flex="5">
+          <Box flex="5" ml="2rem">
             <Select
               width="10vw"
               value={pageSize}
