@@ -141,12 +141,7 @@ export const USERS = [
     disableFilters: true,
     sticky: 'left',
     Cell: ({ cell }) => (
-      <a
-        href={
-          'http://localhost:3000/admin/users/edit/' +
-          contentTypeID 
-        }
-      >
+      <a href={'http://localhost:3000/admin/users/edit/' + cell.row.values.id}>
         <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
         </button>
