@@ -24,7 +24,7 @@ const Content = () => {
   const [addHidden, setAddHidden] = useState(true);
   const [contentTypeFields, setContentTypeFields] = useState([]);
   useEffect(() => {
-    console.log("render")
+    console.log('render');
     contentPageUtils.fillContentTypesDropdown(incomingData => {
       setContentTypes(contentTypes.concat(incomingData));
     });
@@ -65,11 +65,6 @@ const Content = () => {
       setIsDisabled(false);
     }
   };
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> feature-field-management
   return (
     <VStack>
       <Flex
@@ -122,7 +117,6 @@ const Content = () => {
       </Flex>
 
       <If test={!listHidden}>
-<<<<<<< HEAD
         <Flex
           height="auto"
           p={5}
@@ -133,9 +127,6 @@ const Content = () => {
           <Heading as="h5" size="md">
             All Contents
           </Heading>
-=======
-        <Flex height="auto" p={5} w="100%">
->>>>>>> feature-field-management
           <Box w={'100%'}>
             <Paginated data={contents} columns={CONTENT_COLUMNS} />
           </Box>

@@ -97,7 +97,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   isClosable: true,
                 });
                 setTimeout(() => {
-                  window.location.reload(false)
+                  window.location.reload(false);
                 }, 2000);
               },
               onErrorResult => {
