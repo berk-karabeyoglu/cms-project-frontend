@@ -52,6 +52,7 @@ const FileUpdateField = ({ fieldObj }) => {
       justifyContent={'space-around'}
     >
       <Formik
+        enableReinitialize
         initialValues={{
           type: 'file',
           name: fieldObj.label,

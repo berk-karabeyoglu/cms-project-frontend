@@ -19,20 +19,19 @@ import booleanFieldValidations from '../../../validations/FieldsValidation/Boole
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import DeleteAlert from '../../AlertDialog';
-
 const BooleanUpdateField = ({ fieldObj }) => {
   const toast = useToast();
-  const [switchStatus, setSwitchStatus] = useState('');
+  const [switchStatus, setSwitchStatus] = useState();
   const [defaultColumnName, setDefaultColumnName] = useState('');
   const contentTypeID = useParams().content_type_id;
   const fieldID = useParams().field_id;
 
   useEffect(() => {
-    console.log(fieldObj.label);
     setDefaultColumnName(fieldObj.column_name);
     if (fieldObj.is_required === 1) {
       setSwitchStatus(true);
     } else setSwitchStatus(false);
+    console.log('test1 ', fieldObj);
   }, [fieldObj]);
 
   return (
@@ -47,6 +46,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
       justifyContent={'space-around'}
     >
       <Formik
+        enableReinitialize
         initialValues={{
           type: 'boolean',
           name: fieldObj.label,
