@@ -31,7 +31,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
     if (type === 'file') return <FileInputField field={field} />;
-    if (type === 'html') return <HTMLInputField field={field} />;
+    if (type === 'html') return <StringInputField field={field} />;
   };
   const [checkboxStatus, setCheckBoxStatus] = useState(true);
 

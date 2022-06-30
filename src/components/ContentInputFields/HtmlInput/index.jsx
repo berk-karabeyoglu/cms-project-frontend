@@ -6,6 +6,7 @@ import draftToHtml from 'draftjs-to-html';
 export default class HTMLInputField extends Component {
   state = {
     editorState: EditorState.createEmpty(),
+    field: '',
   };
 
   onEditorStateChange = editorState => {
@@ -52,6 +53,7 @@ export default class HTMLInputField extends Component {
           }}
         />
         <textarea
+          {...this.state.field}
           style={{ width: '100%' }}
           disabled
           value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
