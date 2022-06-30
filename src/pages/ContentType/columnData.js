@@ -41,7 +41,7 @@ const contentTypeIDForFieldsEditMethod = () => {
   const splittedArray = window.location.pathname.split('/');
   const contentTypeIDForFieldsEdit = splittedArray[splittedArray.length - 1];
   return contentTypeIDForFieldsEdit;
-}
+};
 
 export const CONTENT_TYPE_FIELDS_COLUMNS = [
   {
@@ -74,10 +74,7 @@ export const CONTENT_TYPE_FIELDS_COLUMNS = [
           cell.row.values.id
         }
       >
-        <button
-          className="editButton"
-          value={'Edit'}
-        >
+        <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
         </button>
       </a>
@@ -129,21 +126,20 @@ export const CONTENT_COLUMNS = [
   },
 ];
 
-
-export const VERSIONS = [
+export const USERS = [
   {
-    Header: 'Version ID',
-    accessor: 'version_id',
+    Header: 'ID',
+    accessor: 'id',
     sticky: 'left',
   },
   {
-    Header: 'Title',
-    accessor: 'title',
+    Header: 'Name',
+    accessor: 'name',
     sticky: 'left',
   },
   {
-    Header: 'Created At',
-    accessor: 'created_at',
+    Header: 'Email',
+    accessor: 'email',
     sticky: 'left',
   },
   {
@@ -152,14 +148,7 @@ export const VERSIONS = [
     disableFilters: true,
     sticky: 'left',
     Cell: ({ cell }) => (
-      <a
-        href={
-          'http://localhost:3000/admin/content-types/edit/' +
-          contentTypeID +
-          '/contents/' +
-          cell.row.values.id
-        }
-      >
+      <a href={'http://localhost:3000/admin/users/edit/' + cell.row.values.id}>
         <button className="editButton" value={'Edit'}>
           <i className="fa-solid fa-pen-to-square"></i>
         </button>
