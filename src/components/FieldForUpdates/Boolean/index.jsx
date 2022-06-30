@@ -22,7 +22,7 @@ import DeleteAlert from '../../AlertDialog';
 
 const BooleanUpdateField = ({ fieldObj }) => {
   const toast = useToast();
-  const [switchStatus, setSwitchStatus] = useState(fieldObj.is_required);
+  const [switchStatus, setSwitchStatus] = useState('');
   const [defaultColumnName, setDefaultColumnName] = useState('');
   const contentTypeID = useParams().content_type_id;
   const fieldID = useParams().field_id;
@@ -116,7 +116,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
                         <Text color="red">*</Text>Name
                       </Flex>
                     </FormLabel>
-                    <Input {...field} size="md" id="name" type="name" />
+                    <Input {...field} size="md" id="name" type="text" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -199,14 +199,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
               {/* Is Required Input */}
               <Field name="is_required">
                 {({ field, form }) => (
-                  <FormControl
-                    w={'10%'}
-                    minW={'200px'}
-                    isInvalid={
-                      form.errors.is_required && form.touched.is_required
-                    }
-                    mb={5}
-                  >
+                  <FormControl minW={'250px'} display={'flex'} mb={5}>
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
                     <Checkbox
                       {...field}
@@ -250,16 +243,16 @@ const BooleanUpdateField = ({ fieldObj }) => {
               </Field>
 
               {/* Buttons Part */}
-              <Flex justifyContent={'space-evenly'} w={'100%'}>
-              <Link
+              <Flex justifyContent={'space-evenly'} w="100%">
+                <Link
                   w={'20%'}
                   to={`/admin/content-types/edit/${contentTypeID}`}
                 >
-                  <Button w="100%" colorScheme="red">
+                  <Button w="150%" colorScheme="red">
                     Cancel
                   </Button>
                 </Link>
-                <Button w="20%" colorScheme="blue" type="submit">
+                <Button w="10%" colorScheme="blue" type="submit">
                   Update
                 </Button>
               </Flex>
