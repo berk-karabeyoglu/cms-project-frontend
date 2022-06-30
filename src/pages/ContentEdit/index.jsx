@@ -9,6 +9,7 @@ import {
   Checkbox,
   Heading,
   Spacer,
+  Input,
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import StringInputField from '../../components/ContentInputFields/StringInput';
@@ -26,23 +27,28 @@ import contentEditUtils from '../../utils/contentEditUtils';
 import editContentUtils from '../../utils/contentEditUtils';
 import DeleteAlertForContent from '../../components/AlertDialogContent';
 import { useParams } from 'react-router-dom';
+import addContentUtils from '../../utils/addContentUtils';
 const EditContent = () => {
-  // const [contentTypeID, setContentTypeID] = useState(0);
-  // const [contentID, setContentID] = useState(0);
   const [contentTypeFields, setContentTypeFields] = useState([]);
   const [contentDatas, setContentDatas] = useState({});
+  const [checkboxNewVersionStatus, setNewVersionCheckBoxStatus] =
+    useState(false);
   let publishStatus = false;
   const toast = useToast();
   const contentTypeID = useParams().content_type_id;
   const contentID = useParams().content_id;
+  useState(true);
+
   useEffect(() => {
     // getContentTypeID();
     // getContentID();
-    contentPageUtils.getContentTypeFields(contentTypeID, incomingData => {
-      setContentTypeFields(incomingData);
-    console.log("INCOMINGGGGGG",incomingData)
-
-    },[]);
+    contentPageUtils.getContentTypeFields(
+      contentTypeID,
+      incomingData => {
+        setContentTypeFields(incomingData);
+      },
+      []
+    );
 
     contentEditUtils.getSingleContent(
       contentTypeID,
@@ -66,12 +72,20 @@ const EditContent = () => {
 
   const generateInitialValues = () => {
     let initialValues = {};
+    console.log('Calisti suan');
     contentTypeFields.data?.forEach(element => {
       initialValues[element.column_name] = contentDatas[element.column_name];
     });
     if (contentDatas['published_at'] !== null) {
       publishStatus = true;
     }
+    var type_string_of_tags = '';
+    contentDatas.tags?.map(tag => {
+      type_string_of_tags += `${tag},`;
+    });
+    type_string_of_tags = type_string_of_tags.slice(0, -1); //'abcde'
+    initialValues['tags'] = type_string_of_tags;
+    console.log('INITIAL VALUES ', initialValues);
     return initialValues;
   };
 
@@ -81,6 +95,10 @@ const EditContent = () => {
       errors[column_name] = 'Field ' + column_name + ' is required';
     }
     return errors[column_name];
+  };
+
+  const checkboxNewVersionClickHandler = e => {
+    setNewVersionCheckBoxStatus(e.target.checked);
   };
 
   const checkboxClickHandler = e => {
@@ -108,6 +126,12 @@ const EditContent = () => {
             } else {
               delete values.publish;
             }
+            if (checkboxNewVersionStatus === true) {
+              values['saveVersion'] = checkboxNewVersionStatus;
+            } else {
+              delete values.saveVersion;
+            }
+            console.log('GIDEN VALUES ', values);
             editContentUtils.updateContent(
               values,
               contentTypeID,
@@ -181,11 +205,48 @@ const EditContent = () => {
                     </>
                   );
                 })}
+
+                <Field
+                  name="tags"
+                  validate={addContentUtils.validateTagsInputWithRegex}
+                >
+                  {({ field, form }) => (
+                    <FormControl
+                      w={'40%'}
+                      minW={'250px'}
+                      isInvalid={
+                        form.errors.tags &&
+                        form.touched.tags
+                      }
+                      mb={5}
+                    >
+                      <FormLabel>Tags</FormLabel>
+                      <Input
+                        {...field}
+                        size="md"
+                        w={'40%'}
+                        minW={'250px'}
+                        id="tags"
+                        type="text"
+                      ></Input>
+                      <FormErrorMessage>
+                        {form.errors.tags}
+                      </FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+
                 <Checkbox
                   defaultChecked={publishStatus}
                   onChange={e => checkboxClickHandler(e)}
                 >
                   Is Published ?
+                </Checkbox>
+                <Checkbox
+                  defaultChecked={checkboxNewVersionStatus}
+                  onChange={e => checkboxNewVersionClickHandler(e)}
+                >
+                  Create New Version
                 </Checkbox>
                 <Flex
                   direction={'row'}

@@ -48,9 +48,18 @@ const deleteContent = (contentTypeID, contentID, onSuccess, onError) => {
     });
 };
 
+const validateTagsInputWithRegex = tags => {
+  const errors = {};
+  if (!/^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$/gm.test(tags) && tags !== '') {
+    errors.tags = 'You have to use only alphanumeric characters and comma';
+  }
+  return errors.tags;
+};
+
 const addContentUtils = {
   addContent,
   deleteContent,
+  validateTagsInputWithRegex,
 };
 
 export default addContentUtils;

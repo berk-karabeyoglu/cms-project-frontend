@@ -13,13 +13,11 @@ const getAllContentTypes = (onSuccess, onError) => {
     .catch(error => onError(error.response.data));
 };
 
-const searchContentType = (search, onSuccess, onError) => {
+const getContentTypeWithSearchParam = (search, onSuccess, onError) => {
   axios
-    .post(
-      API.API_URL + '/content-types',
-      {
-        search,
-      },
+    .get(
+      API.API_URL + '/content-types?search=' + search,
+
       {
         headers: {
           Authorization:
@@ -28,10 +26,10 @@ const searchContentType = (search, onSuccess, onError) => {
       }
     )
     .then(response => {
-      onSuccess(response.data.message);
+      onSuccess(response.data.data);
     })
     .catch(error => {
-      onError(error.response.data.message);
+      console.log(error.response.data.message);
     });
 };
 
@@ -102,6 +100,6 @@ const editPageUtils = {
   deleteContentType,
   fillContentTypeFields,
   getSelectedFieldTypeComponent,
-  searchContentType,
+  getContentTypeWithSearchParam,
 };
 export default editPageUtils;

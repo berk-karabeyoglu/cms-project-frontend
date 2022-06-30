@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -9,6 +8,7 @@ import {
   FormLabel,
   FormErrorMessage,
   Checkbox,
+  Input,
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import StringInputField from '../../components/ContentInputFields/StringInput';
@@ -23,7 +23,9 @@ import addContentUtils from '../../utils/addContentUtils';
 
 const AddContent = ({ contentTypeID, contentTypeFields }) => {
   const toast = useToast();
-  const navigate = useNavigate();
+
+  const [checkboxStatus, setCheckBoxStatus] = useState(true);
+
   const getFields = (field, type) => {
     if (type === 'string') return <StringInputField field={field} />;
     if (type === 'decimal') return <DecimalInputField field={field} />;
@@ -34,7 +36,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'file') return <FileInputField field={field} />;
     if (type === 'html') return <StringInputField field={field} />;
   };
-  const [checkboxStatus, setCheckBoxStatus] = useState(true);
 
   const generateInitialValues = () => {
     let initialValues = {};
@@ -65,12 +66,13 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
   return (
     <Flex
       alignItems="center"
-      justifyContent="center"
+      justifyContent="space-evenly"
       w="100%"
       h={'auto'}
       gap={3}
       direction={'column'}
       p={6}
+      bgColor="whiteAlpha.900"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -84,6 +86,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
             } else {
               delete values.publish;
             }
+            console.log('giden valuelar:', values);
             addContentUtils.addContent(
               values,
               contentTypeID,
@@ -150,12 +153,47 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   </>
                 );
               })}
-              <Checkbox
-                defaultChecked={checkboxStatus}
-                onChange={e => checkboxClickHandler(e)}
+              <Flex
+                direction={'column'}
+                alignItems="flex-start"
+                justifyContent={'flex-start'}
+                wrap={'wrap'}
+                gap={2}
+                w="100%"
               >
-                Is Published ?
-              </Checkbox>
+                <Field
+                  name="tags"
+                  validate={addContentUtils.validateTagsInputWithRegex}
+                >
+                  {({ field, form }) => (
+                    <FormControl
+                      w={'40%'}
+                      minW={'250px'}
+                      isInvalid={form.errors.tags && form.touched.tags}
+                      mb={5}
+                    >
+                      <FormLabel>Tags</FormLabel>
+                      <Input
+                        {...field}
+                        size="md"
+                        w={'40%'}
+                        minW={'250px'}
+                        id="name"
+                        type="text"
+                      ></Input>
+                      <FormErrorMessage>{form.errors.tags}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Checkbox
+                  defaultChecked={checkboxStatus}
+                  onChange={e => checkboxClickHandler(e)}
+                >
+                  Is Published ?
+                </Checkbox>
+              </Flex>
+
               <Flex
                 direction={'row'}
                 justifyContent={'space-evenly'}

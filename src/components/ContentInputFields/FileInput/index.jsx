@@ -1,7 +1,4 @@
 import { useFormikContext } from 'formik';
-
-const { useState } = require('react');
-
 const FileInputField = ({ field, maximumFieldAmount }) => {
   const { setFieldValue } = useFormikContext();
   const onChangeHandler = event => {
