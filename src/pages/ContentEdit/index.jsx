@@ -17,6 +17,7 @@ import DecimalInputField from '../../components/ContentInputFields/DecimalInput'
 import BooleanInputField from '../../components/ContentInputFields/BooleanInput';
 import TimestampInputField from '../../components/ContentInputFields/DateInput';
 import FileInputField from '../../components/ContentInputFields/FileInput';
+import HTMLInputField from '../../components/ContentInputFields/HtmlInput';
 import If from '../../components/If';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -60,8 +61,7 @@ const EditContent = () => {
     if (type === 'float') return <IntegerInputField field={field} />;
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
-    if (type === 'file')
-      return <FileInputField maximumFieldAmount={1} field={field} />;
+    if (type === 'file') return <FileInputField field={field} />;
     if (type === 'html') return <StringInputField field={field} />;
   };
 
@@ -90,12 +90,15 @@ const EditContent = () => {
   return (
     <Flex
       alignItems="center"
+<<<<<<< HEAD
+=======
+      justifyContent="center"
+>>>>>>> feature-field-management
       w="100%"
       wrap={'wrap'}
       h={'auto'}
       direction={'column'}
       p={6}
-      bgColor="whiteAlpha.900"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -120,7 +123,7 @@ const EditContent = () => {
                   title: 'Success',
                   description: onSuccessResult,
                   status: 'success',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
               },
@@ -130,7 +133,7 @@ const EditContent = () => {
                   title: 'Error',
                   description: onErrorResult,
                   status: 'error',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
               }

@@ -17,6 +17,7 @@ import DecimalInputField from '../../components/ContentInputFields/DecimalInput'
 import BooleanInputField from '../../components/ContentInputFields/BooleanInput';
 import TimestampInputField from '../../components/ContentInputFields/DateInput';
 import FileInputField from '../../components/ContentInputFields/FileInput';
+import HTMLInputField from '../../components/ContentInputFields/HtmlInput';
 import If from '../../components/If';
 import addContentUtils from '../../utils/addContentUtils';
 
@@ -30,8 +31,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'float') return <IntegerInputField field={field} />;
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
-    if (type === 'file')
-      return <FileInputField field={field} maximumFieldAmount={1} />;
+    if (type === 'file') return <FileInputField field={field} />;
     if (type === 'html') return <StringInputField field={field} />;
   };
   const [checkboxStatus, setCheckBoxStatus] = useState(true);
@@ -65,13 +65,12 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
   return (
     <Flex
       alignItems="center"
-      justifyContent={'space-evenly'}
+      justifyContent="center"
       w="100%"
       h={'auto'}
       gap={3}
       direction={'column'}
       p={6}
-      bgColor="whiteAlpha.900"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
@@ -94,7 +93,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   title: 'Success',
                   description: onSuccessResult,
                   status: 'success',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
                 setTimeout(() => {
@@ -107,7 +106,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   title: 'Error',
                   description: onErrorResult,
                   status: 'error',
-                  duration: 10000,
+                  duration: 3000,
                   isClosable: true,
                 });
               }

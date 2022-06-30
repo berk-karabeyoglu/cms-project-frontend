@@ -10,12 +10,12 @@ const addContent = (values, contentTypeID, onSuccess, onError) => {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization:
-            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
         },
       }
     )
     .then(response => onSuccess(response.data.message))
-    .catch(error => onError(error.response.data.message));
+    .catch(error => onError(error));
 };
 
 

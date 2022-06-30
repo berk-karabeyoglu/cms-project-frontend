@@ -5,8 +5,8 @@ const TimestampInputField = ({ field }) => {
   const [startDate, setStartDate] = useState(new Date());
   const { setFieldValue } = useFormikContext();
   function updateDate(newDate) {
-    let formattedDate = newDate.toLocaleDateString("tr-TR");
-    formattedDate = formattedDate.replace(/\./g, "-")
+    let formattedDate = newDate.toLocaleDateString('tr-TR');
+    formattedDate = formattedDate.replace(/\./g, '-');
     setFieldValue(field.name, formattedDate);
     setStartDate(newDate);
   }

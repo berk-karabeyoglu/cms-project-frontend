@@ -12,6 +12,7 @@ Table {
 
   table tr:nth-child(even) {
     background-color: #ccdae4f0;
+    color:black;
   }
   
   table tr:hover {
