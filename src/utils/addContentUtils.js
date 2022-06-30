@@ -18,11 +18,14 @@ const addContent = (values, contentTypeID, onSuccess, onError) => {
     .catch(error => onError(error));
 };
 
-
-const deleteContent = (contentTypeID, contentID,onSuccess,onError) => {
+const deleteContent = (contentTypeID, contentID, onSuccess, onError) => {
   axios
     .delete(
-      API.API_URL + '/content-types/' + contentTypeID + '/contents/' + contentID,
+      API.API_URL +
+        '/content-types/' +
+        contentTypeID +
+        '/contents/' +
+        contentID,
       {
         headers: {
           Authorization:
@@ -39,9 +42,18 @@ const deleteContent = (contentTypeID, contentID,onSuccess,onError) => {
     });
 };
 
+const validateTagsInputWithRegex = tags => {
+  const errors = {};
+  if (!/^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$/gm.test(tags) && tags !== '') {
+    errors.tags = 'You have to use only alphanumeric characters and comma';
+  }
+  return errors.tags;
+};
+
 const addContentUtils = {
   addContent,
   deleteContent,
+  validateTagsInputWithRegex,
 };
 
 export default addContentUtils;

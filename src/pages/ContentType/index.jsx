@@ -8,11 +8,12 @@ const ContentType = () => {
   const [dataIncome, setDataIncome] = useState([]);
 
   const fetchData = filter => {
+    console.log('FİLTER:', filter);
     editPageUtils.getAllContentTypes(onSuccessResult => {
       setDataIncome(onSuccessResult);
     });
   };
-  
+
   // We are getting all content types when content types page load
   useEffect(() => {
     fetchData();

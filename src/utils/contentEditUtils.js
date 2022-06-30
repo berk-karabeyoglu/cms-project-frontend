@@ -21,7 +21,7 @@ const getSingleContent = (contentTypeID, contentID, onSucces) => {
 };
 
 const updateContent = (values, contentTypeID, contentID, onSuccess) => {
-  console.log('VALUES', values);
+  console.log('GELEn VALUES', values);
   axios
     .put(
       API.API_URL +
