@@ -12,7 +12,6 @@ const HTMLInputField = ({ field }) => {
       field.name,
       draftToHtml(convertToRaw(editorState.getCurrentContent()))
     );
-    console.log(editorState);
   };
 
   const { editorState } = '';
