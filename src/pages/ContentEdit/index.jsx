@@ -52,8 +52,6 @@ const EditContent = () => {
     );
   }, []);
 
-
-
   const getFields = (field, type) => {
     if (type === 'string') return <StringInputField field={field} />;
     if (type === 'decimal') return <DecimalInputField field={field} />;
@@ -90,10 +88,6 @@ const EditContent = () => {
   return (
     <Flex
       alignItems="center"
-<<<<<<< HEAD
-=======
-      justifyContent="center"
->>>>>>> feature-field-management
       w="100%"
       wrap={'wrap'}
       h={'auto'}

@@ -19,7 +19,6 @@ const FieldEdit = () => {
   const [fieldObj, setFieldObj] = useState({});
   const [sendingFieldsObject, setSendingFieldsObject] = useState({});
   const FIELD_TYPES = {
-<<<<<<< HEAD
     string: <StringUpdateField fieldObj={sendingFieldsObject} />,
     decimal: <DecimalUpdateField fieldObj={sendingFieldsObject} />,
     boolean: <BooleanUpdateField fieldObj={sendingFieldsObject} />,
@@ -27,15 +26,6 @@ const FieldEdit = () => {
     integer: <IntegerUpdateField fieldObj={sendingFieldsObject} />,
     timestamp: <DateUpdateField fieldObj={sendingFieldsObject} />,
     file: <FileUpdateField fieldObj={sendingFieldsObject} />,
-=======
-    string: <StringField fieldMetas={fieldObj} />,
-    decimal: <DecimalField />,
-    boolean: <BooleanField />,
-    float: <FloatField />,
-    integer: <IntegerField />,
-    dateField: <DateField />,
-    fileField: <FileField />,
->>>>>>> feature-field-management
   };
 
   useEffect(() => {
