@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -24,7 +23,6 @@ import addContentUtils from '../../utils/addContentUtils';
 
 const AddContent = ({ contentTypeID, contentTypeFields }) => {
   const toast = useToast();
-  const navigate = useNavigate();
 
   const [checkboxStatus, setCheckBoxStatus] = useState(true);
 
@@ -36,7 +34,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'boolean') return <BooleanInputField field={field} />;
     if (type === 'timestamp') return <TimestampInputField field={field} />;
     if (type === 'file') return <FileInputField field={field} />;
-    if (type === 'html') return <StringInputField field={field} />;
+    if (type === 'html') return <HTMLInputField field={field} />;
   };
 
   const generateInitialValues = () => {
@@ -74,7 +72,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
       gap={3}
       direction={'column'}
       p={6}
-      bgColor="whiteAlpha.900"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />

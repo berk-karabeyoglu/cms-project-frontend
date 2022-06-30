@@ -107,7 +107,6 @@ const Content = () => {
       setIsDisabled(false);
     }
   };
-
   return (
     <VStack>
       <Flex
@@ -119,7 +118,6 @@ const Content = () => {
         height="auto"
         p={5}
         w="100%"
-        bgColor="whiteAlpha.900"
       >
         <VStack w={'100%'}>
           <Select onChange={e => selectChangeHandler(e)} size="md">
@@ -161,6 +159,7 @@ const Content = () => {
       </Flex>
 
       <If test={!listHidden}>
+<<<<<<< HEAD
         <Flex
           height="auto"
           p={5}
@@ -209,6 +208,12 @@ const Content = () => {
             </InputGroup>
           </Flex>
 
+=======
+        <Flex height="auto" p={5} direction={'column'} w="100%">
+          <Heading as="h5" size="md">
+            All Contents
+          </Heading>
+>>>>>>> develop
           <Box w={'100%'}>
             <If test={isEmpty === false}>
               <Paginated data={contents} columns={CONTENT_COLUMNS} />
@@ -223,13 +228,7 @@ const Content = () => {
         </Flex>
       </If>
       <If test={!addHidden}>
-        <Flex
-          height="auto"
-          p={5}
-          direction={'column'}
-          bgColor="whiteAlpha.900"
-          w="100%"
-        >
+        <Flex height="auto" p={5} direction={'column'} w="100%">
           <Heading as="h5" size="md">
             Create New Content
           </Heading>

@@ -22,7 +22,7 @@ const FieldEdit = () => {
     string: <StringUpdateField fieldObj={sendingFieldsObject} />,
     decimal: <DecimalUpdateField fieldObj={sendingFieldsObject} />,
     boolean: <BooleanUpdateField fieldObj={sendingFieldsObject} />,
-    float: <FloatUpdateField />,
+    float: <FloatUpdateField fieldObj={sendingFieldsObject} />,
     integer: <IntegerUpdateField fieldObj={sendingFieldsObject} />,
     timestamp: <DateUpdateField fieldObj={sendingFieldsObject} />,
     file: <FileUpdateField fieldObj={sendingFieldsObject} />,

@@ -13,6 +13,8 @@ import {
   useToast,
   Spinner,
   Spacer,
+  Link,
+  textDecoration,
 } from '@chakra-ui/react';
 import modalValidations from '../../../validations/ContentType/addModalValidation';
 import loginValidation from '../../../validations/AuthValidations/loginValidation';
@@ -24,7 +26,6 @@ import userGetUtils from '../../../utils/UserUtils/getAllUsers';
 import DeleteAlertForUsers from '../../../components/AlertDialogForUsers';
 import loginValidations from '../../../validations/AuthValidations/loginValidation';
 import userUpdateUtil from '../../../utils/UserUtils/updateUser';
-
 const UserEdit = () => {
   const [selectedUserRole, setSelectedUserRole] = useState('');
   const [isVisible, setIsVisible] = useState(false);
@@ -72,7 +73,6 @@ const UserEdit = () => {
       h={'auto'}
       direction={'row'}
       p={6}
-      bgColor="whiteAlpha.900"
       justifyContent={'space-around'}
     >
       <>
@@ -306,10 +306,17 @@ const UserEdit = () => {
 
                   {/* Button Part */}
                   <Flex justifyContent={'space-evenly'} w={'100%'}>
-                    <Button w="20%" colorScheme="red">
-                      Cancel
-                    </Button>
-                    <Button w="20%" colorScheme="blue" type="submit">
+                    <Link
+                      href="http://localhost:3000/admin/users"
+                      _hover={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <Button w="150%" colorScheme="red">
+                        Cancel
+                      </Button>
+                    </Link>
+                    <Button w="10%" colorScheme="blue" type="submit">
                       Save
                     </Button>
                   </Flex>

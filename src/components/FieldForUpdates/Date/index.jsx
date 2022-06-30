@@ -23,17 +23,16 @@ const DateUpdateField = ({ fieldObj }) => {
   const [switchStatus, setSwitchStatus] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState();
   const toast = useToast();
-
   const [defaultColumnName, setDefaultColumnName] = useState();
   const contentTypeID = useParams().content_type_id;
   const fieldID = useParams().field_id;
 
   useEffect(() => {
+    console.log('name: ' + fieldObj.label);
     setDefaultColumnName(fieldObj.column_name);
     if (fieldObj.is_required === 1) {
       setSwitchStatus(true);
     } else setSwitchStatus(false);
-    console.log(fieldObj);
   }, [fieldObj]);
   const selectOnChangeHandle = e => {
     setSelectedFormat(e.target.value);
@@ -50,6 +49,7 @@ const DateUpdateField = ({ fieldObj }) => {
       justifyContent={'space-around'}
     >
       <Formik
+        enableReinitialize
         initialValues={{
           type: 'timestamp',
           name: fieldObj.label,
@@ -238,15 +238,12 @@ const DateUpdateField = ({ fieldObj }) => {
 
               {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Link
-                  w={'20%'}
-                  to={`/admin/content-types/edit/${contentTypeID}`}
-                >
-                  <Button w="100%" colorScheme="red">
+                <Link to={`/admin/content-types/edit/${contentTypeID}`}>
+                  <Button w="150%" colorScheme="red">
                     Cancel
                   </Button>
                 </Link>
-                <Button w="20%" colorScheme="blue" type="submit">
+                <Button w="10%" colorScheme="blue" type="submit">
                   Update
                 </Button>
               </Flex>

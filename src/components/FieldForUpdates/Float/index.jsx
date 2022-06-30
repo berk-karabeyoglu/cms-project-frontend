@@ -7,22 +7,31 @@ import {
   Flex,
   FormErrorMessage,
   Textarea,
-  Switch,
   Button,
   Heading,
   useToast,
   Text,
+  Checkbox,
   Spacer,
 } from '@chakra-ui/react';
 import integerFieldValidations from '../../../validations/FieldsValidation/Integer';
 import integerFieldUtils from '../../../utils/FieldsUtils/integerFieldsUtils';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import DeleteAlert from '../../AlertDialog';
-import { Link } from 'react-router-dom';
-
-const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
-  const [switchStatus, setSwitchStatus] = useState(false);
+const FloatUpdateField = ({ fieldObj }) => {
   const toast = useToast();
+  const [switchStatus, setSwitchStatus] = useState(false);
+  const [defaultColumnName, setDefaultColumnName] = useState();
+  const contentTypeID = useParams().content_type_id;
+  const fieldID = useParams().field_id;
 
+  useEffect(() => {
+    setDefaultColumnName(fieldObj.column_name);
+    if (fieldObj.is_required === 1) {
+      setSwitchStatus(true);
+    } else setSwitchStatus(false);
+  }, [fieldObj]);
   return (
     <Flex
       alignItems="center"
@@ -35,7 +44,18 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
       justifyContent={'space-around'}
     >
       <Formik
-        initialValues={{}}
+        enableReinitialize
+        initialValues={{
+          type: 'float',
+          name: fieldObj.label,
+          description: fieldObj.description,
+          column_name: fieldObj.column_name,
+          is_required: fieldObj.is_required,
+          minimum: fieldObj.min,
+          maximum: fieldObj.max,
+          prefix: fieldObj.prefix,
+          suffix: fieldObj.suffix,
+        }}
         onSubmit={values => {
           integerFieldUtils.update(
             values.type,
@@ -46,6 +66,8 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
             values.maximum,
             values.prefix,
             values.suffix,
+            contentTypeID,
+            fieldID,
             onSuccessMessage => {
               toast({
                 position: 'bottom-right',
@@ -55,7 +77,6 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
                 duration: 3000,
                 isClosable: true,
               });
-              onClose();
             },
             onErrorMessage => {
               toast({
@@ -73,7 +94,7 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
         {props => (
           <Form>
             <Flex>
-              <Heading as={'h4'} size="md" mb={6}>
+              <Heading as={'h3'} size="md" mb={6}>
                 Update Float Field
               </Heading>
               <Spacer />
@@ -119,14 +140,14 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
                   >
                     <FormLabel htmlFor="column_name">Column Name</FormLabel>
                     <Text
-                      fontSize="6xl"
+                      fontSize="lg"
                       {...field}
                       disabled
                       size="md"
                       id="column_name"
                       type="text"
                     >
-                      {/* Buraya degerini yazdıracaksın */}
+                      {defaultColumnName}
                     </Text>
                     <FormErrorMessage>
                       {form.errors.column_name}
@@ -177,6 +198,7 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
                   </FormControl>
                 )}
               </Field>
+
               {/* Is Required Input */}
               <Field name="is_required">
                 {({ field, form }) => (
@@ -189,11 +211,14 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
                     mb={5}
                   >
                     <FormLabel htmlFor="is_required">Is Required ?</FormLabel>
-                    <Switch
-                      onChange={() => setSwitchStatus(!switchStatus)}
+                    <Checkbox
+                      {...field}
                       colorScheme="green"
+                      id="is_require"
                       size="lg"
-                    />
+                      isChecked={switchStatus}
+                      onChange={e => setSwitchStatus(e.target.checked)}
+                    ></Checkbox>
                     <FormErrorMessage>
                       {form.errors.is_required}
                     </FormErrorMessage>
@@ -238,26 +263,38 @@ const FloatUpdateField = ({ onClose, reFetchFieldsData }) => {
                   </FormControl>
                 )}
               </Field>
+
               {/* Description Input */}
               <Field name="description">
                 {({ field, form }) => (
-                  <FormControl w={'40%'} minW={'200px'} mb={5}>
+                  <FormControl
+                    w={'40%'}
+                    minW={'200px'}
+                    isInvalid={
+                      form.errors.description && form.touched.description
+                    }
+                    mb={5}
+                  >
                     <FormLabel htmlFor="description">Description</FormLabel>
                     <Textarea
+                      {...field}
                       placeholder=""
                       size="sm"
-                      {...field}
                       id="description"
                       resize={'none'}
                     />
                   </FormControl>
                 )}
               </Field>
+
+              {/* Button Part */}
               <Flex justifyContent={'space-evenly'} w={'100%'}>
-                <Button w="100%" colorScheme="red">
-                  Cancel
-                </Button>
-                <Button w="20%" colorScheme="blue" type="submit">
+                <Link to={`/admin/content-types/edit/${contentTypeID}`}>
+                  <Button w="150%" colorScheme="red">
+                    Cancel
+                  </Button>
+                </Link>
+                <Button w="10%" colorScheme="blue" type="submit">
                   Update
                 </Button>
               </Flex>
