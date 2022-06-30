@@ -72,7 +72,6 @@ const UserEdit = () => {
       h={'auto'}
       direction={'row'}
       p={6}
-      bgColor="whiteAlpha.900"
       justifyContent={'space-around'}
     >
       <>
@@ -201,7 +200,11 @@ const UserEdit = () => {
                         }
                         mb={5}
                       >
-                        <FormLabel htmlFor="user_password">Password</FormLabel>
+                        <FormLabel htmlFor="user_password">
+                          <Flex>
+                            <Text color="red">*</Text>Password
+                          </Flex>
+                        </FormLabel>
                         <Input
                           {...field}
                           id="user_password"

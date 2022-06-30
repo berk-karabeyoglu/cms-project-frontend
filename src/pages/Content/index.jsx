@@ -65,7 +65,6 @@ const Content = () => {
       setIsDisabled(false);
     }
   };
-
   return (
     <VStack>
       <Flex

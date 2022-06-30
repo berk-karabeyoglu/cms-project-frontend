@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -24,7 +23,6 @@ import addContentUtils from '../../utils/addContentUtils';
 
 const AddContent = ({ contentTypeID, contentTypeFields }) => {
   const toast = useToast();
-  const navigate = useNavigate();
 
   const [checkboxStatus, setCheckBoxStatus] = useState(true);
 

@@ -109,7 +109,7 @@ const DecimalUpdateField = ({ fieldObj }) => {
                 Update Decimal Field
               </Heading>
               <Spacer />
-              <DeleteAlert deletedItem={'decimal field'}  />
+              <DeleteAlert deletedItem={'decimal field'} />
             </Flex>
             <Flex wrap={'wrap'} justifyContent={'space-evenly'}>
               {/* Name Input */}
@@ -331,11 +331,11 @@ const DecimalUpdateField = ({ fieldObj }) => {
                   w={'20%'}
                   to={`/admin/content-types/edit/${contentTypeID}`}
                 >
-                  <Button w="100%" colorScheme="red">
+                  <Button w="150%" colorScheme="red">
                     Cancel
                   </Button>
                 </Link>
-                <Button w="20%" colorScheme="blue" type="submit">
+                <Button w="10%" colorScheme="blue" type="submit">
                   Update
                 </Button>
               </Flex>
