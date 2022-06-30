@@ -49,6 +49,7 @@ const DateUpdateField = ({ fieldObj }) => {
       justifyContent={'space-around'}
     >
       <Formik
+        enableReinitialize
         initialValues={{
           type: 'timestamp',
           name: fieldObj.label,

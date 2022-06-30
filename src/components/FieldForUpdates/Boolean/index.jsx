@@ -47,6 +47,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
       justifyContent={'space-around'}
     >
       <Formik
+        enableReinitialize
         initialValues={{
           type: 'boolean',
           name: fieldObj.label,
