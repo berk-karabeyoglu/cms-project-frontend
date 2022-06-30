@@ -35,6 +35,8 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
     if (type === 'html') return <StringInputField field={field} />;
   };
   const [checkboxStatus, setCheckBoxStatus] = useState(true);
+  const [checkboxNewVersionStatus, setNewVersionCheckBoxStatus] =
+    useState(true);
 
   const generateInitialValues = () => {
     let initialValues = {};
@@ -97,7 +99,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
                   isClosable: true,
                 });
                 setTimeout(() => {
-                  window.location.reload(false)
+                  window.location.reload(false);
                 }, 2000);
               },
               onErrorResult => {
@@ -156,6 +158,7 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
               >
                 Is Published ?
               </Checkbox>
+
               <Flex
                 direction={'row'}
                 justifyContent={'space-evenly'}

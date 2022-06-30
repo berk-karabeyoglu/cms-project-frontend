@@ -27,22 +27,26 @@ import editContentUtils from '../../utils/contentEditUtils';
 import DeleteAlertForContent from '../../components/AlertDialogContent';
 import { useParams } from 'react-router-dom';
 const EditContent = () => {
-  // const [contentTypeID, setContentTypeID] = useState(0);
-  // const [contentID, setContentID] = useState(0);
   const [contentTypeFields, setContentTypeFields] = useState([]);
   const [contentDatas, setContentDatas] = useState({});
+  const [checkboxNewVersionStatus, setNewVersionCheckBoxStatus] =
+    useState(false);
   let publishStatus = false;
   const toast = useToast();
   const contentTypeID = useParams().content_type_id;
   const contentID = useParams().content_id;
+  useState(true);
+
   useEffect(() => {
     // getContentTypeID();
     // getContentID();
-    contentPageUtils.getContentTypeFields(contentTypeID, incomingData => {
-      setContentTypeFields(incomingData);
-    console.log("INCOMINGGGGGG",incomingData)
-
-    },[]);
+    contentPageUtils.getContentTypeFields(
+      contentTypeID,
+      incomingData => {
+        setContentTypeFields(incomingData);
+      },
+      []
+    );
 
     contentEditUtils.getSingleContent(
       contentTypeID,
@@ -83,6 +87,10 @@ const EditContent = () => {
     return errors[column_name];
   };
 
+  const checkboxNewVersionClickHandler = e => {
+    setNewVersionCheckBoxStatus(e.target.checked);
+  };
+
   const checkboxClickHandler = e => {
     publishStatus = e.target.checked;
   };
@@ -103,10 +111,16 @@ const EditContent = () => {
           enableReinitialize
           initialValues={generateInitialValues()}
           onSubmit={values => {
+            console.log('UPDATE GİDEN FİELDLAR:', values);
             if (publishStatus === true) {
               values['publish'] = publishStatus;
             } else {
               delete values.publish;
+            }
+            if (checkboxNewVersionStatus === true) {
+              values['saveVersion'] = checkboxNewVersionStatus;
+            } else {
+              delete values.saveVersion;
             }
             editContentUtils.updateContent(
               values,
@@ -186,6 +200,12 @@ const EditContent = () => {
                   onChange={e => checkboxClickHandler(e)}
                 >
                   Is Published ?
+                </Checkbox>
+                <Checkbox
+                  defaultChecked={checkboxNewVersionStatus}
+                  onChange={e => checkboxNewVersionClickHandler(e)}
+                >
+                  Create New Version
                 </Checkbox>
                 <Flex
                   direction={'row'}
