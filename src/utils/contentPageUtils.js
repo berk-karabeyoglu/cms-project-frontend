@@ -21,20 +21,92 @@ const fillContentTypesDropdown = async onSuccess => {
   );
 };
 
-const fillContentsTable = async (selectedContentTypeID, onSuccess) => {
-  axios
-    .get(
-      API.API_URL + '/content-types/' + selectedContentTypeID + '/contents',
-      {
-        headers: {
-          Authorization:
-            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
-        },
-      }
-    )
-    .then(response => onSuccess(response.data))
-    .catch(error => console.log(error.response.data));
+const fillContentsTable = (search, tags, selectedContentTypeID, onSuccess) => {
+  console.log("Api istegine gelenler:");
+  console.log("SEARCH:",search)
+  console.log("TAGS",tags)
+  console.log("CONTENT TYPE ID :" , selectedContentTypeID)
+  // Both of them are filled
+  if (tags !== '' && search !== '') {
+    axios
+      .get(
+        API.API_URL +
+          '/content-types/' +
+          selectedContentTypeID +
+          '/contents?search=' +
+          search +
+          '&tags=' +
+          tags,
+        {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              JSON.parse(localStorage.getItem('access_token')).token,
+          },
+        }
+      )
+      .then(response => onSuccess(response.data.data))
+      .catch(error => console.log(error.response.data));
+  } // tags filled search empty
+  else if (tags !== '' && search === '') {
+    axios
+      .get(
+        API.API_URL +
+          '/content-types/' +
+          selectedContentTypeID +
+          '/contents?tags=' +
+          tags,
+        {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              JSON.parse(localStorage.getItem('access_token')).token,
+          },
+        }
+      )
+      .then(response => onSuccess(response.data.data))
+      .catch(error => console.log(error.response.data));
+  } // search filled tags empty
+  else if (tags === '' && search !== '') {
+    axios
+      .get(
+        API.API_URL +
+          '/content-types/' +
+          selectedContentTypeID +
+          '/contents?search=' +
+          search,
+        {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              JSON.parse(localStorage.getItem('access_token')).token,
+          },
+        }
+      )
+      .then(response => onSuccess(response.data.data))
+      .catch(error => console.log(error.response.data));
+  } else {
+    axios
+      .get(
+        API.API_URL +
+          '/content-types/' +
+          selectedContentTypeID +
+          '/contents' +
+          search,
+        {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              JSON.parse(localStorage.getItem('access_token')).token,
+          },
+        }
+      )
+      .then(response => onSuccess(response.data.data))
+      .catch(error => console.log(error.response.data));
+  }
 };
+
+
 
 const getContentTypeFields = (contentTypeID, onSuccess) => {
   axios
@@ -50,7 +122,7 @@ const getContentTypeFields = (contentTypeID, onSuccess) => {
 const contentPageUtils = {
   fillContentTypesDropdown,
   fillContentsTable,
-  getContentTypeFields
+  getContentTypeFields,
 };
 
 export default contentPageUtils;
