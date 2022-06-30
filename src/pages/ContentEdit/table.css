@@ -1,0 +1,43 @@
+Table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    margin-top: 2rem;
+    
+  }
+  
+  table td,
+  table th {
+    border: 1px solid #ddd;
+  }
+
+
+  table tr:nth-child(even) {
+    background-color: #ccdae4f0;
+    color:black;
+  }
+  
+  table tr:hover {
+    background-color: rgb(132, 145, 178);
+  }
+  
+  table th {
+    background-color: rgb(0, 96, 144);
+    height: 3rem;
+  }
+
+  .editButton{
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: 2rem;
+    transition: all .3s;
+  }
+  .editButton:hover{
+    color:white;
+    font-size:1.3rem;
+  }
+
+ #search-button:hover{
+  background-color:rgb(132, 145, 178);
+ }
+ #add-button:hover{
+  background-color:rgb(132, 145, 178);
+ }

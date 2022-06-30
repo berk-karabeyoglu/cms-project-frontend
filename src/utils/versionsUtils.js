@@ -10,23 +10,54 @@ const getAllVersionsOfContent = async (contentTypeID, contentID, onSuccess) => {
         contentTypeID +
         '/contents/' +
         contentID +
-        '/versions',
+        '/versions?only=' +
+        only,
       {
         headers: {
           Authorization:
             'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
         },
-      },
-      {
-        only,
       }
     )
     .then(response => onSuccess(response.data))
     .catch(error => console.log(error.response.message));
 };
 
+const changeVersions = (
+  contentTypeID,
+  contentID,
+  versionID,
+  onSuccess,
+  onError
+) => {
+  console.log(contentTypeID, contentID, versionID);
+  axios
+    .put(
+      API.API_URL +
+        '/content-types/' +
+        contentTypeID +
+        '/contents/' +
+        contentID +
+        '/versions/' +
+        versionID,
+      {
+        contentTypeID,
+        contentID,
+        versionID
+      },
+      {
+        headers: {
+          Authorization:
+            'Bearer ' + JSON.parse(localStorage.getItem('access_token')).token,
+        },
+      }
+    )
+    .then(response => onSuccess(response.data.message))
+    .catch(error => onError(error.response.message));
+};
 const versionsUtils = {
   getAllVersionsOfContent,
+  changeVersions,
 };
 
 export default versionsUtils;

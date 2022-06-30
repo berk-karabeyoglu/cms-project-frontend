@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { useFormikContext } from 'formik';
+import './editor.css';
 const HTMLInputField = ({ field }) => {
   const { setFieldValue } = useFormikContext();
 
@@ -18,7 +19,6 @@ const HTMLInputField = ({ field }) => {
   // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
 
   return (
-    <div>
       <Editor
         toolbarClassName="toolbarClassName"
         wrapperClassName="wrapperClassName"
@@ -26,7 +26,7 @@ const HTMLInputField = ({ field }) => {
         onEditorStateChange={onEditorStateChange}
         placeholder="Enter your body here..."
         toolbarStyle={{
-          backgroundColor: 'rgb(23, 25, 35)',
+          backgroundColor: 'white',
           color: 'black',
           width: '100%',
           height: '8rem',
@@ -36,24 +36,17 @@ const HTMLInputField = ({ field }) => {
         }}
         editorStyle={{
           backgroundColor: '',
-          color: 'white',
           borderBlock: '0.15rem solid white',
           borderRadius: '1rem',
           marginBottom: '2rem',
           textAlign: 'center',
-          height: 'auto',
-          maxHeight: '600px',
-          overflow: 'auto',
+          maxHeight: '800px',
           padding: '1rem',
           letterSpacing: '0.1rem',
           maxWidth: '100%',
         }}
       />
-      {/* <textarea
-        style={{ width: '100%' }}
-        value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-      ></textarea> */}
-    </div>
+
   );
 };
 
