@@ -11,12 +11,10 @@ const ContentType = () => {
 
   const fetchData = filter => {
     if (filter === undefined || filter === '') {
-      console.log("geldi")
       editPageUtils.getAllContentTypes(onSuccessResult => {
         setDataIncome(onSuccessResult);
       });
     } else {
-      console.log("sus amk", filter)
       editPageUtils.getContentTypeWithSearchParam(
         filter,
         onSuccessResult => {

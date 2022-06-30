@@ -7,7 +7,14 @@ import {
   Button,
   Select,
   Heading,
+  InputGroup,
+  InputRightElement,
+  Input,
+  useToast,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 import { useEffect } from 'react';
 import contentPageUtils from '../../utils/contentPageUtils';
 import { Paginated } from '../../pages/ContentType/table';
@@ -23,6 +30,11 @@ const Content = () => {
   const [listHidden, setListHidden] = useState(true);
   const [addHidden, setAddHidden] = useState(true);
   const [contentTypeFields, setContentTypeFields] = useState([]);
+  const [isEmpty, setIsEmpty] = useState(false);
+
+  const toast = useToast();
+  const search = '';
+  const tags = '';
   useEffect(() => {
     console.log('render');
     contentPageUtils.fillContentTypesDropdown(incomingData => {
@@ -42,11 +54,41 @@ const Content = () => {
   };
 
   const listOnClickHandler = () => {
-    contentPageUtils.fillContentsTable(selectedContentTypeID, incomingData => {
-      setContents(incomingData.data);
-    });
+    contentPageUtils.fillContentsTable(
+      search,
+      tags,
+      selectedContentTypeID,
+      incomingData => {
+        if (incomingData.length === 0) {
+          <Alert status="warning">
+            <AlertIcon />
+            There is no content according to your search!
+          </Alert>;
+        } else {
+          setContents(incomingData);
+        }
+      }
+    );
     setListHidden(false);
     setAddHidden(true);
+  };
+
+  const searchHandle = () => {
+    const searchInputValue = document.getElementById('searchInput').value;
+    const searchByTagsValue = document.getElementById('tagsSearchInput').value;
+    contentPageUtils.fillContentsTable(
+      searchInputValue,
+      searchByTagsValue,
+      selectedContentTypeID,
+      incomingData => {
+        if (incomingData.length === 0) {
+          setIsEmpty(true);
+        } else {
+          setIsEmpty(false);
+          setContents(incomingData);
+        }
+      }
+    );
   };
 
   const selectChangeHandler = e => {
@@ -117,12 +159,71 @@ const Content = () => {
       </Flex>
 
       <If test={!listHidden}>
+<<<<<<< HEAD
+        <Flex
+          height="auto"
+          p={5}
+          direction={'column'}
+          w="100%"
+          bgColor="whiteAlpha.900"
+        >
+          <Flex
+            height="auto"
+            p={5}
+            gap={5}
+            direction={'row'}
+            w="100%"
+            bgColor="whiteAlpha.900"
+          >
+            <Heading as="h5" w="30%" size="md">
+              All Contents
+            </Heading>
+            <InputGroup>
+              <Input
+                id="searchInput"
+                type="search"
+                placeholder="Search Content By name"
+              />
+
+              <InputRightElement pointerEvents="none" />
+            </InputGroup>
+            <InputGroup>
+              <Input
+                id="tagsSearchInput"
+                type="search"
+                placeholder="Search Content By Tags"
+              />
+              <Button
+                ml="0.60rem"
+                id="search-button"
+                backgroundColor="rgb(0, 96, 144);"
+                color="whiteAlpha.900"
+                px={10}
+                fontSize="1.1rem"
+                onClick={searchHandle}
+              >
+                <SearchIcon />
+              </Button>{' '}
+              <InputRightElement pointerEvents="none" />
+            </InputGroup>
+          </Flex>
+
+=======
         <Flex height="auto" p={5} direction={'column'} w="100%">
           <Heading as="h5" size="md">
             All Contents
           </Heading>
+>>>>>>> develop
           <Box w={'100%'}>
-            <Paginated data={contents} columns={CONTENT_COLUMNS} />
+            <If test={isEmpty === false}>
+              <Paginated data={contents} columns={CONTENT_COLUMNS} />
+            </If>
+            <If test={isEmpty === true}>
+              <Alert status="warning">
+                <AlertIcon />
+                There is no content.
+              </Alert>
+            </If>
           </Box>
         </Flex>
       </If>

@@ -1,4 +1,4 @@
-import { Flex, useToast } from '@chakra-ui/react';
+import { Alert, AlertIcon, Flex, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import NavigationForUsers from './NavigationForUsers';
 import If from '../../components/If';
@@ -8,23 +8,39 @@ import userGetUtils from '../../utils/UserUtils/getAllUsers';
 const Users = () => {
   const toast = useToast();
   const [dataIncome, setDataIncome] = useState([]);
-
+  const filter = ''
   const fetchData = filter => {
-    userGetUtils.getAllUsers(
-      onSuccess => {
-        setDataIncome(onSuccess);
-      },
-      onError => {
-        toast({
-          position: 'bottom-right',
-          title: 'Success',
-          description: onError,
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    );
+    if (filter === '' | filter === undefined) {
+      console.log('Bos oldugu icin buraya girdi', filter);
+      userGetUtils.getAllUsers(
+        filter,
+        onSuccess => {
+          setDataIncome(onSuccess);
+        },
+        onError => {
+          <Alert status="warning">
+            <AlertIcon />
+            There is no user.
+          </Alert>;
+        }
+      );
+    } else {
+      console.log('Dolu oldugu icin buraya girdi', filter);
+
+      userGetUtils.getAllUsers(
+        filter,
+        onSuccess => {
+          setDataIncome(onSuccess);
+          console.log(onSuccess)
+        },
+        onError => {
+          <Alert status="warning">
+            <AlertIcon />
+            There is no user according to your search.
+          </Alert>;
+        }
+      );
+    }
   };
 
   // We are getting users when users page load

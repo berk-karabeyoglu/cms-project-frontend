@@ -39,10 +39,15 @@ const Navigation = props => {
     setSelectedUserRole(e.target.value);
   };
 
-  const addUserButtonOnClickHandle = () => {
-    setIsVisible(false)
-    onOpen();
+  const searchButtonOnClickHandle = () => {
+    const userText = document.getElementById('searchInput').value;
+    props.onRefetchData(userText)
   }
+
+  const addUserButtonOnClickHandle = () => {
+    setIsVisible(false);
+    onOpen();
+  };
   return (
     <Flex alignItems="center" height="8rem" w="100%">
       <HStack
@@ -54,17 +59,14 @@ const Navigation = props => {
         justifyContent="space-between"
       >
         <InputGroup>
-          <Input
-            id="searchInput"
-            type="search"
-            placeholder="Search Content Type"
-          />
+          <Input id="searchInput" type="search" placeholder="Search User" />
           <Button
             ml="0.60rem"
             id="search-button"
             backgroundColor="rgb(0, 96, 144);"
             color="whiteAlpha.900"
             fontSize="1.1rem"
+            onClick={searchButtonOnClickHandle}
           >
             <SearchIcon />
           </Button>
@@ -98,7 +100,7 @@ const Navigation = props => {
             <ModalBody pb={6}>
               <Formik
                 initialValues={{
-                  user_password:''
+                  user_password: '',
                 }}
                 onSubmit={values => {
                   userAddUtil.addUser(
