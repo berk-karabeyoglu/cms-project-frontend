@@ -244,10 +244,7 @@ const BooleanUpdateField = ({ fieldObj }) => {
 
               {/* Buttons Part */}
               <Flex justifyContent={'space-evenly'} w="100%">
-                <Link
-                  w={'20%'}
-                  to={`/admin/content-types/edit/${contentTypeID}`}
-                >
+                <Link to={`/admin/content-types/edit/${contentTypeID}`}>
                   <Button w="150%" colorScheme="red">
                     Cancel
                   </Button>

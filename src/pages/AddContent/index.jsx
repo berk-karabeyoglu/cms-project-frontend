@@ -72,7 +72,6 @@ const AddContent = ({ contentTypeID, contentTypeFields }) => {
       gap={3}
       direction={'column'}
       p={6}
-      bgColor="whiteAlpha.900"
     >
       <If test={!contentTypeFields.data}>
         <Spinner />
