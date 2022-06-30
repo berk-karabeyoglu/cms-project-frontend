@@ -24,7 +24,6 @@ import contentPageUtils from '../../utils/contentPageUtils';
 import contentEditUtils from '../../utils/contentEditUtils';
 import editContentUtils from '../../utils/contentEditUtils';
 import DeleteAlertForContent from '../../components/AlertDialogContent';
-import VersionsComponent from '../../components/Versions';
 import { useParams } from 'react-router-dom';
 const EditContent = () => {
   // const [contentTypeID, setContentTypeID] = useState(0);
@@ -40,7 +39,9 @@ const EditContent = () => {
     // getContentID();
     contentPageUtils.getContentTypeFields(contentTypeID, incomingData => {
       setContentTypeFields(incomingData);
-    });
+    console.log("INCOMINGGGGGG",incomingData)
+
+    },[]);
 
     contentEditUtils.getSingleContent(
       contentTypeID,
@@ -147,7 +148,6 @@ const EditContent = () => {
                 <DeleteAlertForContent
                   deletedItem={`Content ID:${contentID}`}
                 />
-                <VersionsComponent />
               </Flex>
               <Form>
                 {contentTypeFields.data?.map(data => {

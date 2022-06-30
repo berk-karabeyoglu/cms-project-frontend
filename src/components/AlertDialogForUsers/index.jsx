@@ -11,21 +11,18 @@ import {
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import commonUtils from '../../utils/commonUtils';
+import userDeleteUtil from '../../utils/UserUtils/deleteUser';
 
-const DeleteAlert = ({ deletedItem }) => {
+const DeleteAlertForUsers = ({ deletedItem }) => {
   const toast = useToast();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-  const contentTypeID = useParams().content_type_id;
-  const fieldID = useParams().field_id;
+  const userID = useParams().user_id;
+
   const deleteOnClickHandle = () => {
-    console.log("SİLİNEN CONTENT TYPE ID:",contentTypeID)
-    console.log("SİLİNEN FİELD ID:",fieldID)
-    commonUtils.deleteField(
-      contentTypeID,
-      fieldID,
+    userDeleteUtil.deleteUser(
+      userID,
       onSuccessMessage => {
         toast({
           position: 'bottom-right',
@@ -37,7 +34,7 @@ const DeleteAlert = ({ deletedItem }) => {
         });
         onClose();
         setTimeout(() => {
-          navigate(`../content-types/edit/${contentTypeID}`);
+          navigate(`../users`);
         }, 2000);
       },
       onErrorMessage => {
@@ -95,4 +92,4 @@ const DeleteAlert = ({ deletedItem }) => {
   );
 };
 
-export default DeleteAlert;
+export default DeleteAlertForUsers;

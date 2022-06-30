@@ -8,6 +8,7 @@ import EditContentType from '../../pages/Edit';
 import EditContent from '../../pages/ContentEdit';
 import Users from '../../pages/Users';
 import UserEdit from '../../pages/Users/UserEdit';
+import FieldEdit from '../../pages/FieldEdit';
 const PrivateLayout = () => {
   const isTokenValid = authUtils.validateAccessToken();
 
@@ -16,7 +17,7 @@ const PrivateLayout = () => {
       <SidebarWithHeader>
         <Routes>
           <Route path="/users" element={<Users />} />
-          <Route path="/users/edit/:userID" element={<UserEdit />} />
+          <Route path="/users/edit/:user_id" element={<UserEdit />} />
           <Route path="/contents" element={<Content />} />
           <Route path="/content-types" element={<ContentType />} />
           <Route
@@ -26,6 +27,10 @@ const PrivateLayout = () => {
           <Route
             path="/content-types/edit/:content_type_id/contents/:content_id"
             element={<EditContent />}
+          />
+          <Route
+            path="/content-types/edit/:content_type_id/fields/:field_id"
+            element={<FieldEdit />}
           />
         </Routes>
       </SidebarWithHeader>
