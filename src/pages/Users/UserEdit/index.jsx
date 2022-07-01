@@ -36,23 +36,17 @@ const UserEdit = () => {
 
   useEffect(() => {
     if (userInformations.length === 0) {
-      userGetUtils.getAllUsers(
+      userGetUtils.getUserByID(
+        selectedUserID,
         onSuccess => {
-          //   setUserInformations(onSuccess);
-          //   console.log(userInformations);
-          onSuccess.map(data => {
-            if (data.id == selectedUserID) {
-              setUserInformations(data);
-              // setSelectedUserRole(data.role)
-            }
-          });
+          setUserInformations(onSuccess);
         },
         onError => {
           toast({
             position: 'bottom-right',
-            title: 'Success',
+            title: 'Error',
             description: onError,
-            status: 'success',
+            status: 'error',
             duration: 3000,
             isClosable: true,
           });
@@ -82,10 +76,8 @@ const UserEdit = () => {
             initialValues={{
               user_fullname: userInformations['name'],
               user_email: userInformations['email'],
-              //   user_role: userInformations["role"],
-              //   user_password: userInformations["password"],
-              user_role: 'admin',
-              user_password: 'password',
+              user_role: userInformations['role'],
+              user_password: '',
               user_new_password: '',
               user_password_confirmation: '',
             }}

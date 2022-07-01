@@ -8,10 +8,9 @@ import userGetUtils from '../../utils/UserUtils/getAllUsers';
 const Users = () => {
   const toast = useToast();
   const [dataIncome, setDataIncome] = useState([]);
-  const filter = ''
+  const filter = '';
   const fetchData = filter => {
-    if (filter === '' | filter === undefined) {
-      console.log('Bos oldugu icin buraya girdi', filter);
+    if ((filter === '') | (filter === undefined)) {
       userGetUtils.getAllUsers(
         filter,
         onSuccess => {
@@ -25,13 +24,11 @@ const Users = () => {
         }
       );
     } else {
-      console.log('Dolu oldugu icin buraya girdi', filter);
-
       userGetUtils.getAllUsers(
         filter,
         onSuccess => {
           setDataIncome(onSuccess);
-          console.log(onSuccess)
+          console.log(onSuccess);
         },
         onError => {
           <Alert status="warning">
