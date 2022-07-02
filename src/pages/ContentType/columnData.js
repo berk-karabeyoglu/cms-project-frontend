@@ -1,3 +1,4 @@
+import { Button } from '@chakra-ui/react';
 import React from 'react';
 export const COLUMNS = [
   {
@@ -153,6 +154,36 @@ export const USERS = [
           <i className="fa-solid fa-pen-to-square"></i>
         </button>
       </a>
+    ),
+  },
+];
+
+export const VERSIONS = [
+  {
+    Header: '#',
+    accessor: 'id',
+    disableFilters: true,
+    sticky: 'left',
+  },
+  {
+    Header: 'Version',
+    accessor: 'version',
+    disableFilters: true,
+    sticky: 'left',
+  },
+  {
+    Header: 'Date',
+    accessor: 'created_at',
+    sticky: 'left',
+  },
+  {
+    Header: 'Action',
+    accessor: 'action',
+    sticky: 'left',
+    Cell: ({ cell }) => (
+      <Button value={'Edit'}>
+        Revert
+      </Button>
     ),
   },
 ];
