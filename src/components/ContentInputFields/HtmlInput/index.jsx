@@ -8,6 +8,7 @@ import './editor.css';
 const HTMLInputField = ({ field }) => {
   const { setFieldValue } = useFormikContext();
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const [loadedDefaultData, setLoadedDefaultData] = useState(false)
 
   const onEditorStateChange = editorState => {
     setFieldValue(
@@ -17,8 +18,9 @@ const HTMLInputField = ({ field }) => {
     setEditorState(editorState)
   };
     useEffect(() => {
-        if (field.value) {
+        if (field.value && loadedDefaultData === false) {
             setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(field.value))))
+            setLoadedDefaultData(true);
         }
     });
   return (
