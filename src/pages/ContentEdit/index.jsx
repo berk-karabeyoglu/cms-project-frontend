@@ -47,9 +47,7 @@ import editContentUtils from '../../utils/contentEditUtils';
 import DeleteAlertForContent from '../../components/AlertDialogContent';
 import { useNavigate, useParams } from 'react-router-dom';
 import addContentUtils from '../../utils/addContentUtils';
-import { TableForVersions } from './table';
-import { VERSIONS } from '../ContentType/columnData';
-import { Paginated } from '../ContentType/table';
+
 const EditContent = () => {
   const [contentTypeFields, setContentTypeFields] = useState([]);
   const [contentDatas, setContentDatas] = useState({});
@@ -92,7 +90,7 @@ const EditContent = () => {
           setVersionsLoaded(true);
           console.log(response);
         })
-        .catch(error => console.log(error.response.message));
+        .catch(error => console.log("RESPONSE:",error.response.message));
     }
 
     contentPageUtils.getContentTypeFields(contentTypeID, incomingData => {
@@ -121,7 +119,6 @@ const EditContent = () => {
 
   const generateInitialValues = () => {
     let initialValues = {};
-    // console.log('Calisti suan');
     contentTypeFields.data?.forEach(element => {
       initialValues[element.column_name] = contentDatas[element.column_name];
     });
@@ -166,9 +163,7 @@ const EditContent = () => {
         });
         onClose();
         setTimeout(() => {
-          window.location.href =
-            `http://localhost:3000/admin/content-types/edit/${contentTypeID}/contents/${data.id}`
-          ;
+          window.location.href = `http://localhost:3000/admin/content-types/edit/${contentTypeID}/contents/${data.id}`;
         }, 2000);
       },
       onErrorResult => {}
@@ -279,7 +274,12 @@ const EditContent = () => {
                                 <Tr>
                                   <Td key={data.id}>{data.id}</Td>
                                   <Td key={data.id}>{data.version}</Td>
-                                  <Td key={data.id}>{data.created_at}</Td>
+                                  <Td key={data.id}>
+                                    {data.created_at_formatted}
+                                  </Td>
+                                  <Td key={data.id}>
+                                    {data.created_at_formatted}
+                                  </Td>
                                   <Td key={data.id}>
                                     <If test={data.active}>
                                       <Button disabled>Current</Button>

@@ -14,6 +14,7 @@ const validateAccessToken = () => {
 
 const logOutHandle = () => {
   localStorage.removeItem('access_token');
+  localStorage.removeItem('user_login');
   window.location = '/login';
 };
 
@@ -56,13 +57,13 @@ const login = (email, password, onError) => {
           token: response.data.token,
         })
       );
-      var role =response.data.data.role;
+      var role = response.data.data.role;
       var edittedRole = role.charAt(0).toUpperCase() + role.slice(1);
-    
-        
+
       localStorage.setItem(
         'user_info',
         JSON.stringify({
+          userID: response.data.data.id,
           userName: response.data.data.name,
           userRole: edittedRole,
         })

@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import {
   IconButton,
   Avatar,
@@ -38,6 +38,10 @@ const LinkItems = [
   { name: 'Users', icon: FiUsers, to: '/users' },
 ];
 
+const profileOnClickHandle = () => {
+  console.log("tiklandi")
+  window.location.href = "http://localhost:3000/admin/profile"
+}
 export default function SidebarWithHeader({ children, userName, userRole }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -56,12 +60,16 @@ export default function SidebarWithHeader({ children, userName, userRole }) {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent userName={userName} userRole={userRole} onClose={onClose} />
+          <SidebarContent
+            userName={userName}
+            userRole={userRole}
+            onClose={onClose}
+          />
         </DrawerContent>
       </Drawer>
 
       {/* mobilenav */}
-      <MobileNav  userName={userName} userRole={userRole}  onOpen={onOpen} />
+      <MobileNav userName={userName} userRole={userRole} onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -69,7 +77,7 @@ export default function SidebarWithHeader({ children, userName, userRole }) {
   );
 }
 
-const SidebarContent = ({ userName,userRole, onClose, ...rest }) => {
+const SidebarContent = ({ userName, userRole, onClose, ...rest }) => {
   return (
     <Box
       transition="3s ease"
@@ -131,7 +139,7 @@ const NavItem = ({ icon, children, to, ...rest }) => {
   );
 };
 
-const MobileNav = ({userName,userRole, onOpen, ...rest }) => {
+const MobileNav = ({ userName, userRole, onOpen, ...rest }) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -193,7 +201,7 @@ const MobileNav = ({userName,userRole, onOpen, ...rest }) => {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuItem>Profile</MenuItem>
+              <MenuItem onClick={profileOnClickHandle}>Profile</MenuItem>
               <MenuDivider />
               <MenuItem onClick={authUtils.logOutHandle}>Sign out</MenuItem>
             </MenuList>

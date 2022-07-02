@@ -10,6 +10,7 @@ import Users from '../../pages/Users';
 import UserEdit from '../../pages/Users/UserEdit';
 import FieldEdit from '../../pages/FieldEdit';
 import { useEffect, useState } from 'react';
+import Profile from "../../pages/CurrentUserProfile"
 const PrivateLayout = () => {
   const isTokenValid = authUtils.validateAccessToken();
   const [userName, setUserName] = useState('');
@@ -25,6 +26,7 @@ const PrivateLayout = () => {
         <Routes>
           <Route path="/users" element={<Users />} />
           <Route path="/users/edit/:user_id" element={<UserEdit />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/contents" element={<Content />} />
           <Route path="/content-types" element={<ContentType />} />
           <Route

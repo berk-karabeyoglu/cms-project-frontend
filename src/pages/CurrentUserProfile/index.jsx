@@ -1,4 +1,3 @@
-import { React, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   FormControl,
@@ -8,56 +7,33 @@ import {
   FormErrorMessage,
   Button,
   Text,
-  Select,
   Heading,
-  useToast,
   Spinner,
-  Spacer,
   Link,
-  textDecoration,
+  useToast,
 } from '@chakra-ui/react';
-import modalValidations from '../../../validations/ContentType/addModalValidation';
-import loginValidation from '../../../validations/AuthValidations/loginValidation';
-import PasswordStrengthChecker from '../../../components/PasswordStrengthChecker';
-import If from '../../../components/If';
+import { useState } from 'react';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import userGetUtils from '../../../utils/UserUtils/getAllUsers';
-import DeleteAlertForUsers from '../../../components/AlertDialogForUsers';
-import loginValidations from '../../../validations/AuthValidations/loginValidation';
-import userUpdateUtil from '../../../utils/UserUtils/updateUser';
-const UserEdit = () => {
-  const [selectedUserRole, setSelectedUserRole] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
-  const [userInformations, setUserInformations] = useState([]);
-  const selectedUserID = useParams().user_id;
+import currentUserUtils from '../../utils/UserUtils/getCurrentUser';
+import modalValidations from '../../validations/ContentType/addModalValidation';
+import loginValidation from '../../validations/AuthValidations/loginValidation';
+import PasswordStrengthChecker from '../../components/PasswordStrengthChecker';
+import If from '../../components/If';
+const Profile = () => {
   const toast = useToast();
-  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [userID, setuserID] = useState(0);
 
   useEffect(() => {
-    if (userInformations.length === 0) {
-      userGetUtils.getUserByID(
-        selectedUserID,
-        onSuccess => {
-          setUserInformations(onSuccess);
-        },
-        onError => {
-          toast({
-            position: 'bottom-right',
-            title: 'Error',
-            description: onError,
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      );
+    if (userInfo.length === 0) {
+      currentUserUtils.getCurrentUser(onSuccess => {
+        setuserID(onSuccess.id);
+        setUserInfo(onSuccess);
+        console.log(userID);
+      });
     }
-  }, [userInformations]);
-
-  const selectOnChangeHandle = e => {
-    setSelectedUserRole(e.target.value);
-  };
+  }, [userInfo]);
   return (
     <Flex
       alignItems="center"
@@ -70,23 +46,21 @@ const UserEdit = () => {
       justifyContent={'space-around'}
     >
       <>
-        <If test={userInformations.length !== 0}>
+        <If test={userInfo.length !== 0}>
           <Formik
             enableReinitialize
             initialValues={{
-              user_fullname: userInformations['name'],
-              user_email: userInformations['email'],
-              user_role: userInformations['role'],
+              user_fullname: userInfo['name'],
+              user_email: userInfo['email'],
               user_password: '',
               user_new_password: '',
               user_password_confirmation: '',
             }}
             onSubmit={values => {
-              userUpdateUtil.updateUser(
-                selectedUserID,
+              currentUserUtils.updateCurrentUser(
                 values.user_fullname,
-                values.user_email,
                 values.user_password,
+                values.user_email,
                 values.user_new_password,
                 values.user_password_confirmation,
                 onSuccess => {
@@ -98,9 +72,6 @@ const UserEdit = () => {
                     duration: 3000,
                     isClosable: true,
                   });
-                  setTimeout(() => {
-                    navigate(`../users`);
-                  }, 2000);
                 },
                 onError => {
                   toast({
@@ -119,10 +90,8 @@ const UserEdit = () => {
               <Form>
                 <Flex>
                   <Heading as={'h4'} size="md" mb={6}>
-                    Update Users
+                    Update Profile
                   </Heading>
-                  <Spacer />
-                  <DeleteAlertForUsers deletedItem={`User ${selectedUserID}`} />
                 </Flex>
                 <Flex
                   wrap={'wrap'}
@@ -183,7 +152,7 @@ const UserEdit = () => {
                   </Field>
                   <Field
                     name="user_password"
-                    validate={loginValidations.validatePassword}
+                    validate={loginValidation.validatePassword}
                   >
                     {({ field, form }) => (
                       <FormControl
@@ -245,7 +214,7 @@ const UserEdit = () => {
                         mb={2}
                       >
                         <FormLabel htmlFor="user_password_confirmation">
-                          New Password Again
+                          Password Again
                         </FormLabel>
                         <Input
                           {...field}
@@ -259,38 +228,11 @@ const UserEdit = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="user_role">
-                    {({ field, form }) => (
-                      <FormControl
-                        isInvalid={
-                          form.errors.user_role && form.touched.user_role
-                        }
-                        mb={5}
-                      >
-                        <FormLabel htmlFor="user_role">Role</FormLabel>
-                        <Select
-                          {...field}
-                          onChange={e => selectOnChangeHandle(e)}
-                          size="sm"
-                        >
-                          <option selected disabled value="empty">
-                            Select User Role
-                          </option>
-                          <option value="admin">Admin</option>
-                          <option value="manager">Manager</option>
-                          <option value="editor">Editor</option>
-                        </Select>
-                        <FormErrorMessage>
-                          {form.errors.user_role}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
 
                   {/* Button Part */}
                   <Flex justifyContent={'space-evenly'} w={'100%'}>
                     <Link
-                      href="http://localhost:3000/admin/users"
+                      href="http://localhost:3000/admin/content-types"
                       _hover={{
                         textDecoration: 'none',
                       }}
@@ -308,7 +250,7 @@ const UserEdit = () => {
             )}
           </Formik>
         </If>
-        <If test={userInformations.length === 0}>
+        <If test={userInfo.length === 0}>
           <Spinner />
         </If>
       </>
@@ -316,4 +258,4 @@ const UserEdit = () => {
   );
 };
 
-export default UserEdit;
+export default Profile;
