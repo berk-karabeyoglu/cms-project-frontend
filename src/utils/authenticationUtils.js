@@ -56,10 +56,21 @@ const login = (email, password, onError) => {
           token: response.data.token,
         })
       );
+      var role =response.data.data.role;
+      var edittedRole = role.charAt(0).toUpperCase() + role.slice(1);
+    
+        
+      localStorage.setItem(
+        'user_info',
+        JSON.stringify({
+          userName: response.data.data.name,
+          userRole: edittedRole,
+        })
+      );
       window.location = '/admin/content-types';
     })
     .catch(error => {
-      onError(error.response.data.message);
+      onError(error.message);
     });
 };
 

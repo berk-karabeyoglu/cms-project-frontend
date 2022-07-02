@@ -53,7 +53,7 @@ const DeleteAlertForUsers = ({ deletedItem }) => {
   return (
     <>
       <Button colorScheme="red" onClick={onOpen}>
-        Delete Field
+        Delete User
       </Button>
 
       <AlertDialog

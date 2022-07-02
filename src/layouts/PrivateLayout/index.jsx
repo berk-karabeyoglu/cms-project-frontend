@@ -9,12 +9,19 @@ import EditContent from '../../pages/ContentEdit';
 import Users from '../../pages/Users';
 import UserEdit from '../../pages/Users/UserEdit';
 import FieldEdit from '../../pages/FieldEdit';
+import { useEffect, useState } from 'react';
 const PrivateLayout = () => {
   const isTokenValid = authUtils.validateAccessToken();
+  const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState('');
 
+  useEffect(() => {
+    setUserName(JSON.parse(localStorage.getItem('user_info')).userName);
+    setUserRole(JSON.parse(localStorage.getItem('user_info')).userRole);
+  }, [userName, userRole]);
   return (
     <If test={isTokenValid}>
-      <SidebarWithHeader>
+      <SidebarWithHeader userName={userName} userRole={userRole}>
         <Routes>
           <Route path="/users" element={<Users />} />
           <Route path="/users/edit/:user_id" element={<UserEdit />} />
