@@ -159,7 +159,6 @@ const Content = () => {
       </Flex>
 
       <If test={!listHidden}>
-<<<<<<< HEAD
         <Flex
           height="auto"
           p={5}
@@ -208,12 +207,6 @@ const Content = () => {
             </InputGroup>
           </Flex>
 
-=======
-        <Flex height="auto" p={5} direction={'column'} w="100%">
-          <Heading as="h5" size="md">
-            All Contents
-          </Heading>
->>>>>>> develop
           <Box w={'100%'}>
             <If test={isEmpty === false}>
               <Paginated data={contents} columns={CONTENT_COLUMNS} />
