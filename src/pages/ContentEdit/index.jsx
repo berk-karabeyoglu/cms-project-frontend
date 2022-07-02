@@ -88,7 +88,6 @@ const EditContent = () => {
         .then(response => {
           setVersionList(response.data.data);
           setVersionsLoaded(true);
-          console.log(response);
         })
         .catch(error => console.log("RESPONSE:",error.response.message));
     }

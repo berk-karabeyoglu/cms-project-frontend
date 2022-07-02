@@ -1,32 +1,38 @@
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import React, { Component } from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
+import React, {Component, useEffect, useState} from 'react';
+import { EditorState, ContentState, convertFromHTML, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html';
 import { useFormikContext } from 'formik';
 import './editor.css';
 const HTMLInputField = ({ field }) => {
   const { setFieldValue } = useFormikContext();
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const [loadedDefaultData, setLoadedDefaultData] = useState(false)
 
   const onEditorStateChange = editorState => {
     setFieldValue(
       field.name,
       draftToHtml(convertToRaw(editorState.getCurrentContent()))
     );
+    setEditorState(editorState)
   };
-
-  const { editorState } = '';
-  // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-
+    useEffect(() => {
+        if (field.value && loadedDefaultData === false) {
+            setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(field.value))))
+            setLoadedDefaultData(true);
+        }
+    });
   return (
     <Editor
+        editorState={editorState}
       toolbarClassName="toolbarClassName"
       wrapperClassName="wrapperClassName"
       editorClassName="editorClassName"
       onEditorStateChange={onEditorStateChange}
       placeholder="Enter your body here..."
       toolbarStyle={{
-        backgroundColor: 'rgb(23, 25, 35)',
+        // backgroundColor: 'rgb(23, 25, 35)',
         color: 'black',
         width: '100%',
         height: '8rem',
