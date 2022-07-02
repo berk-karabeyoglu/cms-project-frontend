@@ -21,12 +21,6 @@ const HTMLInputField = ({ field }) => {
             setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(field.value))))
         }
     });
-    // const defaultState = editorState => {
-    //     EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(field.value)))
-    // };
-
-  // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-
   return (
     <Editor
         editorState={editorState}
