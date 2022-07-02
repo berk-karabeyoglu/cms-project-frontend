@@ -47,9 +47,6 @@ import editContentUtils from '../../utils/contentEditUtils';
 import DeleteAlertForContent from '../../components/AlertDialogContent';
 import { useNavigate, useParams } from 'react-router-dom';
 import addContentUtils from '../../utils/addContentUtils';
-import { TableForVersions } from './table';
-import { VERSIONS } from '../ContentType/columnData';
-import { Paginated } from '../ContentType/table';
 const EditContent = () => {
   const [contentTypeFields, setContentTypeFields] = useState([]);
   const [contentDatas, setContentDatas] = useState({});
@@ -90,7 +87,6 @@ const EditContent = () => {
         .then(response => {
           setVersionList(response.data.data);
           setVersionsLoaded(true);
-          console.log(response);
         })
         .catch(error => console.log(error.response.message));
     }
