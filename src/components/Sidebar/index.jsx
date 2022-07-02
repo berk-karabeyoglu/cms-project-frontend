@@ -38,7 +38,7 @@ const LinkItems = [
   { name: 'Users', icon: FiUsers, to: '/users' },
 ];
 
-export default function SidebarWithHeader({ children }) {
+export default function SidebarWithHeader({ children, userName, userRole }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -56,12 +56,12 @@ export default function SidebarWithHeader({ children }) {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent userName={userName} userRole={userRole} onClose={onClose} />
         </DrawerContent>
       </Drawer>
 
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav  userName={userName} userRole={userRole}  onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -69,7 +69,7 @@ export default function SidebarWithHeader({ children }) {
   );
 }
 
-const SidebarContent = ({ onClose, ...rest }) => {
+const SidebarContent = ({ userName,userRole, onClose, ...rest }) => {
   return (
     <Box
       transition="3s ease"
@@ -131,7 +131,7 @@ const NavItem = ({ icon, children, to, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, ...rest }) => {
+const MobileNav = ({userName,userRole, onOpen, ...rest }) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -181,8 +181,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs"> Admin</Text>
+                  <Text fontSize="sm">{userName}</Text>
+                  <Text fontSize="xs"> {userRole}</Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
                   <FiChevronDown />

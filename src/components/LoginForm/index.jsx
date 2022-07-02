@@ -62,7 +62,7 @@ const LoginForm = () => {
                 </FormControl>
               )}
             </Field>
-            
+
             <Field name="password" validate={loginValidations.validatePassword}>
               {({ field, form }) => (
                 <FormControl
@@ -70,7 +70,7 @@ const LoginForm = () => {
                   mb={10}
                 >
                   <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input {...field} id="password" type="password" />
+                  <Input {...field} id="password" size="lg" type="password" />
                   <FormErrorMessage>{form.errors.password}</FormErrorMessage>
                 </FormControl>
               )}
@@ -92,7 +92,7 @@ const LoginForm = () => {
               disabled={props.isSubmitting}
               type="submit"
             >
-              Submit
+              Login
             </Button>
           </Form>
         </Box>
