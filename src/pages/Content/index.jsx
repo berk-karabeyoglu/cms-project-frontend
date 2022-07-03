@@ -164,7 +164,6 @@ const Content = () => {
           p={5}
           direction={'column'}
           w="100%"
-          bgColor="whiteAlpha.900"
         >
           <Flex
             height="auto"
@@ -172,7 +171,6 @@ const Content = () => {
             gap={5}
             direction={'row'}
             w="100%"
-            bgColor="whiteAlpha.900"
           >
             <Heading as="h5" w="30%" size="md">
               All Contents
