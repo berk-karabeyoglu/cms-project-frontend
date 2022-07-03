@@ -53,7 +53,7 @@ const DeleteAlert = ({ deletedItem }) => {
   };
   return (
     <>
-      <Button colorScheme="red" onClick={onOpen}>
+      <Button colorScheme="red" size={'md'} onClick={onOpen}>
         Delete Content
       </Button>
 

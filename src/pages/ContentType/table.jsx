@@ -68,7 +68,6 @@ export const Paginated = ({ columns, data }) => {
                 {row.cells.map(cell => {
                   return (
                     <Td textAlign="center" {...cell.getCellProps()}>
-                      {console.log("ALIIIIIIIIII",cell.getCellProps())}
                       {cell.render('Cell')}
                     </Td>
                   );

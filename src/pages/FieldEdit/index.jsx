@@ -57,8 +57,6 @@ const FieldEdit = () => {
           });
           var sendingObject = Object.assign({}, fieldObj, fieldMetasObject);
           setSendingFieldsObject(sendingObject);
-          console.log('Spreadle birlestirilen: ', sendingObject);
-          console.log('Props olarak gecilen: !', sendingFieldsObject);
         }
       });
     }
