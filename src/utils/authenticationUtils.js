@@ -8,13 +8,24 @@ const validateAccessToken = () => {
         window.location = '/login';
         return false;
     }
-
     return true;
 };
 
+const checkUserAuthorized = () => {
+    var userRole = JSON.parse(localStorage.getItem('user_info')).userRole;
+    if (userRole === 'Editor') return false;
+    return true;
+};
+
+const checkUserIsManager = () => {
+    var userRole = JSON.parse(localStorage.getItem('user_info')).userRole;
+    if (userRole === 'Manager') return true;
+    return false;
+}
+
 const logOutHandle = () => {
+    localStorage.removeItem('user_info');
     localStorage.removeItem('access_token');
-    localStorage.removeItem('user_login');
     window.location = '/login';
 };
 
@@ -110,4 +121,6 @@ export const authUtils = {
     sendEmailForForgotPassword,
     resetPassword,
     logOutHandle,
+    checkUserAuthorized,
+    checkUserIsManager
 };

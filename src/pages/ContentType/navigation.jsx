@@ -74,12 +74,7 @@ const Navigation = props => {
 
           <InputRightElement pointerEvents="none" />
         </InputGroup>
-        <Select placeholder="Filter" size="md">
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </Select>
-
+        
         <Button
           id="add-button"
           onClick={onOpen}

@@ -135,14 +135,29 @@ const Content = () => {
                 </VStack>
             </Flex>
 
-            <If test={!listHidden}>
-                <Flex height="auto" p={5} direction={'column'} w="100%">
-                    <Flex height="auto" p={5} gap={5} direction={'row'} w="100%">
-                        <Heading as="h5" w="30%" size="md">
-                            All Contents
-                        </Heading>
-                        <InputGroup>
-                            <Input id="searchInput" type="search" placeholder="Search Content By name" />
+      <If test={!listHidden}>
+        <Flex
+          height="auto"
+          p={5}
+          direction={'column'}
+          w="100%"
+        >
+          <Flex
+            height="auto"
+            p={5}
+            gap={5}
+            direction={'row'}
+            w="100%"
+          >
+            <Heading as="h5" w="30%" size="md">
+              All Contents
+            </Heading>
+            <InputGroup>
+              <Input
+                id="searchInput"
+                type="search"
+                placeholder="Search Content By name"
+              />
 
                             <InputRightElement pointerEvents="none" />
                         </InputGroup>

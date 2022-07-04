@@ -9,38 +9,32 @@ import { authUtils } from '../../utils/authenticationUtils';
 import If from '../../components/If';
 
 const AuthLayout = () => {
-  const isTokenValid = authUtils.accessTokenChecker();
-  return (
-    <If test={isTokenValid}>
-      <VStack minH="100vh">
-        <Flex alignItems="center" height="4rem" w="100vw" bgColor="#1A365D">
-          <Flex minWidth="max-content" gap="2" w="100%">
-            <Box p="2">
-              <Heading size="md" textColor="whiteAlpha.900" mx="0.3rem">
-                Babe CMS
-              </Heading>
-            </Box>
-            <Spacer />
-            <ColorModeSwitcher />
-          </Flex>
-        </Flex>
-        {/*  yukaridaki auth header component */}
-        <Flex flex="1" justifyContent="center" alignItems="center" h="100%">
-          <Routes>
-            <Route
-              path={PATHS.FORGOT_PASSWORD}
-              element={<ForgotPasswordForm />}
-            />
-            <Route
-              path={PATHS.RESET_PASSWORD}
-              element={<ResetPasswordForm />}
-            />
-            <Route path={PATHS.LOGIN} element={<LoginForm />} />
-          </Routes>
-        </Flex>
-      </VStack>
-    </If>
-  );
+    const isTokenValid = authUtils.accessTokenChecker();
+    return (
+        <If test={isTokenValid}>
+            <VStack minH="100vh">
+                <Flex alignItems="center" height="4rem" w="100vw" bgColor="#1A365D">
+                    <Flex minWidth="max-content" gap="2" w="100%">
+                        <Box p="2">
+                            <Heading size="md" textColor="whiteAlpha.900" mx="0.3rem">
+                                Babe CMS
+                            </Heading>
+                        </Box>
+                        <Spacer />
+                        <ColorModeSwitcher />
+                    </Flex>
+                </Flex>
+                {/*  yukaridaki auth header component */}
+                <Flex flex="1" justifyContent="center" alignItems="center" h="100%">
+                    <Routes>
+                        <Route path={PATHS.FORGOT_PASSWORD} element={<ForgotPasswordForm />} />
+                        <Route path={PATHS.RESET_PASSWORD} element={<ResetPasswordForm />} />
+                        <Route path={PATHS.LOGIN} element={<LoginForm />} />
+                    </Routes>
+                </Flex>
+            </VStack>
+        </If>
+    );
 };
 
 export default AuthLayout;
